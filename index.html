@@ -23,6 +23,7 @@
     body {
       margin: 0;
       padding: 20px;
+
       font-family:
         Arial,
         "Noto Sans Thai",
@@ -33,79 +34,202 @@
     }
 
     .container {
-      max-width: 500px;
+      max-width: 520px;
       margin: 0 auto;
     }
 
     .card {
-      background: white;
+      background: #fff;
+
       border-radius: 24px;
-      padding: 30px 22px;
+
+      padding: 28px 22px;
 
       box-shadow:
-        0 8px 30px rgba(0,0,0,0.08);
+        0 8px 30px
+        rgba(0,0,0,0.08);
     }
 
-    .icon {
+    .logo {
       text-align: center;
-      font-size: 52px;
-      margin-bottom: 10px;
+
+      font-size: 50px;
+
+      margin-bottom: 8px;
     }
 
     h1 {
       text-align: center;
+
+      margin: 0;
+
       font-size: 24px;
-      margin: 0 0 8px;
     }
 
     .subtitle {
       text-align: center;
+
       color: #777;
+
+      margin-top: 8px;
+
       margin-bottom: 25px;
     }
 
-    .status {
-      padding: 15px;
-      border-radius: 14px;
+    .welcome {
       background: #f5f7fa;
-      text-align: center;
-      color: #555;
+
+      border-radius: 16px;
+
+      padding: 18px;
+
+      margin-bottom: 20px;
     }
 
-    .info {
-      margin-top: 15px;
-      padding: 16px;
-      background: #f5f7fa;
-      border-radius: 14px;
-    }
+    .welcome-title {
+      font-size: 14px;
 
-    .label {
-      font-size: 13px;
       color: #777;
-      margin-bottom: 6px;
+
+      margin-bottom: 5px;
     }
 
-    .value {
-      font-size: 15px;
-      word-break: break-all;
-    }
+    .welcome-name {
+      font-size: 20px;
 
-    .success {
-      margin-top: 20px;
-      padding: 16px;
-      background: #ecfdf5;
-      border-radius: 14px;
-      color: #166534;
-      text-align: center;
       font-weight: bold;
     }
 
-    .error {
+    .section {
       margin-top: 20px;
-      padding: 16px;
-      background: #fef2f2;
+    }
+
+    .section-title {
+      font-size: 18px;
+
+      font-weight: bold;
+
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+
+      margin-top: 14px;
+
+      margin-bottom: 6px;
+
+      font-size: 14px;
+
+      color: #555;
+    }
+
+    input,
+    textarea {
+
+      width: 100%;
+
+      padding: 13px 14px;
+
+      border: 1px solid #ddd;
+
+      border-radius: 12px;
+
+      font-size: 16px;
+
+      outline: none;
+
+      font-family: inherit;
+
+      background: #fff;
+
+    }
+
+    input:focus,
+    textarea:focus {
+
+      border-color: #999;
+
+    }
+
+    textarea {
+
+      min-height: 90px;
+
+      resize: vertical;
+
+    }
+
+    .user-id {
+
+      margin-top: 20px;
+
+      padding: 12px;
+
+      background: #f8f8f8;
+
+      border-radius: 10px;
+
+      font-size: 11px;
+
+      color: #777;
+
+      word-break: break-all;
+
+    }
+
+    .button {
+
+      width: 100%;
+
+      border: none;
+
       border-radius: 14px;
+
+      padding: 15px;
+
+      margin-top: 25px;
+
+      font-size: 17px;
+
+      font-weight: bold;
+
+      cursor: pointer;
+
+      background: #111;
+
+      color: white;
+
+    }
+
+    .button:active {
+
+      transform: scale(0.98);
+
+    }
+
+    .status {
+
+      text-align: center;
+
+      color: #777;
+
+      margin-bottom: 20px;
+
+    }
+
+    .error {
+
+      padding: 15px;
+
+      background: #fef2f2;
+
       color: #991b1b;
+
+      border-radius: 12px;
+
+      margin-top: 15px;
+
     }
 
   </style>
@@ -115,54 +239,59 @@
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <div class="card">
+  <div class="card">
 
-      <div class="icon">
-        🎉
-      </div>
-
-      <h1>
-        ANC Life Planning
-      </h1>
-
-      <div class="subtitle">
-        ระบบสมัครประกันออนไลน์
-      </div>
-
-      <div
-        id="status"
-        class="status"
-      >
-        🔄 กำลังเริ่มต้น LIFF...
-      </div>
-
-      <div id="profile"></div>
-
+    <div class="logo">
+      🎉
     </div>
 
+    <h1>
+      ANC Life Planning
+    </h1>
+
+    <div class="subtitle">
+      ระบบสมัครประกันออนไลน์
+    </div>
+
+
+    <div
+      id="status"
+      class="status"
+    >
+      🔄 กำลังเชื่อมต่อ LINE...
+    </div>
+
+
+    <div id="app"></div>
+
   </div>
+
+</div>
 
 
 <script>
 
 
-// =================================================
-// CONFIG
-// =================================================
+// ============================================
+// LIFF CONFIG
+// ============================================
 
 const LIFF_ID =
   "2011077014-4bdad1VJ";
 
 
-const API_URL =
-  "https://script.google.com/macros/s/AKfycbx2D04TYozU4CPQrQ1qAFWnWj5c4y9h9M9T6pgYzHleQfd2XisYmJRqvJAFHoJu9sNM/exec";
+// ============================================
+// GLOBAL USER
+// ============================================
+
+let lineUser = null;
 
 
-// =================================================
-// MAIN
-// =================================================
+// ============================================
+// START LIFF
+// ============================================
 
 async function main() {
 
@@ -173,9 +302,9 @@ async function main() {
     );
 
 
-    // =============================================
-    // 1. Initialize LIFF
-    // =============================================
+    // ------------------------------------------
+    // Initialize
+    // ------------------------------------------
 
     await liff.init({
 
@@ -184,14 +313,9 @@ async function main() {
     });
 
 
-    setStatus(
-      "✅ LIFF เริ่มต้นสำเร็จ"
-    );
-
-
-    // =============================================
-    // 2. ตรวจ Login
-    // =============================================
+    // ------------------------------------------
+    // Login
+    // ------------------------------------------
 
     if (!liff.isLoggedIn()) {
 
@@ -206,129 +330,49 @@ async function main() {
     }
 
 
-    // =============================================
-    // 3. ขอ ID Token
-    // =============================================
+    // ------------------------------------------
+    // Get Profile
+    // ------------------------------------------
 
     setStatus(
-      "🔐 กำลังยืนยันตัวตน..."
+      "🔄 กำลังอ่านข้อมูล LINE..."
     );
 
 
-    const idToken =
-      liff.getIDToken();
+    const profile =
+      await liff.getProfile();
 
 
-    if (!idToken) {
+    lineUser = {
 
-      throw new Error(
-        "ไม่พบ ID Token"
-      );
+      userId:
+        profile.userId,
 
-    }
+      displayName:
+        profile.displayName,
+
+      pictureUrl:
+        profile.pictureUrl || ""
+
+    };
 
 
-    // =============================================
-    // 4. ส่ง ID Token ไป Apps Script
-    // =============================================
-
-    setStatus(
-      "🔄 กำลังตรวจสอบข้อมูล..."
+    console.log(
+      "LINE USER:",
+      lineUser
     );
 
 
-    const response =
-      await fetch(
-        API_URL,
-        {
-
-          method: "POST",
-
-          headers: {
-
-            "Content-Type":
-              "application/json"
-
-          },
-
-          body: JSON.stringify({
-
-            idToken: idToken
-
-          })
-
-        }
-      );
-
-
-    // =============================================
-    // 5. อ่าน Response
-    // =============================================
-
-    const result =
-      await response.json();
-
-
-    if (!result.success) {
-
-      throw new Error(
-        result.error ||
-        "ไม่สามารถยืนยันตัวตนได้"
-      );
-
-    }
-
-
-    // =============================================
-    // 6. แสดงข้อมูลที่ Server ยืนยันแล้ว
-    // =============================================
+    // ------------------------------------------
+    // Show Application Form
+    // ------------------------------------------
 
     setStatus(
-      "✅ ยืนยันตัวตนสำเร็จ"
+      "✅ เชื่อมต่อ LINE สำเร็จ"
     );
 
 
-    document.getElementById(
-      "profile"
-    ).innerHTML = `
-
-      <div class="info">
-
-        <div class="label">
-          ชื่อผู้ใช้งาน
-        </div>
-
-        <div class="value">
-          ${escapeHtml(
-            result.displayName
-          )}
-        </div>
-
-      </div>
-
-
-      <div class="info">
-
-        <div class="label">
-          USER ID
-        </div>
-
-        <div class="value">
-          ${escapeHtml(
-            result.USER_ID
-          )}
-        </div>
-
-      </div>
-
-
-      <div class="success">
-
-        ✅ LINE ID ได้รับการยืนยันแล้ว
-
-      </div>
-
-    `;
+    showApplicationForm();
 
 
   } catch (error) {
@@ -336,13 +380,18 @@ async function main() {
     console.error(error);
 
 
+    setStatus(
+      "❌ เกิดข้อผิดพลาด"
+    );
+
+
     document.getElementById(
-      "profile"
+      "app"
     ).innerHTML = `
 
       <div class="error">
 
-        ❌ ไม่สามารถยืนยันตัวตนได้
+        ไม่สามารถเชื่อมต่อ LINE ได้
 
         <br><br>
 
@@ -355,19 +404,200 @@ async function main() {
 
     `;
 
-
-    setStatus(
-      "เกิดข้อผิดพลาด"
-    );
-
   }
 
 }
 
 
-// =================================================
+// ============================================
+// APPLICATION FORM
+// ============================================
+
+function showApplicationForm() {
+
+  const app =
+    document.getElementById("app");
+
+
+  app.innerHTML = `
+
+    <div class="welcome">
+
+      <div class="welcome-title">
+        ยินดีต้อนรับครับ
+      </div>
+
+      <div class="welcome-name">
+        ${escapeHtml(
+          lineUser.displayName
+        )}
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <div class="section-title">
+        📝 ข้อมูลผู้สมัคร
+      </div>
+
+
+      <label>
+        ชื่อ - นามสกุล
+      </label>
+
+      <input
+        id="fullName"
+        type="text"
+        placeholder="กรุณากรอกชื่อ - นามสกุล"
+      >
+
+
+      <label>
+        เบอร์โทรศัพท์
+      </label>
+
+      <input
+        id="phone"
+        type="tel"
+        placeholder="08xxxxxxxx"
+      >
+
+
+      <label>
+        อีเมล
+      </label>
+
+      <input
+        id="email"
+        type="email"
+        placeholder="example@email.com"
+      >
+
+
+      <label>
+        น้ำหนัก (กก.)
+      </label>
+
+      <input
+        id="weight"
+        type="number"
+        placeholder="เช่น 70"
+      >
+
+
+      <label>
+        ส่วนสูง (ซม.)
+      </label>
+
+      <input
+        id="height"
+        type="number"
+        placeholder="เช่น 170"
+      >
+
+
+      <label>
+        โรคประจำตัว
+      </label>
+
+      <textarea
+        id="disease"
+        placeholder="หากไม่มี กรุณาพิมพ์ว่า ไม่มี"
+      ></textarea>
+
+
+      <label>
+        ประวัติการรักษาในโรงพยาบาล
+      </label>
+
+      <textarea
+        id="hospitalHistory"
+        placeholder="หากไม่มี กรุณาพิมพ์ว่า ไม่มี"
+      ></textarea>
+
+
+    </div>
+
+
+    <div class="user-id">
+
+      LINE USER ID
+
+      <br>
+
+      ${escapeHtml(
+        lineUser.userId
+      )}
+
+    </div>
+
+
+    <button
+      class="button"
+      onclick="nextStep()"
+    >
+
+      ดำเนินการต่อ →
+
+    </button>
+
+  `;
+
+}
+
+
+// ============================================
+// NEXT STEP
+// ============================================
+
+function nextStep() {
+
+  const fullName =
+    document.getElementById(
+      "fullName"
+    ).value.trim();
+
+
+  const phone =
+    document.getElementById(
+      "phone"
+    ).value.trim();
+
+
+  if (!fullName) {
+
+    alert(
+      "กรุณากรอกชื่อ - นามสกุล"
+    );
+
+    return;
+
+  }
+
+
+  if (!phone) {
+
+    alert(
+      "กรุณากรอกเบอร์โทรศัพท์"
+    );
+
+    return;
+
+  }
+
+
+  alert(
+    "ข้อมูลเบื้องต้นถูกต้องแล้วครับ"
+  );
+
+}
+
+
+// ============================================
 // STATUS
-// =================================================
+// ============================================
 
 function setStatus(message) {
 
@@ -378,9 +608,9 @@ function setStatus(message) {
 }
 
 
-// =================================================
+// ============================================
 // SECURITY
-// =================================================
+// ============================================
 
 function escapeHtml(value) {
 
@@ -414,9 +644,9 @@ function escapeHtml(value) {
 }
 
 
-// =================================================
+// ============================================
 // START
-// =================================================
+// ============================================
 
 main();
 
