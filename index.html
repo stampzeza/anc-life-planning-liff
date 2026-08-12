@@ -3907,7 +3907,82 @@ function showReviewForm() {
         </div>
 
       </div>
-
+      
+      <!-- ================================= -->
+      <!-- การชำระเงิน -->
+      <!-- ================================= -->
+      
+      <div style="
+        padding:18px;
+        background:#fafafa;
+        border:1px solid #e5e5e5;
+        border-radius:16px;
+        margin-bottom:18px;
+      ">
+      
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          margin-bottom:16px;
+        ">
+      
+          <div style="
+            font-size:17px;
+            font-weight:bold;
+          ">
+            💳 การชำระเงิน
+          </div>
+      
+      
+          <button
+            type="button"
+            onclick="showPaymentForm()"
+            style="
+              border:none;
+              background:white;
+              color:#777;
+              padding:7px 10px;
+              border-radius:8px;
+              font-size:13px;
+            "
+          >
+            ✏️ แก้ไข
+          </button>
+      
+        </div>
+      
+      
+        <div class="review-row">
+      
+          <div class="review-label">
+            ช่องทางการชำระ
+          </div>
+      
+          <div class="review-value">
+            ${escapeHtml(
+              applicationData.PaymentMethod || "-"
+            )}
+          </div>
+      
+        </div>
+      
+      
+        <div class="review-row">
+      
+          <div class="review-label">
+            ความถี่การชำระ
+          </div>
+      
+          <div class="review-value">
+            ${escapeHtml(
+              applicationData.PaymentFrequency || "-"
+            )}
+          </div>
+      
+        </div>
+      
+      </div>
 
       <!-- ================================= -->
       <!-- ปุ่มกลับ -->
