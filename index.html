@@ -1006,12 +1006,9 @@ function nextStep() {
   // ==========================================
 
   const emailElement =
-    getRequiredValue(
-      "email",
-      "กรุณากรอกอีเมล"
+    document.getElementById(
+      "email"
     );
-
-  if (emailElement === null) return;
   
   const email =
     emailElement
