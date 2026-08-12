@@ -328,6 +328,12 @@
     border-bottom:1px solid #eee;
   
   }
+  
+  .required {
+    color: #e53935;
+    font-weight: bold;
+    margin-left: 3px;
+  }
   </style>
 
 </head>
@@ -384,7 +390,61 @@ const LIFF_ID =
 
 let lineUser = null;
 
-let applicationData = {};
+let applicationData = {
+
+  USER_ID: "",
+  DisplayName: "",
+
+  // =========================
+  // ข้อมูลผู้สมัคร
+  // =========================
+
+  FullName: "",
+  IDCard: "",
+  LaserID: "",
+  BirthDate: "",
+  IDExpireDate: "",
+  Nationality: "",
+  Phone: "",
+  Email: "",
+
+  Weight: "",
+  Height: "",
+  Disease: "",
+  HospitalHistory: "",
+
+  // =========================
+  // การชำระเงิน
+  // =========================
+
+  PaymentMethod: "",
+  PaymentFrequency: "",
+
+  // =========================
+  // การทำงาน
+  // =========================
+
+  Occupation: "",
+  Company: "",
+  Position: "",
+  JobDescription: "",
+  AnnualIncome: "",
+
+  // =========================
+  // ที่อยู่
+  // =========================
+
+  CurrentAddress: null,
+  HouseAddress: null,
+  SameAddress: false,
+
+  // =========================
+  // ผู้รับผลประโยชน์
+  // =========================
+
+  Beneficiaries: []
+
+};
 
 let beneficiaries = [];
 
@@ -507,7 +567,6 @@ async function main() {
 
 }
 
-
 // ============================================
 // APPLICATION FORM
 // ============================================
@@ -516,6 +575,13 @@ function showApplicationForm() {
 
   const app =
     document.getElementById("app");
+
+
+  // ==========================================
+  // ค่าที่เคยกรอกไว้
+  // ==========================================
+
+  const data = applicationData || {};
 
 
   app.innerHTML = `
@@ -542,27 +608,144 @@ function showApplicationForm() {
       </div>
 
 
+      <!-- ================================= -->
+      <!-- ชื่อ -->
+      <!-- ================================= -->
+
       <label>
         ชื่อ - นามสกุล
+        <span class="required">*</span>
       </label>
 
       <input
         id="fullName"
         type="text"
         placeholder="กรุณากรอกชื่อ - นามสกุล"
+        value="${escapeHtml(
+          data.FullName || ""
+        )}"
       >
 
 
+      <!-- ================================= -->
+      <!-- เลขบัตรประชาชน -->
+      <!-- ================================= -->
+
+      <label>
+        เลขบัตรประชาชน
+        <span class="required">*</span>
+      </label>
+
+      <input
+        id="idCard"
+        type="text"
+        inputmode="numeric"
+        maxlength="13"
+        placeholder="เลขบัตรประชาชน 13 หลัก"
+        value="${escapeHtml(
+          data.IDCard || ""
+        )}"
+      >
+
+
+      <!-- ================================= -->
+      <!-- เลขหลังบัตร -->
+      <!-- ================================= -->
+
+      <label>
+        เลขหลังบัตรประชาชน
+        <span class="required">*</span>
+      </label>
+
+      <input
+        id="laserID"
+        type="text"
+        placeholder="เช่น ME1-1234567-89"
+        value="${escapeHtml(
+          data.LaserID || ""
+        )}"
+      >
+
+
+      <!-- ================================= -->
+      <!-- วันเกิด -->
+      <!-- ================================= -->
+
+      <label>
+        วันเดือนปีเกิด
+        <span class="required">*</span>
+      </label>
+
+      <input
+        id="birthDate"
+        type="date"
+        value="${escapeHtml(
+          data.BirthDate || ""
+        )}"
+      >
+
+
+      <!-- ================================= -->
+      <!-- วันหมดอายุ -->
+      <!-- ================================= -->
+
+      <label>
+        วันหมดอายุบัตรประชาชน
+        <span class="required">*</span>
+      </label>
+
+      <input
+        id="idExpireDate"
+        type="date"
+        value="${escapeHtml(
+          data.IDExpireDate || ""
+        )}"
+      >
+
+
+      <!-- ================================= -->
+      <!-- สัญชาติ -->
+      <!-- ================================= -->
+
+      <label>
+        สัญชาติ
+        <span class="required">*</span>
+      </label>
+
+      <input
+        id="nationality"
+        type="text"
+        placeholder="เช่น ไทย"
+        value="${escapeHtml(
+          data.Nationality || "ไทย"
+        )}"
+      >
+
+
+      <!-- ================================= -->
+      <!-- เบอร์โทร -->
+      <!-- ================================= -->
+
       <label>
         เบอร์โทรศัพท์
+        <span class="required">*</span>
       </label>
 
       <input
         id="phone"
         type="tel"
+        inputmode="numeric"
+        maxlength="10"
         placeholder="08xxxxxxxx"
+        value="${escapeHtml(
+          data.Phone || ""
+        )}"
       >
 
+
+      <!-- ================================= -->
+      <!-- Email -->
+      <!-- ================================= -->
 
       <label>
         อีเมล
@@ -572,40 +755,72 @@ function showApplicationForm() {
         id="email"
         type="email"
         placeholder="example@email.com"
+        value="${escapeHtml(
+          data.Email || ""
+        )}"
       >
 
 
+      <!-- ================================= -->
+      <!-- น้ำหนัก -->
+      <!-- ================================= -->
+
       <label>
         น้ำหนัก (กก.)
+        <span class="required">*</span>
       </label>
 
       <input
         id="weight"
         type="number"
+        inputmode="decimal"
         placeholder="เช่น 70"
+        value="${escapeHtml(
+          data.Weight || ""
+        )}"
       >
 
 
+      <!-- ================================= -->
+      <!-- ส่วนสูง -->
+      <!-- ================================= -->
+
       <label>
         ส่วนสูง (ซม.)
+        <span class="required">*</span>
       </label>
 
       <input
         id="height"
         type="number"
+        inputmode="numeric"
         placeholder="เช่น 170"
+        value="${escapeHtml(
+          data.Height || ""
+        )}"
       >
 
 
+      <!-- ================================= -->
+      <!-- โรคประจำตัว -->
+      <!-- ================================= -->
+
       <label>
         โรคประจำตัว
+        <span class="required">*</span>
       </label>
 
       <textarea
         id="disease"
         placeholder="หากไม่มี กรุณาพิมพ์ว่า ไม่มี"
-      ></textarea>
+      >${escapeHtml(
+        data.Disease || ""
+      )}</textarea>
 
+
+      <!-- ================================= -->
+      <!-- ประวัติรักษา -->
+      <!-- ================================= -->
 
       <label>
         ประวัติการรักษาในโรงพยาบาล
@@ -614,7 +829,9 @@ function showApplicationForm() {
       <textarea
         id="hospitalHistory"
         placeholder="หากไม่มี กรุณาพิมพ์ว่า ไม่มี"
-      ></textarea>
+      >${escapeHtml(
+        data.HospitalHistory || ""
+      )}</textarea>
 
 
     </div>
@@ -646,129 +863,323 @@ function showApplicationForm() {
 
 }
 
-
 // ============================================
 // NEXT STEP
 // ============================================
 
 function nextStep() {
 
+  // ==========================================
+  // ชื่อ - นามสกุล
+  // ==========================================
+
   const fullName =
-    document.getElementById(
-      "fullName"
-    ).value.trim();
-
-  const phone =
-    document.getElementById(
-      "phone"
-    ).value.trim();
-
-  const email =
-    document.getElementById(
-      "email"
-    ).value.trim();
-
-  const weight =
-    document.getElementById(
-      "weight"
-    ).value.trim();
-
-  const height =
-    document.getElementById(
-      "height"
-    ).value.trim();
-
-  const disease =
-    document.getElementById(
-      "disease"
-    ).value.trim();
-
-  const hospitalHistory =
-    document.getElementById(
-      "hospitalHistory"
-    ).value.trim();
-
-
-  // ============================================
-  // ตรวจข้อมูลจำเป็น
-  // ============================================
-
-  if (!fullName) {
-
-    alert(
+    getRequiredValue(
+      "fullName",
       "กรุณากรอกชื่อ - นามสกุล"
     );
 
+  if (fullName === null) return;
+
+
+  // ==========================================
+  // เลขบัตรประชาชน
+  // ==========================================
+
+  const idCard =
+    getRequiredValue(
+      "idCard",
+      "กรุณากรอกเลขบัตรประชาชน"
+    );
+
+  if (idCard === null) return;
+
+
+  // ตรวจเลขบัตร 13 หลัก
+  const cleanIDCard =
+    idCard.replace(/\D/g, "");
+
+  if (cleanIDCard.length !== 13) {
+
+    alert(
+      "เลขบัตรประชาชนต้องมี 13 หลัก"
+    );
+
+    document
+      .getElementById("idCard")
+      .focus();
+
     return;
 
   }
 
 
-  if (!phone) {
+  // ==========================================
+  // เลขหลังบัตร
+  // ==========================================
 
-    alert(
+  const laserID =
+    getRequiredValue(
+      "laserID",
+      "กรุณากรอกเลขหลังบัตรประชาชน"
+    );
+
+  if (laserID === null) return;
+
+
+  // ==========================================
+  // วันเดือนปีเกิด
+  // ==========================================
+
+  const birthDate =
+    getRequiredValue(
+      "birthDate",
+      "กรุณากรอกวันเดือนปีเกิด"
+    );
+
+  if (birthDate === null) return;
+
+
+  // ==========================================
+  // วันหมดอายุบัตร
+  // ==========================================
+
+  const idExpireDate =
+    getRequiredValue(
+      "idExpireDate",
+      "กรุณากรอกวันหมดอายุบัตรประชาชน"
+    );
+
+  if (idExpireDate === null) return;
+
+
+  // ==========================================
+  // สัญชาติ
+  // ==========================================
+
+  const nationality =
+    getRequiredValue(
+      "nationality",
+      "กรุณากรอกสัญชาติ"
+    );
+
+  if (nationality === null) return;
+
+
+  // ==========================================
+  // เบอร์โทรศัพท์
+  // ==========================================
+
+  const phone =
+    getRequiredValue(
+      "phone",
       "กรุณากรอกเบอร์โทรศัพท์"
     );
 
+  if (phone === null) return;
+
+
+  // ตรวจเบอร์โทร
+  const cleanPhone =
+    phone.replace(/\D/g, "");
+
+  if (
+    cleanPhone.length !== 10 ||
+    !cleanPhone.startsWith("0")
+  ) {
+
+    alert(
+      "กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง เช่น 0812345678"
+    );
+
+    document
+      .getElementById("phone")
+      .focus();
+
     return;
 
   }
 
 
-  // ============================================
-  // เก็บข้อมูลไว้ในตัวแปร
-  // ============================================
+  // ==========================================
+  // น้ำหนัก
+  // ==========================================
 
-  applicationData = {
+  const weight =
+    getRequiredValue(
+      "weight",
+      "กรุณากรอกน้ำหนัก"
+    );
 
-    USER_ID:
-      lineUser.userId,
+  if (weight === null) return;
 
-    DisplayName:
-      lineUser.displayName,
 
-    FullName:
-      fullName,
+  if (
+    Number(weight) <= 0 ||
+    Number(weight) > 500
+  ) {
 
-    Phone:
-      phone,
+    alert(
+      "กรุณาตรวจสอบน้ำหนักอีกครั้ง"
+    );
 
-    Email:
-      email,
+    document
+      .getElementById("weight")
+      .focus();
 
-    Weight:
-      weight,
+    return;
 
-    Height:
-      height,
+  }
 
-    Disease:
-      disease,
 
-    HospitalHistory:
-      hospitalHistory
+  // ==========================================
+  // ส่วนสูง
+  // ==========================================
 
-  };
+  const height =
+    getRequiredValue(
+      "height",
+      "กรุณากรอกส่วนสูง"
+    );
 
+  if (height === null) return;
+
+
+  if (
+    Number(height) <= 0 ||
+    Number(height) > 250
+  ) {
+
+    alert(
+      "กรุณาตรวจสอบส่วนสูงอีกครั้ง"
+    );
+
+    document
+      .getElementById("height")
+      .focus();
+
+    return;
+
+  }
+
+
+  // ==========================================
+  // โรคประจำตัว
+  // ==========================================
+
+  const disease =
+    getRequiredValue(
+      "disease",
+      "กรุณาระบุโรคประจำตัว\nหากไม่มี กรุณาพิมพ์ว่า ไม่มี"
+    );
+
+  if (disease === null) return;
+
+
+  // ==========================================
+  // ประวัติการรักษา
+  // ไม่ Required
+  // ==========================================
+
+  const hospitalHistoryElement =
+    document.getElementById(
+      "hospitalHistory"
+    );
+
+
+  const hospitalHistory =
+    hospitalHistoryElement
+      ? hospitalHistoryElement.value.trim()
+      : "";
+
+
+  // ==========================================
+  // Email
+  // ไม่ Required
+  // ==========================================
+
+  const emailElement =
+    document.getElementById(
+      "email"
+    );
+
+
+  const email =
+    emailElement
+      ? emailElement.value.trim()
+      : "";
+
+
+  // ==========================================
+  // บันทึกข้อมูลลง applicationData
+  // ==========================================
+
+  applicationData.FullName =
+    fullName;
+
+  applicationData.IDCard =
+    cleanIDCard;
+
+  applicationData.LaserID =
+    laserID;
+
+  applicationData.BirthDate =
+    birthDate;
+
+  applicationData.IDExpireDate =
+    idExpireDate;
+
+  applicationData.Nationality =
+    nationality;
+
+  applicationData.Phone =
+    cleanPhone;
+
+  applicationData.Email =
+    email;
+
+  applicationData.Weight =
+    weight;
+
+  applicationData.Height =
+    height;
+
+  applicationData.Disease =
+    disease;
+
+  applicationData.HospitalHistory =
+    hospitalHistory;
+
+
+  // ==========================================
+  // DEBUG
+  // ==========================================
 
   console.log(
-    "APPLICATION DATA:",
-    applicationData
+    "APPLICATION DATA UPDATED"
   );
 
 
-  // ============================================
-  // ไปหน้าชำระเงิน
-  // ============================================
+  // ==========================================
+  // ไป STEP 2
+  // ==========================================
 
   showPaymentForm();
 
 }
+  
+// ============================================
+// PAYMENT FORM
+// ============================================
 
 function showPaymentForm() {
 
   const app =
     document.getElementById("app");
+
+
+  const data =
+    applicationData || {};
 
 
   app.innerHTML = `
@@ -787,11 +1198,24 @@ function showPaymentForm() {
       </div>
 
 
+      <!-- ================================= -->
       <!-- QR CODE -->
+      <!-- ================================= -->
 
       <div
-        class="payment-option"
-        onclick="selectPayment('QR Code ออนไลน์')"
+        class="payment-option
+          ${
+            data.PaymentMethod ===
+            "QR Code ออนไลน์"
+              ? "selected"
+              : ""
+          }
+        "
+        onclick="
+          selectPayment(
+            'QR Code ออนไลน์'
+          )
+        "
         id="payment-qr"
       >
 
@@ -823,11 +1247,24 @@ function showPaymentForm() {
       </div>
 
 
+      <!-- ================================= -->
       <!-- CREDIT CARD -->
+      <!-- ================================= -->
 
       <div
-        class="payment-option"
-        onclick="selectPayment('บัตรเครดิต')"
+        class="payment-option
+          ${
+            data.PaymentMethod ===
+            "บัตรเครดิต"
+              ? "selected"
+              : ""
+          }
+        "
+        onclick="
+          selectPayment(
+            'บัตรเครดิต'
+          )
+        "
         id="payment-card"
       >
 
@@ -859,6 +1296,10 @@ function showPaymentForm() {
       </div>
 
 
+      <!-- ================================= -->
+      <!-- FREQUENCY -->
+      <!-- ================================= -->
+
       <div class="section">
 
         <div class="section-title">
@@ -870,29 +1311,69 @@ function showPaymentForm() {
 
 
           <button
-            class="frequency-button"
-            onclick="selectFrequency('รายปี')"
+            class="
+              frequency-button
+              ${
+                data.PaymentFrequency ===
+                "รายปี"
+                  ? "selected"
+                  : ""
+              }
+            "
+            onclick="
+              selectFrequency('รายปี')
+            "
             id="freq-year"
           >
+
             📅 รายปี
+
           </button>
 
 
           <button
-            class="frequency-button"
-            onclick="selectFrequency('ราย 6 เดือน')"
+            class="
+              frequency-button
+              ${
+                data.PaymentFrequency ===
+                "ราย 6 เดือน"
+                  ? "selected"
+                  : ""
+              }
+            "
+            onclick="
+              selectFrequency(
+                'ราย 6 เดือน'
+              )
+            "
             id="freq-6m"
           >
+
             📆 ราย 6 เดือน
+
           </button>
 
 
           <button
-            class="frequency-button"
-            onclick="selectFrequency('ราย 3 เดือน')"
+            class="
+              frequency-button
+              ${
+                data.PaymentFrequency ===
+                "ราย 3 เดือน"
+                  ? "selected"
+                  : ""
+              }
+            "
+            onclick="
+              selectFrequency(
+                'ราย 3 เดือน'
+              )
+            "
             id="freq-3m"
           >
+
             🗓️ ราย 3 เดือน
+
           </button>
 
 
@@ -900,6 +1381,10 @@ function showPaymentForm() {
 
       </div>
 
+
+      <!-- ================================= -->
+      <!-- NEXT -->
+      <!-- ================================= -->
 
       <button
         class="button"
@@ -910,6 +1395,10 @@ function showPaymentForm() {
 
       </button>
 
+
+      <!-- ================================= -->
+      <!-- BACK -->
+      <!-- ================================= -->
 
       <button
         onclick="showApplicationForm()"
@@ -934,11 +1423,17 @@ function showPaymentForm() {
 
 }
 
+// ============================================
+// SELECT PAYMENT
+// ============================================
+
 function selectPayment(method) {
 
   applicationData.PaymentMethod =
     method;
 
+
+  // เอา selected ออกจากทุกตัว
 
   document
     .querySelectorAll(
@@ -953,6 +1448,8 @@ function selectPayment(method) {
     });
 
 
+  // ใส่ selected ให้ตัวที่เลือก
+
   if (
     method ===
     "QR Code ออนไลน์"
@@ -962,7 +1459,7 @@ function selectPayment(method) {
       .getElementById(
         "payment-qr"
       )
-      .classList.add(
+      ?.classList.add(
         "selected"
       );
 
@@ -978,13 +1475,17 @@ function selectPayment(method) {
       .getElementById(
         "payment-card"
       )
-      .classList.add(
+      ?.classList.add(
         "selected"
       );
 
   }
 
 }
+
+// ============================================
+// SELECT FREQUENCY
+// ============================================
 
 function selectFrequency(frequency) {
 
@@ -992,58 +1493,61 @@ function selectFrequency(frequency) {
     frequency;
 
 
+  // เอา selected ออกจากทุกปุ่ม
+
   document
     .querySelectorAll(
       ".frequency-button"
     )
-    .forEach(el => {
+    .forEach(btn => {
 
-      el.classList.remove(
+      btn.classList.remove(
         "selected"
       );
 
     });
 
 
+  // หา ID ของปุ่ม
+
+  let id = "";
+
+
   if (
-    frequency === "รายปี"
+    frequency ===
+    "รายปี"
   ) {
 
-    document
-      .getElementById(
-        "freq-year"
-      )
-      .classList.add(
-        "selected"
-      );
+    id = "freq-year";
 
   }
 
 
   if (
-    frequency === "ราย 6 เดือน"
+    frequency ===
+    "ราย 6 เดือน"
   ) {
 
-    document
-      .getElementById(
-        "freq-6m"
-      )
-      .classList.add(
-        "selected"
-      );
+    id = "freq-6m";
 
   }
 
 
   if (
-    frequency === "ราย 3 เดือน"
+    frequency ===
+    "ราย 3 เดือน"
   ) {
 
+    id = "freq-3m";
+
+  }
+
+
+  if (id) {
+
     document
-      .getElementById(
-        "freq-3m"
-      )
-      .classList.add(
+      .getElementById(id)
+      ?.classList.add(
         "selected"
       );
 
@@ -1051,9 +1555,19 @@ function selectFrequency(frequency) {
 
 }
 
+// ============================================
+// CONFIRM PAYMENT
+// ============================================
+
 function confirmPayment() {
 
-  if (!applicationData.PaymentMethod) {
+  // ==========================================
+  // ตรวจช่องทางการชำระ
+  // ==========================================
+
+  if (
+    !applicationData.PaymentMethod
+  ) {
 
     alert(
       "กรุณาเลือกช่องทางการชำระเงิน"
@@ -1064,10 +1578,16 @@ function confirmPayment() {
   }
 
 
-  if (!applicationData.PaymentFrequency) {
+  // ==========================================
+  // ตรวจความถี่
+  // ==========================================
+
+  if (
+    !applicationData.PaymentFrequency
+  ) {
 
     alert(
-      "กรุณาเลือกความถี่การชำระเบี้ย"
+      "กรุณาเลือกความถี่ในการชำระเบี้ย"
     );
 
     return;
@@ -1075,7 +1595,10 @@ function confirmPayment() {
   }
 
 
-  // ไป STEP 3
+  // ==========================================
+  // ไปข้อมูลการทำงาน
+  // ==========================================
+
   showWorkForm();
 
 }
@@ -2755,6 +3278,44 @@ function setStatus(message) {
 
 }
 
+function requiredLabel(text) {
+
+  return `
+    <label>
+      ${text}
+      <span class="required">*</span>
+    </label>
+  `;
+
+}
+
+function getRequiredValue(id, message) {
+
+  const element =
+    document.getElementById(id);
+
+  if (!element) {
+
+    return "";
+
+  }
+
+  const value =
+    element.value.trim();
+
+  if (!value) {
+
+    alert(message);
+
+    element.focus();
+
+    return null;
+
+  }
+
+  return value;
+
+}
 
 // ============================================
 // SECURITY
