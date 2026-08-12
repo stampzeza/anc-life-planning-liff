@@ -749,6 +749,7 @@ function showApplicationForm() {
 
       <label>
         อีเมล
+        <span class="required">*</span>
       </label>
 
       <input
@@ -1095,15 +1096,16 @@ function nextStep() {
 
   // ==========================================
   // Email
-  // ไม่ Required
   // ==========================================
 
   const emailElement =
-    document.getElementById(
-      "email"
+    getRequiredValue(
+      "email",
+      "กรุณากรอกอีเมล"
     );
 
-
+  if (emailElement === null) return;
+  
   const email =
     emailElement
       ? emailElement.value.trim()
