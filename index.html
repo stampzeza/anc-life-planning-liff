@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>ANC Life Planning</title>
+
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family:
+        Arial,
+        "Noto Sans Thai",
+        sans-serif;
+
+      background: #f5f7fa;
+      color: #222;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 30px 22px;
+
+      box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .icon {
+      text-align: center;
+      font-size: 52px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin: 0 0 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #777;
+      margin-bottom: 25px;
+    }
+
+    .status {
+      padding: 15px;
+      border-radius: 14px;
+      background: #f5f7fa;
+
+      text-align: center;
+      color: #555;
+    }
+
+    .info {
+      margin-top: 15px;
+      padding: 16px;
+
+      background: #f5f7fa;
+
+      border-radius: 14px;
+    }
+
+    .label {
+      font-size: 13px;
+      color: #777;
+      margin-bottom: 6px;
+    }
+
+    .value {
+      font-size: 15px;
+      word-break: break-all;
+    }
+
+    .success {
+      margin-top: 20px;
+
+      padding: 16px;
+
+      background: #ecfdf5;
+
+      border-radius: 14px;
+
+      color: #166534;
+
+      text-align: center;
+
+      font-weight: bold;
+    }
+
+    .error {
+      margin-top: 20px;
+
+      padding: 16px;
+
+      background: #fef2f2;
+
+      border-radius: 14px;
+
+      color: #991b1b;
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+  <div class="container">
+
+    <div class="card">
+
+      <div class="icon">
+        🎉
+      </div>
+
+      <h1>
+        ANC Life Planning
+      </h1>
+
+      <div class="subtitle">
+        ระบบสมัครประกันออนไลน์
+      </div>
+
+      <div
+        id="status"
+        class="status"
+      >
+        🔄 กำลังเริ่มต้น LIFF...
+      </div>
+
+      <div id="profile"></div>
+
+    </div>
+
+  </div>
+
+
+<script>
+
+const LIFF_ID =
+  "2011077014-4bdad1VJ";
+
+
+// =================================================
+// Main
+// =================================================
+
+async function main() {
+
+  try {
+
+    setStatus(
+      "🔄 กำลังเริ่มต้น LIFF..."
+    );
+
+
+    // ---------------------------------------------
+    // Initialize LIFF
+    // ---------------------------------------------
+
+    await liff.init({
+
+      liffId: LIFF_ID
+
+    });
+
+
+    setStatus(
+      "✅ LIFF เริ่มต้นสำเร็จ"
+    );
+
+
+    // ---------------------------------------------
+    // ตรวจสอบ Login
+    // ---------------------------------------------
+
+    if (!liff.isLoggedIn()) {
+
+      setStatus(
+        "🔐 กำลังเข้าสู่ระบบ LINE..."
+      );
+
+      liff.login();
+
+      return;
+
+    }
+
+
+    // ---------------------------------------------
+    // ดึง Profile
+    // ---------------------------------------------
+
+    setStatus(
+      "🔄 กำลังอ่านข้อมูล LINE..."
+    );
+
+
+    const profile =
+      await liff.getProfile();
+
+
+    // ---------------------------------------------
+    // แสดงข้อมูล
+    // ---------------------------------------------
+
+    document.getElementById(
+      "profile"
+    ).innerHTML = `
+
+      <div class="info">
+
+        <div class="label">
+          ชื่อผู้ใช้งาน
+        </div>
+
+        <div class="value">
+          ${escapeHtml(
+            profile.displayName
+          )}
+        </div>
+
+      </div>
+
+
+      <div class="info">
+
+        <div class="label">
+          USER ID
+        </div>
+
+        <div class="value">
+          ${escapeHtml(
+            profile.userId
+          )}
+        </div>
+
+      </div>
+
+
+      <div class="success">
+
+        ✅ เชื่อมต่อ LINE สำเร็จ
+
+      </div>
+
+    `;
+
+
+    setStatus(
+      "พร้อมเริ่มต้นระบบสมัครประกัน"
+    );
+
+
+  } catch (error) {
+
+    console.error(error);
+
+
+    document.getElementById(
+      "profile"
+    ).innerHTML = `
+
+      <div class="error">
+
+        ❌ เกิดข้อผิดพลาด
+
+        <br><br>
+
+        Code:
+        ${escapeHtml(
+          error.code || "-"
+        )}
+
+        <br>
+
+        Message:
+        ${escapeHtml(
+          error.message ||
+          error.toString()
+        )}
+
+      </div>
+
+    `;
+
+
+    setStatus(
+      "ไม่สามารถเริ่มต้น LIFF ได้"
+    );
+
+  }
+
+}
+
+
+// =================================================
+// Status
+// =================================================
+
+function setStatus(message) {
+
+  document.getElementById(
+    "status"
+  ).innerHTML = message;
+
+}
+
+
+// =================================================
+// Security
+// =================================================
+
+function escapeHtml(value) {
+
+  return String(value)
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+// =================================================
+// Start
+// =================================================
+
+main();
+
+</script>
+
+</body>
+
+</html>
