@@ -1095,14 +1095,19 @@ function nextStep() {
 
   // ==========================================
   // Email
-  // ไม่ Required
   // ==========================================
 
   const emailElement =
     document.getElementById(
       "email"
     );
+  const emailElement =
+    getRequiredValue(
+      "email",
+      "กรุณากรอกอีเมล"
+    );
 
+  if (emailElement === null) return;
 
   const email =
     emailElement
