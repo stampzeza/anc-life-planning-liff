@@ -426,6 +426,8 @@ let applicationData = {
 
   Occupation: "",
   Company: "",
+  WorkAddress: "",
+  WorkPhone: "",
   Position: "",
   JobDescription: "",
   AnnualIncome: "",
@@ -1600,10 +1602,17 @@ function confirmPayment() {
 
 }
 
+// ============================================
+// WORK FORM
+// ============================================
+
 function showWorkForm() {
 
   const app =
     document.getElementById("app");
+
+  const data =
+    applicationData || {};
 
 
   app.innerHTML = `
@@ -1622,10 +1631,13 @@ function showWorkForm() {
       </div>
 
 
+      <!-- ================================= -->
       <!-- อาชีพ -->
+      <!-- ================================= -->
 
       <label>
         อาชีพปัจจุบัน
+        <span class="required">*</span>
       </label>
 
       <select
@@ -1645,70 +1657,185 @@ function showWorkForm() {
           -- กรุณาเลือกอาชีพ --
         </option>
 
-        <option value="พนักงานออฟฟิศ">
+        <option
+          value="พนักงานออฟฟิศ"
+          ${
+            data.Occupation ===
+            "พนักงานออฟฟิศ"
+              ? "selected"
+              : ""
+          }
+        >
           👔 พนักงานออฟฟิศ
         </option>
 
-        <option value="ค้าขาย/ธุรกิจส่วนตัว">
+        <option
+          value="ค้าขาย/ธุรกิจส่วนตัว"
+          ${
+            data.Occupation ===
+            "ค้าขาย/ธุรกิจส่วนตัว"
+              ? "selected"
+              : ""
+          }
+        >
           🏪 ค้าขาย / ธุรกิจส่วนตัว
         </option>
 
-        <option value="ข้าราชการ/รัฐวิสาหกิจ">
+        <option
+          value="ข้าราชการ/รัฐวิสาหกิจ"
+          ${
+            data.Occupation ===
+            "ข้าราชการ/รัฐวิสาหกิจ"
+              ? "selected"
+              : ""
+          }
+        >
           🏛️ ข้าราชการ / รัฐวิสาหกิจ
         </option>
 
-        <option value="รับจ้าง/ฟรีแลนซ์">
+        <option
+          value="รับจ้าง/ฟรีแลนซ์"
+          ${
+            data.Occupation ===
+            "รับจ้าง/ฟรีแลนซ์"
+              ? "selected"
+              : ""
+          }
+        >
           💻 รับจ้าง / ฟรีแลนซ์
         </option>
 
-        <option value="อื่นๆ">
+        <option
+          value="อื่นๆ"
+          ${
+            data.Occupation ===
+            "อื่นๆ"
+              ? "selected"
+              : ""
+          }
+        >
           📝 อื่นๆ
         </option>
 
       </select>
 
 
-      <!-- ส่วนข้อมูลการทำงาน -->
+      <!-- ================================= -->
+      <!-- WORK FIELDS -->
+      <!-- ================================= -->
 
       <div
         id="workFields"
-        style="display:none;"
+        style="
+          display:${
+            data.Occupation
+              ? "block"
+              : "none"
+          };
+        "
       >
+
+
+        <!-- =============================== -->
+        <!-- บริษัท -->
+        <!-- =============================== -->
 
         <label>
           สถานที่ทำงาน
+          <span class="required">*</span>
         </label>
 
         <input
           id="company"
           type="text"
           placeholder="เช่น บริษัท ABC จำกัด"
+          value="${escapeHtml(
+            data.Company || ""
+          )}"
         >
 
 
+        <!-- =============================== -->
+        <!-- ที่อยู่ที่ทำงาน -->
+        <!-- =============================== -->
+
+        <label>
+          ที่อยู่ที่ทำงาน
+          <span class="required">*</span>
+        </label>
+
+        <textarea
+          id="workAddress"
+          placeholder="บ้านเลขที่ ถนน แขวง/ตำบล เขต/อำเภอ จังหวัด รหัสไปรษณีย์"
+        >${escapeHtml(
+          data.WorkAddress || ""
+        )}</textarea>
+
+
+        <!-- =============================== -->
+        <!-- เบอร์โทรที่ทำงาน -->
+        <!-- =============================== -->
+
+        <label>
+          เบอร์โทรศัพท์ที่ทำงาน
+          <span class="required">*</span>
+        </label>
+
+        <input
+          id="workPhone"
+          type="tel"
+          inputmode="numeric"
+          maxlength="10"
+          placeholder="เช่น 021234567"
+          value="${escapeHtml(
+            data.WorkPhone || ""
+          )}"
+        >
+
+
+        <!-- =============================== -->
+        <!-- ตำแหน่ง -->
+        <!-- =============================== -->
+
         <label>
           ตำแหน่ง
+          <span class="required">*</span>
         </label>
 
         <input
           id="position"
           type="text"
           placeholder="เช่น ผู้จัดการฝ่ายขาย"
+          value="${escapeHtml(
+            data.Position || ""
+          )}"
         >
 
 
+        <!-- =============================== -->
+        <!-- ลักษณะงาน -->
+        <!-- =============================== -->
+
         <label>
           ลักษณะงาน
+          <span class="required">*</span>
         </label>
 
         <textarea
           id="jobDescription"
           placeholder="อธิบายลักษณะงานโดยย่อ"
-        ></textarea>
+        >${escapeHtml(
+          data.JobDescription || ""
+        )}</textarea>
 
+
+        <!-- =============================== -->
+        <!-- รายได้ -->
+        <!-- =============================== -->
 
         <label>
           รายได้ต่อปี (บาท)
+          <span class="required">*</span>
         </label>
 
         <input
@@ -1716,10 +1843,17 @@ function showWorkForm() {
           type="number"
           inputmode="numeric"
           placeholder="เช่น 600000"
+          value="${escapeHtml(
+            data.AnnualIncome || ""
+          )}"
         >
 
       </div>
 
+
+      <!-- ================================= -->
+      <!-- NEXT -->
+      <!-- ================================= -->
 
       <button
         class="button"
@@ -1730,6 +1864,10 @@ function showWorkForm() {
 
       </button>
 
+
+      <!-- ================================= -->
+      <!-- BACK -->
+      <!-- ================================= -->
 
       <button
         onclick="showPaymentForm()"
@@ -1754,6 +1892,10 @@ function showWorkForm() {
 
 }
 
+// ============================================
+// OCCUPATION CHANGED
+// ============================================
+
 function occupationChanged() {
 
   const occupation =
@@ -1762,37 +1904,49 @@ function occupationChanged() {
     ).value;
 
 
+  // เก็บอาชีพทันที
+
+  applicationData.Occupation =
+    occupation;
+
+
   const workFields =
     document.getElementById(
       "workFields"
     );
 
 
-  if (!occupation) {
+  if (!workFields) return;
+
+
+  if (occupation) {
+
+    workFields.style.display =
+      "block";
+
+  } else {
 
     workFields.style.display =
       "none";
 
-    return;
-
   }
 
-
-  // ถ้าเลือกอาชีพแล้ว
-  // แสดงข้อมูลการทำงาน
-
-  workFields.style.display =
-    "block";
-
 }
+  
+// ============================================
+// NEXT WORK STEP
+// ============================================
 
 function nextWorkStep() {
+
+  // ==========================================
+  // อาชีพ
+  // ==========================================
 
   const occupation =
     document.getElementById(
       "occupation"
-    ).value;
-
+    ).value.trim();
 
   if (!occupation) {
 
@@ -1800,37 +1954,136 @@ function nextWorkStep() {
       "กรุณาเลือกอาชีพปัจจุบัน"
     );
 
+    document
+      .getElementById("occupation")
+      .focus();
+
     return;
 
   }
 
 
+  // ==========================================
+  // สถานที่ทำงาน
+  // ==========================================
+
   const company =
-    document.getElementById(
-      "company"
-    ).value.trim();
+    getRequiredValue(
+      "company",
+      "กรุณากรอกสถานที่ทำงาน"
+    );
 
-
-  const position =
-    document.getElementById(
-      "position"
-    ).value.trim();
-
-
-  const jobDescription =
-    document.getElementById(
-      "jobDescription"
-    ).value.trim();
-
-
-  const annualIncome =
-    document.getElementById(
-      "annualIncome"
-    ).value.trim();
+  if (company === null) return;
 
 
   // ==========================================
-  // เก็บข้อมูล
+  // ที่อยู่ที่ทำงาน
+  // ==========================================
+
+  const workAddress =
+    getRequiredValue(
+      "workAddress",
+      "กรุณากรอกที่อยู่ที่ทำงาน"
+    );
+
+  if (workAddress === null) return;
+
+
+  // ==========================================
+  // เบอร์โทรศัพท์ที่ทำงาน
+  // ==========================================
+
+  const workPhone =
+    getRequiredValue(
+      "workPhone",
+      "กรุณากรอกเบอร์โทรศัพท์ที่ทำงาน"
+    );
+
+  if (workPhone === null) return;
+
+
+  // ตรวจเบอร์โทรศัพท์ที่ทำงาน
+  const cleanWorkPhone =
+    workPhone.replace(/\D/g, "");
+
+
+  if (
+    cleanWorkPhone.length < 9 ||
+    cleanWorkPhone.length > 10
+  ) {
+
+    alert(
+      "กรุณาตรวจสอบเบอร์โทรศัพท์ที่ทำงาน"
+    );
+
+    document
+      .getElementById("workPhone")
+      .focus();
+
+    return;
+
+  }
+
+
+  // ==========================================
+  // ตำแหน่ง
+  // ==========================================
+
+  const position =
+    getRequiredValue(
+      "position",
+      "กรุณากรอกตำแหน่ง"
+    );
+
+  if (position === null) return;
+
+
+  // ==========================================
+  // ลักษณะงาน
+  // ==========================================
+
+  const jobDescription =
+    getRequiredValue(
+      "jobDescription",
+      "กรุณากรอกลักษณะงาน"
+    );
+
+  if (jobDescription === null) return;
+
+
+  // ==========================================
+  // รายได้ต่อปี
+  // ==========================================
+
+  const annualIncome =
+    getRequiredValue(
+      "annualIncome",
+      "กรุณากรอกรายได้ต่อปี"
+    );
+
+  if (annualIncome === null) return;
+
+
+  // ตรวจรายได้
+  if (
+    Number(annualIncome) <= 0
+  ) {
+
+    alert(
+      "กรุณาตรวจสอบรายได้ต่อปี"
+    );
+
+    document
+      .getElementById("annualIncome")
+      .focus();
+
+    return;
+
+  }
+
+
+  // ==========================================
+  // บันทึกข้อมูล
   // ==========================================
 
   applicationData.Occupation =
@@ -1838,6 +2091,12 @@ function nextWorkStep() {
 
   applicationData.Company =
     company;
+
+  applicationData.WorkAddress =
+    workAddress;
+
+  applicationData.WorkPhone =
+    cleanWorkPhone;
 
   applicationData.Position =
     position;
@@ -1849,28 +2108,49 @@ function nextWorkStep() {
     annualIncome;
 
 
+  // ==========================================
+  // DEBUG
+  // ==========================================
+
   console.log(
-    "APPLICATION DATA:",
-    applicationData
+    "WORK DATA SAVED"
   );
+
 
   // ==========================================
   // ไป STEP 4
   // ==========================================
-  
+
   showAddressForm();
 
 }
+
+// ============================================
+// ADDRESS FORM
+// ============================================
 
 function showAddressForm() {
 
   const app =
     document.getElementById("app");
 
+  const data =
+    applicationData || {};
+
+  const current =
+    data.CurrentAddress || {};
+
+  const house =
+    data.HouseAddress || {};
+
 
   app.innerHTML = `
 
     <div class="section">
+
+      <!-- ================================= -->
+      <!-- CURRENT ADDRESS -->
+      <!-- ================================= -->
 
       <div class="section-title">
         🏠 ที่อยู่ปัจจุบัน
@@ -1884,16 +2164,24 @@ function showAddressForm() {
       </div>
 
 
+      <!-- บ้านเลขที่ -->
+
       <label>
         บ้านเลขที่
+        <span class="required">*</span>
       </label>
 
       <input
         id="currentHouseNo"
         type="text"
         placeholder="เช่น 99/99"
+        value="${escapeHtml(
+          current.HouseNo || ""
+        )}"
       >
 
+
+      <!-- หมู่ -->
 
       <label>
         หมู่
@@ -1903,8 +2191,13 @@ function showAddressForm() {
         id="currentMoo"
         type="text"
         placeholder="เช่น 5"
+        value="${escapeHtml(
+          current.Moo || ""
+        )}"
       >
 
+
+      <!-- ซอย -->
 
       <label>
         ซอย
@@ -1914,8 +2207,13 @@ function showAddressForm() {
         id="currentSoi"
         type="text"
         placeholder="ถ้ามี"
+        value="${escapeHtml(
+          current.Soi || ""
+        )}"
       >
 
+
+      <!-- ถนน -->
 
       <label>
         ถนน
@@ -1925,44 +2223,68 @@ function showAddressForm() {
         id="currentRoad"
         type="text"
         placeholder="ถ้ามี"
+        value="${escapeHtml(
+          current.Road || ""
+        )}"
       >
 
 
+      <!-- ตำบล -->
+
       <label>
         ตำบล / แขวง
+        <span class="required">*</span>
       </label>
 
       <input
         id="currentSubDistrict"
         type="text"
         placeholder="เช่น ตำบลสุเทพ"
+        value="${escapeHtml(
+          current.SubDistrict || ""
+        )}"
       >
 
 
+      <!-- อำเภอ -->
+
       <label>
         อำเภอ / เขต
+        <span class="required">*</span>
       </label>
 
       <input
         id="currentDistrict"
         type="text"
         placeholder="เช่น อำเภอเมือง"
+        value="${escapeHtml(
+          current.District || ""
+        )}"
       >
 
 
+      <!-- จังหวัด -->
+
       <label>
         จังหวัด
+        <span class="required">*</span>
       </label>
 
       <input
         id="currentProvince"
         type="text"
         placeholder="เช่น เชียงใหม่"
+        value="${escapeHtml(
+          current.Province || ""
+        )}"
       >
 
 
+      <!-- รหัสไปรษณีย์ -->
+
       <label>
         รหัสไปรษณีย์
+        <span class="required">*</span>
       </label>
 
       <input
@@ -1971,11 +2293,14 @@ function showAddressForm() {
         inputmode="numeric"
         maxlength="5"
         placeholder="เช่น 50000"
+        value="${escapeHtml(
+          current.PostalCode || ""
+        )}"
       >
 
 
       <!-- ================================= -->
-      <!-- ทะเบียนบ้าน -->
+      <!-- HOUSE ADDRESS -->
       <!-- ================================= -->
 
       <div class="section">
@@ -1984,6 +2309,8 @@ function showAddressForm() {
           🏡 ที่อยู่ตามทะเบียนบ้าน
         </div>
 
+
+        <!-- SAME ADDRESS -->
 
         <label style="
           display:flex;
@@ -2001,6 +2328,11 @@ function showAddressForm() {
               width:20px;
               height:20px;
             "
+            ${
+              data.SameAddress
+                ? "checked"
+                : ""
+            }
           >
 
           ใช้ที่อยู่ปัจจุบันเป็นที่อยู่ตามทะเบียนบ้าน
@@ -2008,19 +2340,36 @@ function showAddressForm() {
         </label>
 
 
-        <div id="houseAddressFields">
+        <div
+          id="houseAddressFields"
+          style="
+            display:${
+              data.SameAddress
+                ? "none"
+                : "block"
+            };
+          "
+        >
 
+
+          <!-- บ้านเลขที่ -->
 
           <label>
             บ้านเลขที่
+            <span class="required">*</span>
           </label>
 
           <input
             id="houseHouseNo"
             type="text"
             placeholder="เช่น 99/99"
+            value="${escapeHtml(
+              house.HouseNo || ""
+            )}"
           >
 
+
+          <!-- หมู่ -->
 
           <label>
             หมู่
@@ -2030,8 +2379,13 @@ function showAddressForm() {
             id="houseMoo"
             type="text"
             placeholder="เช่น 5"
+            value="${escapeHtml(
+              house.Moo || ""
+            )}"
           >
 
+
+          <!-- ซอย -->
 
           <label>
             ซอย
@@ -2041,8 +2395,13 @@ function showAddressForm() {
             id="houseSoi"
             type="text"
             placeholder="ถ้ามี"
+            value="${escapeHtml(
+              house.Soi || ""
+            )}"
           >
 
+
+          <!-- ถนน -->
 
           <label>
             ถนน
@@ -2052,44 +2411,68 @@ function showAddressForm() {
             id="houseRoad"
             type="text"
             placeholder="ถ้ามี"
+            value="${escapeHtml(
+              house.Road || ""
+            )}"
           >
 
 
+          <!-- ตำบล -->
+
           <label>
             ตำบล / แขวง
+            <span class="required">*</span>
           </label>
 
           <input
             id="houseSubDistrict"
             type="text"
             placeholder="เช่น ตำบลสุเทพ"
+            value="${escapeHtml(
+              house.SubDistrict || ""
+            )}"
           >
 
 
+          <!-- อำเภอ -->
+
           <label>
             อำเภอ / เขต
+            <span class="required">*</span>
           </label>
 
           <input
             id="houseDistrict"
             type="text"
             placeholder="เช่น อำเภอเมือง"
+            value="${escapeHtml(
+              house.District || ""
+            )}"
           >
 
 
+          <!-- จังหวัด -->
+
           <label>
             จังหวัด
+            <span class="required">*</span>
           </label>
 
           <input
             id="houseProvince"
             type="text"
             placeholder="เช่น เชียงใหม่"
+            value="${escapeHtml(
+              house.Province || ""
+            )}"
           >
 
 
+          <!-- รหัสไปรษณีย์ -->
+
           <label>
             รหัสไปรษณีย์
+            <span class="required">*</span>
           </label>
 
           <input
@@ -2098,12 +2481,19 @@ function showAddressForm() {
             inputmode="numeric"
             maxlength="5"
             placeholder="เช่น 50000"
+            value="${escapeHtml(
+              house.PostalCode || ""
+            )}"
           >
 
         </div>
 
       </div>
 
+
+      <!-- ================================= -->
+      <!-- NEXT -->
+      <!-- ================================= -->
 
       <button
         class="button"
@@ -2114,6 +2504,10 @@ function showAddressForm() {
 
       </button>
 
+
+      <!-- ================================= -->
+      <!-- BACK -->
+      <!-- ================================= -->
 
       <button
         onclick="showWorkForm()"
@@ -2138,26 +2532,122 @@ function showAddressForm() {
 
 }
 
+// ============================================
+// SAME ADDRESS
+// ============================================
+
 function sameAddressChanged() {
 
-  const checked =
+  const checkbox =
     document.getElementById(
       "sameAddress"
-    ).checked;
-
+    );
 
   const fields =
     document.getElementById(
       "houseAddressFields"
     );
 
+  if (!checkbox || !fields) {
+    return;
+  }
 
-  if (checked) {
+
+  if (checkbox.checked) {
+
+    // ========================================
+    // คัดลอก Current → House
+    // ========================================
+
+    const currentAddress = {
+
+      houseNo:
+        document
+          .getElementById(
+            "currentHouseNo"
+          )
+          .value.trim(),
+
+      moo:
+        document
+          .getElementById(
+            "currentMoo"
+          )
+          .value.trim(),
+
+      soi:
+        document
+          .getElementById(
+            "currentSoi"
+          )
+          .value.trim(),
+
+      road:
+        document
+          .getElementById(
+            "currentRoad"
+          )
+          .value.trim(),
+
+      subDistrict:
+        document
+          .getElementById(
+            "currentSubDistrict"
+          )
+          .value.trim(),
+
+      district:
+        document
+          .getElementById(
+            "currentDistrict"
+          )
+          .value.trim(),
+
+      province:
+        document
+          .getElementById(
+            "currentProvince"
+          )
+          .value.trim(),
+
+      postalCode:
+        document
+          .getElementById(
+            "currentPostalCode"
+          )
+          .value.trim()
+
+    };
+
+
+    // ========================================
+    // เก็บไว้ใน applicationData
+    // ========================================
+
+    applicationData.CurrentAddress =
+      currentAddress;
+
+    applicationData.HouseAddress =
+      {
+        ...currentAddress
+      };
+
+    applicationData.SameAddress =
+      true;
+
+
+    // ========================================
+    // ซ่อนทะเบียนบ้าน
+    // ========================================
 
     fields.style.display =
       "none";
 
+
   } else {
+
+    applicationData.SameAddress =
+      false;
 
     fields.style.display =
       "block";
@@ -2165,6 +2655,10 @@ function sameAddressChanged() {
   }
 
 }
+
+// ============================================
+// NEXT ADDRESS STEP
+// ============================================
 
 function nextAddressStep() {
 
@@ -2218,7 +2712,7 @@ function nextAddressStep() {
 
 
   // ==========================================
-  // ตรวจข้อมูล
+  // Validate ที่อยู่ปัจจุบัน
   // ==========================================
 
   if (!currentAddress.HouseNo) {
@@ -2227,8 +2721,39 @@ function nextAddressStep() {
       "กรุณากรอกบ้านเลขที่"
     );
 
-    return;
+    document
+      .getElementById("currentHouseNo")
+      .focus();
 
+    return;
+  }
+
+
+  if (!currentAddress.SubDistrict) {
+
+    alert(
+      "กรุณากรอกตำบล / แขวง"
+    );
+
+    document
+      .getElementById("currentSubDistrict")
+      .focus();
+
+    return;
+  }
+
+
+  if (!currentAddress.District) {
+
+    alert(
+      "กรุณากรอกอำเภอ / เขต"
+    );
+
+    document
+      .getElementById("currentDistrict")
+      .focus();
+
+    return;
   }
 
 
@@ -2238,8 +2763,11 @@ function nextAddressStep() {
       "กรุณากรอกจังหวัด"
     );
 
-    return;
+    document
+      .getElementById("currentProvince")
+      .focus();
 
+    return;
   }
 
 
@@ -2249,13 +2777,35 @@ function nextAddressStep() {
       "กรุณากรอกรหัสไปรษณีย์"
     );
 
-    return;
+    document
+      .getElementById("currentPostalCode")
+      .focus();
 
+    return;
+  }
+
+
+  // ตรวจรหัสไปรษณีย์
+  if (
+    !/^\d{5}$/.test(
+      currentAddress.PostalCode
+    )
+  ) {
+
+    alert(
+      "กรุณากรอกรหัสไปรษณีย์ให้ถูกต้อง 5 หลัก"
+    );
+
+    document
+      .getElementById("currentPostalCode")
+      .focus();
+
+    return;
   }
 
 
   // ==========================================
-  // เก็บที่อยู่ปัจจุบัน
+  // บันทึกที่อยู่ปัจจุบัน
   // ==========================================
 
   applicationData.CurrentAddress =
@@ -2263,7 +2813,7 @@ function nextAddressStep() {
 
 
   // ==========================================
-  // ที่อยู่ทะเบียนบ้าน
+  // ตรวจว่าใช้ที่อยู่เดียวกันหรือไม่
   // ==========================================
 
   const sameAddress =
@@ -2276,14 +2826,27 @@ function nextAddressStep() {
     sameAddress;
 
 
+  // ==========================================
+  // กรณีที่อยู่เหมือนกัน
+  // ==========================================
+
   if (sameAddress) {
 
     applicationData.HouseAddress =
-      currentAddress;
+      {
+        ...currentAddress
+      };
 
-  } else {
+  }
 
-    applicationData.HouseAddress = {
+
+  // ==========================================
+  // กรณีทะเบียนบ้านคนละที่อยู่
+  // ==========================================
+
+  else {
+
+    const houseAddress = {
 
       HouseNo:
         document.getElementById(
@@ -2327,35 +2890,124 @@ function nextAddressStep() {
 
     };
 
+
+    // ========================================
+    // Validate ทะเบียนบ้าน
+    // ========================================
+
+    if (!houseAddress.HouseNo) {
+
+      alert(
+        "กรุณากรอกบ้านเลขที่ตามทะเบียนบ้าน"
+      );
+
+      document
+        .getElementById("houseHouseNo")
+        .focus();
+
+      return;
+    }
+
+
+    if (!houseAddress.SubDistrict) {
+
+      alert(
+        "กรุณากรอกตำบล / แขวงตามทะเบียนบ้าน"
+      );
+
+      document
+        .getElementById("houseSubDistrict")
+        .focus();
+
+      return;
+    }
+
+
+    if (!houseAddress.District) {
+
+      alert(
+        "กรุณากรอกอำเภอ / เขตตามทะเบียนบ้าน"
+      );
+
+      document
+        .getElementById("houseDistrict")
+        .focus();
+
+      return;
+    }
+
+
+    if (!houseAddress.Province) {
+
+      alert(
+        "กรุณากรอกจังหวัดตามทะเบียนบ้าน"
+      );
+
+      document
+        .getElementById("houseProvince")
+        .focus();
+
+      return;
+    }
+
+
+    if (!houseAddress.PostalCode) {
+
+      alert(
+        "กรุณากรอกรหัสไปรษณีย์ตามทะเบียนบ้าน"
+      );
+
+      document
+        .getElementById("housePostalCode")
+        .focus();
+
+      return;
+    }
+
+
+    // ตรวจรหัสไปรษณีย์
+
+    if (
+      !/^\d{5}$/.test(
+        houseAddress.PostalCode
+      )
+    ) {
+
+      alert(
+        "กรุณากรอกรหัสไปรษณีย์ตามทะเบียนบ้านให้ถูกต้อง 5 หลัก"
+      );
+
+      document
+        .getElementById("housePostalCode")
+        .focus();
+
+      return;
+    }
+
+
+    // ========================================
+    // บันทึกทะเบียนบ้าน
+    // ========================================
+
+    applicationData.HouseAddress =
+      houseAddress;
+
   }
 
 
   // ==========================================
-  // ตรวจทะเบียนบ้าน
-  // ==========================================
-
-  if (
-    !sameAddress &&
-    !applicationData.HouseAddress.HouseNo
-  ) {
-
-    alert(
-      "กรุณากรอกบ้านเลขที่ตามทะเบียนบ้าน"
-    );
-
-    return;
-
-  }
-
-
-  // ==========================================
-  // แสดงข้อมูลใน Console
+  // DEBUG
   // ==========================================
 
   console.log(
-    "APPLICATION DATA:",
+    "ADDRESS DATA:",
     applicationData
   );
+
+
+  // ==========================================
+  // ไป STEP ถัดไป
+  // ==========================================
 
   showBeneficiaryForm();
 
