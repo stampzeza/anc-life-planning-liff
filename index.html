@@ -3300,13 +3300,81 @@ function renderBeneficiaries() {
           ความสัมพันธ์
           <span style="color:red;">*</span>
         </label>
-
-        <input
+        
+        <select
           id="beneficiaryRelation${index}"
-          type="text"
-          placeholder="เช่น คู่สมรส / บุตร / บิดา / มารดา"
-          value="${person.Relation || ""}"
+          style="
+            width:100%;
+            padding:14px;
+            border:1px solid #ddd;
+            border-radius:12px;
+            font-size:16px;
+            background:white;
+            margin-bottom:12px;
+          "
         >
+        
+          <option value="">
+            -- กรุณาเลือกความสัมพันธ์ --
+          </option>
+        
+          <option
+            value="คู่สมรส"
+            ${person.Relation === "คู่สมรส" ? "selected" : ""}
+          >
+            💑 คู่สมรส
+          </option>
+        
+          <option
+            value="บุตร"
+            ${person.Relation === "บุตร" ? "selected" : ""}
+          >
+            👶 บุตร
+          </option>
+        
+          <option
+            value="บิดา"
+            ${person.Relation === "บิดา" ? "selected" : ""}
+          >
+            👨 บิดา
+          </option>
+        
+          <option
+            value="มารดา"
+            ${person.Relation === "มารดา" ? "selected" : ""}
+          >
+            👩 มารดา
+          </option>
+        
+          <option
+            value="พี่น้อง"
+            ${person.Relation === "พี่น้อง" ? "selected" : ""}
+          >
+            👨‍👩‍👧‍👦 พี่น้อง
+          </option>
+        
+          <option
+            value="ปู่/ย่า/ตา/ยาย"
+            ${person.Relation === "ปู่/ย่า/ตา/ยาย" ? "selected" : ""}
+          >
+            👴👵 ปู่ / ย่า / ตา / ยาย
+          </option>
+        
+          <option
+            value="ญาติ"
+            ${person.Relation === "ญาติ" ? "selected" : ""}
+          >
+            👪 ญาติ
+          </option>
+        
+          <option
+            value="อื่นๆ"
+            ${person.Relation === "อื่นๆ" ? "selected" : ""}
+          >
+            📝 อื่นๆ
+          </option>
+        
+        </select>
 
 
         <label>
