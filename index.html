@@ -3014,22 +3014,127 @@ function nextAddressStep() {
 }
 
 // ============================================
-// BENEFICIARY FORM
+// BENEFICIARY FORM - STEP 1
 // ============================================
 
 function showBeneficiaryForm() {
 
-  const app =
-    document.getElementById("app");
+  const app = document.getElementById("app");
 
-  // ถ้ายังไม่มี Array ให้สร้าง
-  if (!Array.isArray(applicationData.Beneficiaries)) {
+  app.innerHTML = `
+    
+    <div class="section">
 
-    applicationData.Beneficiaries = [];
+      <div class="section-title">
+        👥 ผู้รับผลประโยชน์
+      </div>
 
-  }
+      <div style="
+        color:#777;
+        margin-bottom:18px;
+      ">
+        สามารถเพิ่มผู้รับผลประโยชน์ได้สูงสุด 3 คน
+      </div>
 
-  renderBeneficiaries();
+
+      <div style="
+        padding:18px;
+        background:#fafafa;
+        border:1px solid #e5e5e5;
+        border-radius:16px;
+        margin-bottom:20px;
+      ">
+
+        <div style="
+          font-weight:bold;
+          font-size:17px;
+          margin-bottom:15px;
+        ">
+          👤 ผู้รับผลประโยชน์คนที่ 1
+        </div>
+
+
+        <label>
+          ชื่อ - นามสกุล
+          <span style="color:red;">*</span>
+        </label>
+
+        <input
+          id="beneficiaryName1"
+          type="text"
+          placeholder="กรุณากรอกชื่อ - นามสกุล"
+        >
+
+
+        <label>
+          ความสัมพันธ์
+          <span style="color:red;">*</span>
+        </label>
+
+        <input
+          id="beneficiaryRelation1"
+          type="text"
+          placeholder="เช่น คู่สมรส / บุตร / บิดา / มารดา"
+        >
+
+
+        <label>
+          อายุ
+          <span style="color:red;">*</span>
+        </label>
+
+        <input
+          id="beneficiaryAge1"
+          type="number"
+          inputmode="numeric"
+          placeholder="เช่น 35"
+        >
+
+
+        <label>
+          เลขบัตรประชาชน
+          <span style="color:red;">*</span>
+        </label>
+
+        <input
+          id="beneficiaryIDCard1"
+          type="text"
+          inputmode="numeric"
+          maxlength="13"
+          placeholder="เลขบัตรประชาชน 13 หลัก"
+        >
+
+      </div>
+
+
+      <button
+        type="button"
+        class="button"
+        onclick="nextBeneficiaryStep()"
+      >
+        ดำเนินการต่อ →
+      </button>
+
+
+      <button
+        type="button"
+        onclick="showAddressForm()"
+        style="
+          width:100%;
+          margin-top:12px;
+          padding:12px;
+          border:none;
+          background:none;
+          color:#777;
+          font-size:15px;
+        "
+      >
+        ← กลับไปแก้ไขที่อยู่
+      </button>
+
+    </div>
+
+  `;
 
 }
 
@@ -3465,249 +3570,125 @@ function removeBeneficiary(index) {
 }
 
 // ============================================
-// NEXT BENEFICIARY STEP
+// BENEFICIARY STEP 1 - NEXT
 // ============================================
 
 function nextBeneficiaryStep() {
 
-  const beneficiaries =
-    applicationData.Beneficiaries || [];
+  const name =
+    document
+      .getElementById("beneficiaryName1")
+      .value
+      .trim();
+
+  const relation =
+    document
+      .getElementById("beneficiaryRelation1")
+      .value
+      .trim();
+
+  const age =
+    document
+      .getElementById("beneficiaryAge1")
+      .value
+      .trim();
+
+  const idCard =
+    document
+      .getElementById("beneficiaryIDCard1")
+      .value
+      .trim();
 
 
   // ==========================================
-  // ต้องมีอย่างน้อย 1 คน
+  // Validate
   // ==========================================
 
-  if (
-    beneficiaries.length === 0
-  ) {
+  if (!name) {
 
     alert(
-      "กรุณาเพิ่มผู้รับผลประโยชน์อย่างน้อย 1 คน"
+      "กรุณากรอกชื่อ - นามสกุลผู้รับผลประโยชน์"
     );
 
     return;
-
   }
 
 
-  // ==========================================
-  // อ่านข้อมูลแต่ละคน
-  // ==========================================
+  if (!relation) {
 
-  for (
-    let i = 0;
-    i < beneficiaries.length;
-    i++
+    alert(
+      "กรุณากรอกความสัมพันธ์"
+    );
+
+    return;
+  }
+
+
+  if (!age) {
+
+    alert(
+      "กรุณากรอกอายุ"
+    );
+
+    return;
+  }
+
+
+  if (!idCard) {
+
+    alert(
+      "กรุณากรอกเลขบัตรประชาชน"
+    );
+
+    return;
+  }
+
+
+  if (
+    idCard.replace(/\D/g, "").length !== 13
   ) {
 
-    const name =
-      document
-        .getElementById(
-          `beneficiaryName_${i}`
-        )
-        .value
-        .trim();
+    alert(
+      "เลขบัตรประชาชนต้องมี 13 หลัก"
+    );
 
-
-    const relation =
-      document
-        .getElementById(
-          `beneficiaryRelation_${i}`
-        )
-        .value
-        .trim();
-
-
-    const age =
-      document
-        .getElementById(
-          `beneficiaryAge_${i}`
-        )
-        .value
-        .trim();
-
-
-    const idCard =
-      document
-        .getElementById(
-          `beneficiaryIDCard_${i}`
-        )
-        .value
-        .trim();
-
-
-    // ========================================
-    // Validate ชื่อ
-    // ========================================
-
-    if (!name) {
-
-      alert(
-        `กรุณากรอกชื่อ - นามสกุล ผู้รับผลประโยชน์คนที่ ${i + 1}`
-      );
-
-      document
-        .getElementById(
-          `beneficiaryName_${i}`
-        )
-        .focus();
-
-      return;
-
-    }
-
-
-    // ========================================
-    // Validate ความสัมพันธ์
-    // ========================================
-
-    if (!relation) {
-
-      alert(
-        `กรุณาเลือกความสัมพันธ์ ผู้รับผลประโยชน์คนที่ ${i + 1}`
-      );
-
-      document
-        .getElementById(
-          `beneficiaryRelation_${i}`
-        )
-        .focus();
-
-      return;
-
-    }
-
-
-    // ========================================
-    // Validate อายุ
-    // ========================================
-
-    if (!age) {
-
-      alert(
-        `กรุณากรอกอายุ ผู้รับผลประโยชน์คนที่ ${i + 1}`
-      );
-
-      document
-        .getElementById(
-          `beneficiaryAge_${i}`
-        )
-        .focus();
-
-      return;
-
-    }
-
-
-    if (
-      Number(age) < 0 ||
-      Number(age) > 120
-    ) {
-
-      alert(
-        `กรุณาตรวจสอบอายุ ผู้รับผลประโยชน์คนที่ ${i + 1}`
-      );
-
-      document
-        .getElementById(
-          `beneficiaryAge_${i}`
-        )
-        .focus();
-
-      return;
-
-    }
-
-
-    // ========================================
-    // Validate เลขบัตรประชาชน
-    // ========================================
-
-    if (!idCard) {
-
-      alert(
-        `กรุณากรอกเลขบัตรประชาชน ผู้รับผลประโยชน์คนที่ ${i + 1}`
-      );
-
-      document
-        .getElementById(
-          `beneficiaryIDCard_${i}`
-        )
-        .focus();
-
-      return;
-
-    }
-
-
-    const cleanIDCard =
-      idCard.replace(/\D/g, "");
-
-
-    if (
-      cleanIDCard.length !== 13
-    ) {
-
-      alert(
-        `เลขบัตรประชาชนของผู้รับผลประโยชน์คนที่ ${i + 1} ต้องมี 13 หลัก`
-      );
-
-      document
-        .getElementById(
-          `beneficiaryIDCard_${i}`
-        )
-        .focus();
-
-      return;
-
-    }
-
-
-    // ========================================
-    // บันทึก
-    // ========================================
-
-    beneficiaries[i] = {
-
-      Name:
-        name,
-
-      Relation:
-        relation,
-
-      Age:
-        age,
-
-      IDCard:
-        cleanIDCard
-
-    };
-
+    return;
   }
 
 
   // ==========================================
-  // Save
+  // บันทึกข้อมูล
   // ==========================================
 
-  applicationData.Beneficiaries =
-    beneficiaries;
+  applicationData.Beneficiaries = [
+
+    {
+      Name: name,
+      Relation: relation,
+      Age: age,
+      IDCard: idCard.replace(/\D/g, "")
+    }
+
+  ];
 
 
   console.log(
-    "BENEFICIARIES:",
+    "BENEFICIARY:",
     applicationData.Beneficiaries
   );
 
 
   // ==========================================
-  // STEP ถัดไป
+  // ทดสอบก่อน
   // ==========================================
 
-  showReviewForm();
+  alert(
+    "บันทึกผู้รับผลประโยชน์เรียบร้อยแล้วครับ"
+  );
 
 }
+
+  
 function showSummary() {
 
   // ==========================================
