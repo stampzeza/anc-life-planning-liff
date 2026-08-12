@@ -3013,16 +3013,102 @@ function nextAddressStep() {
 
 }
 
+// ============================================
+// BENEFICIARY FORM
+// ============================================
+
 function showBeneficiaryForm() {
 
   const app =
     document.getElementById("app");
 
+  // ถ้ายังไม่มี Array ให้สร้าง
+  if (!Array.isArray(applicationData.Beneficiaries)) {
 
-  beneficiaries = [];
+    applicationData.Beneficiaries = [];
+
+  }
+
+  renderBeneficiaries();
+
+}
 
 
-  app.innerHTML = `
+// ============================================
+// ADD BENEFICIARY
+// ============================================
+
+function addBeneficiary() {
+
+  if (
+    applicationData.Beneficiaries.length >= 3
+  ) {
+
+    alert(
+      "สามารถเพิ่มผู้รับผลประโยชน์ได้สูงสุด 3 คน"
+    );
+
+    return;
+
+  }
+
+  // เพิ่มข้อมูลเปล่า
+
+  applicationData.Beneficiaries.push({
+
+    Name: "",
+    Relation: "",
+    Age: "",
+    IDCard: ""
+
+  });
+
+
+  renderBeneficiaries();
+
+}
+
+// ============================================
+// REMOVE BENEFICIARY
+// ============================================
+
+function removeBeneficiary(index) {
+
+  if (
+    !confirm(
+      "ต้องการลบผู้รับผลประโยชน์คนนี้หรือไม่?"
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  applicationData.Beneficiaries.splice(
+    index,
+    1
+  );
+
+
+  renderBeneficiaries();
+
+}
+
+// ============================================
+// RENDER BENEFICIARIES
+// ============================================
+
+function renderBeneficiaries() {
+
+  const app =
+    document.getElementById("app");
+
+  const beneficiaries =
+    applicationData.Beneficiaries || [];
+
+
+  let html = `
 
     <div class="section">
 
@@ -3033,51 +3119,296 @@ function showBeneficiaryForm() {
       <div style="
         color:#777;
         margin-bottom:18px;
-        line-height:1.6;
       ">
-        สามารถเพิ่มผู้รับผลประโยชน์ได้มากกว่า 1 คน
+        สามารถเพิ่มผู้รับผลประโยชน์ได้สูงสุด 3 คน
       </div>
 
+  `;
 
-      <div id="beneficiaryList"></div>
 
+  // ==========================================
+  // แสดงผู้รับผลประโยชน์แต่ละคน
+  // ==========================================
+
+  beneficiaries.forEach(
+    (person, index) => {
+
+      html += `
+
+        <div
+          style="
+            margin-bottom:20px;
+            padding:18px;
+            background:#fafafa;
+            border:1px solid #e5e5e5;
+            border-radius:16px;
+          "
+        >
+
+          <!-- HEADER -->
+
+          <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:15px;
+          ">
+
+            <div style="
+              font-weight:bold;
+              font-size:17px;
+            ">
+
+              👤 ผู้รับผลประโยชน์คนที่
+              ${index + 1}
+
+            </div>
+
+
+            <button
+              type="button"
+              onclick="removeBeneficiary(${index})"
+              style="
+                border:none;
+                background:#fff;
+                color:#d33;
+                font-size:14px;
+                cursor:pointer;
+                padding:6px 10px;
+                border-radius:8px;
+              "
+            >
+
+              🗑️ ลบ
+
+            </button>
+
+          </div>
+
+
+          <!-- ชื่อ -->
+
+          <label>
+            ชื่อ - นามสกุล
+            <span class="required">*</span>
+          </label>
+
+          <input
+            id="beneficiaryName_${index}"
+            type="text"
+            placeholder="กรุณากรอกชื่อ - นามสกุล"
+            value="${escapeHtml(
+              person.Name || ""
+            )}"
+          >
+
+
+          <!-- ความสัมพันธ์ -->
+
+          <label>
+            ความสัมพันธ์
+            <span class="required">*</span>
+          </label>
+
+          <select
+            id="beneficiaryRelation_${index}"
+            style="
+              width:100%;
+              padding:14px;
+              border:1px solid #ddd;
+              border-radius:12px;
+              font-size:16px;
+              background:white;
+            "
+          >
+
+            <option value="">
+              -- กรุณาเลือกความสัมพันธ์ --
+            </option>
+
+            <option
+              value="คู่สมรส"
+              ${
+                person.Relation === "คู่สมรส"
+                  ? "selected"
+                  : ""
+              }
+            >
+              💕 คู่สมรส
+            </option>
+
+            <option
+              value="บุตร"
+              ${
+                person.Relation === "บุตร"
+                  ? "selected"
+                  : ""
+              }
+            >
+              👶 บุตร
+            </option>
+
+            <option
+              value="บิดา"
+              ${
+                person.Relation === "บิดา"
+                  ? "selected"
+                  : ""
+              }
+            >
+              👨 บิดา
+            </option>
+
+            <option
+              value="มารดา"
+              ${
+                person.Relation === "มารดา"
+                  ? "selected"
+                  : ""
+              }
+            >
+              👩 มารดา
+            </option>
+
+            <option
+              value="พี่น้อง"
+              ${
+                person.Relation === "พี่น้อง"
+                  ? "selected"
+                  : ""
+              }
+            >
+              👥 พี่น้อง
+            </option>
+
+            <option
+              value="อื่นๆ"
+              ${
+                person.Relation === "อื่นๆ"
+                  ? "selected"
+                  : ""
+              }
+            >
+              📝 อื่นๆ
+            </option>
+
+          </select>
+
+
+          <!-- อายุ -->
+
+          <label>
+            อายุ
+            <span class="required">*</span>
+          </label>
+
+          <input
+            id="beneficiaryAge_${index}"
+            type="number"
+            inputmode="numeric"
+            min="0"
+            max="120"
+            placeholder="เช่น 35"
+            value="${escapeHtml(
+              person.Age || ""
+            )}"
+          >
+
+
+          <!-- เลขบัตรประชาชน -->
+
+          <label>
+            เลขบัตรประชาชน
+            <span class="required">*</span>
+          </label>
+
+          <input
+            id="beneficiaryIDCard_${index}"
+            type="text"
+            inputmode="numeric"
+            maxlength="13"
+            placeholder="เลขบัตรประชาชน 13 หลัก"
+            value="${escapeHtml(
+              person.IDCard || ""
+            )}"
+          >
+
+        </div>
+
+      `;
+
+    }
+  );
+
+
+  // ==========================================
+  // ปุ่มเพิ่ม
+  // ==========================================
+
+  if (
+    beneficiaries.length < 3
+  ) {
+
+    html += `
 
       <button
-        class="button"
+        type="button"
         onclick="addBeneficiary()"
+        style="
+          width:100%;
+          padding:15px;
+          border:2px dashed #ccc;
+          background:#fff;
+          color:#555;
+          border-radius:14px;
+          font-size:16px;
+          cursor:pointer;
+          margin-bottom:18px;
+        "
       >
 
-        ＋ เพิ่มผู้รับผลประโยชน์
+        ➕ เพิ่มผู้รับผลประโยชน์
 
       </button>
 
+    `;
+
+  }
+
+
+  // ==========================================
+  // แสดงจำนวน
+  // ==========================================
+
+  html += `
 
       <div style="
-        margin-top:20px;
-        padding:14px;
-        background:#f7f7f7;
-        border-radius:14px;
-        font-size:14px;
-        color:#666;
-        line-height:1.6;
+        text-align:center;
+        color:#888;
+        font-size:13px;
+        margin-bottom:20px;
       ">
 
-        💡 หากยังไม่ต้องการระบุ
-        สามารถข้ามขั้นตอนนี้ได้ครับ
+        ผู้รับผลประโยชน์
+        ${beneficiaries.length}
+        / 3 คน
 
       </div>
 
+
+      <!-- NEXT -->
 
       <button
         class="button"
         onclick="nextBeneficiaryStep()"
-        style="margin-top:18px;"
       >
 
         ดำเนินการต่อ →
 
       </button>
 
+
+      <!-- BACK -->
 
       <button
         onclick="showAddressForm()"
@@ -3101,264 +3432,7 @@ function showBeneficiaryForm() {
   `;
 
 
-  // เพิ่มคนแรกให้อัตโนมัติ
-  addBeneficiary();
-
-}
-
-function addBeneficiary() {
-
-  const index =
-    beneficiaries.length;
-
-
-  beneficiaries.push({
-
-    FullName: "",
-
-    Relationship: "",
-
-    Age: "",
-
-    IDCard: ""
-
-  });
-
-
-  renderBeneficiaries();
-
-}
-
-function renderBeneficiaries() {
-
-  const container =
-    document.getElementById(
-      "beneficiaryList"
-    );
-
-
-  if (!container) return;
-
-
-  container.innerHTML = "";
-
-
-  beneficiaries.forEach(
-    (beneficiary, index) => {
-
-
-      const div =
-        document.createElement(
-          "div"
-        );
-
-
-      div.style.cssText = `
-
-        border:1px solid #e5e5e5;
-
-        border-radius:16px;
-
-        padding:16px;
-
-        margin-bottom:16px;
-
-        background:#fff;
-
-      `;
-
-
-      div.innerHTML = `
-
-        <div style="
-          display:flex;
-          justify-content:space-between;
-          align-items:center;
-          margin-bottom:14px;
-        ">
-
-          <div style="
-            font-weight:bold;
-            font-size:16px;
-          ">
-
-            👤 ผู้รับผลประโยชน์คนที่
-            ${index + 1}
-
-          </div>
-
-
-          ${
-            index > 0
-              ? `
-                <button
-                  onclick="removeBeneficiary(${index})"
-                  style="
-                    border:none;
-                    background:none;
-                    color:#d33;
-                    font-size:14px;
-                  "
-                >
-                  🗑️ ลบ
-                </button>
-              `
-              : ""
-          }
-
-        </div>
-
-
-        <label>
-          ชื่อ - นามสกุล
-        </label>
-
-        <input
-          type="text"
-          value="${beneficiary.FullName}"
-          placeholder="ชื่อ - นามสกุล"
-          onchange="updateBeneficiary(
-            ${index},
-            'FullName',
-            this.value
-          )"
-        >
-
-
-        <label>
-          ความสัมพันธ์
-        </label>
-
-        <select
-          onchange="updateBeneficiary(
-            ${index},
-            'Relationship',
-            this.value
-          )"
-          style="
-            width:100%;
-            padding:14px;
-            border:1px solid #ddd;
-            border-radius:12px;
-            font-size:16px;
-            background:#fff;
-          "
-        >
-
-          <option value="">
-            -- เลือกความสัมพันธ์ --
-          </option>
-
-          <option value="คู่สมรส"
-            ${
-              beneficiary.Relationship ===
-              "คู่สมรส"
-                ? "selected"
-                : ""
-            }
-          >
-            💑 คู่สมรส
-          </option>
-
-          <option value="บุตร"
-            ${
-              beneficiary.Relationship ===
-              "บุตร"
-                ? "selected"
-                : ""
-            }
-          >
-            👶 บุตร
-          </option>
-
-          <option value="บิดา"
-            ${
-              beneficiary.Relationship ===
-              "บิดา"
-                ? "selected"
-                : ""
-            }
-          >
-            👨 บิดา
-          </option>
-
-          <option value="มารดา"
-            ${
-              beneficiary.Relationship ===
-              "มารดา"
-                ? "selected"
-                : ""
-            }
-          >
-            👩 มารดา
-          </option>
-
-          <option value="พี่น้อง"
-            ${
-              beneficiary.Relationship ===
-              "พี่น้อง"
-                ? "selected"
-                : ""
-            }
-          >
-            👥 พี่น้อง
-          </option>
-
-          <option value="อื่นๆ"
-            ${
-              beneficiary.Relationship ===
-              "อื่นๆ"
-                ? "selected"
-                : ""
-            }
-          >
-            📝 อื่นๆ
-          </option>
-
-        </select>
-
-
-        <label>
-          อายุ
-        </label>
-
-        <input
-          type="number"
-          inputmode="numeric"
-          value="${beneficiary.Age}"
-          placeholder="เช่น 35"
-          onchange="updateBeneficiary(
-            ${index},
-            'Age',
-            this.value
-          )"
-        >
-
-
-        <label>
-          เลขบัตรประชาชน
-        </label>
-
-        <input
-          type="text"
-          inputmode="numeric"
-          maxlength="13"
-          value="${beneficiary.IDCard}"
-          placeholder="เลขบัตรประชาชน 13 หลัก"
-          onchange="updateBeneficiary(
-            ${index},
-            'IDCard',
-            this.value
-          )"
-        >
-
-      `;
-
-
-      container.appendChild(div);
-
-    }
-  );
+  app.innerHTML = html;
 
 }
 
@@ -3390,24 +3464,36 @@ function removeBeneficiary(index) {
 
 }
 
+// ============================================
+// NEXT BENEFICIARY STEP
+// ============================================
+
 function nextBeneficiaryStep() {
 
-  // ถ้าไม่มีผู้รับผลประโยชน์
+  const beneficiaries =
+    applicationData.Beneficiaries || [];
+
+
+  // ==========================================
+  // ต้องมีอย่างน้อย 1 คน
+  // ==========================================
+
   if (
     beneficiaries.length === 0
   ) {
 
-    applicationData.Beneficiaries =
-      [];
-
-    showSummary();
+    alert(
+      "กรุณาเพิ่มผู้รับผลประโยชน์อย่างน้อย 1 คน"
+    );
 
     return;
 
   }
 
 
-  // ตรวจข้อมูลแต่ละคน
+  // ==========================================
+  // อ่านข้อมูลแต่ละคน
+  // ==========================================
 
   for (
     let i = 0;
@@ -3415,48 +3501,99 @@ function nextBeneficiaryStep() {
     i++
   ) {
 
-    const b =
-      beneficiaries[i];
+    const name =
+      document
+        .getElementById(
+          `beneficiaryName_${i}`
+        )
+        .value
+        .trim();
 
 
-    if (!b.FullName) {
+    const relation =
+      document
+        .getElementById(
+          `beneficiaryRelation_${i}`
+        )
+        .value
+        .trim();
+
+
+    const age =
+      document
+        .getElementById(
+          `beneficiaryAge_${i}`
+        )
+        .value
+        .trim();
+
+
+    const idCard =
+      document
+        .getElementById(
+          `beneficiaryIDCard_${i}`
+        )
+        .value
+        .trim();
+
+
+    // ========================================
+    // Validate ชื่อ
+    // ========================================
+
+    if (!name) {
 
       alert(
-        `กรุณากรอกชื่อผู้รับผลประโยชน์คนที่ ${i + 1}`
+        `กรุณากรอกชื่อ - นามสกุล ผู้รับผลประโยชน์คนที่ ${i + 1}`
       );
+
+      document
+        .getElementById(
+          `beneficiaryName_${i}`
+        )
+        .focus();
 
       return;
 
     }
 
 
-    if (!b.Relationship) {
+    // ========================================
+    // Validate ความสัมพันธ์
+    // ========================================
+
+    if (!relation) {
 
       alert(
-        `กรุณาเลือกความสัมพันธ์ของผู้รับผลประโยชน์คนที่ ${i + 1}`
+        `กรุณาเลือกความสัมพันธ์ ผู้รับผลประโยชน์คนที่ ${i + 1}`
       );
+
+      document
+        .getElementById(
+          `beneficiaryRelation_${i}`
+        )
+        .focus();
 
       return;
 
     }
 
 
-    if (!b.Age) {
+    // ========================================
+    // Validate อายุ
+    // ========================================
+
+    if (!age) {
 
       alert(
-        `กรุณากรอกอายุผู้รับผลประโยชน์คนที่ ${i + 1}`
+        `กรุณากรอกอายุ ผู้รับผลประโยชน์คนที่ ${i + 1}`
       );
 
-      return;
-
-    }
-
-
-    if (!b.IDCard) {
-
-      alert(
-        `กรุณากรอกเลขบัตรประชาชนของผู้รับผลประโยชน์คนที่ ${i + 1}`
-      );
+      document
+        .getElementById(
+          `beneficiaryAge_${i}`
+        )
+        .focus();
 
       return;
 
@@ -3464,37 +3601,113 @@ function nextBeneficiaryStep() {
 
 
     if (
-      b.IDCard.length !== 13
+      Number(age) < 0 ||
+      Number(age) > 120
+    ) {
+
+      alert(
+        `กรุณาตรวจสอบอายุ ผู้รับผลประโยชน์คนที่ ${i + 1}`
+      );
+
+      document
+        .getElementById(
+          `beneficiaryAge_${i}`
+        )
+        .focus();
+
+      return;
+
+    }
+
+
+    // ========================================
+    // Validate เลขบัตรประชาชน
+    // ========================================
+
+    if (!idCard) {
+
+      alert(
+        `กรุณากรอกเลขบัตรประชาชน ผู้รับผลประโยชน์คนที่ ${i + 1}`
+      );
+
+      document
+        .getElementById(
+          `beneficiaryIDCard_${i}`
+        )
+        .focus();
+
+      return;
+
+    }
+
+
+    const cleanIDCard =
+      idCard.replace(/\D/g, "");
+
+
+    if (
+      cleanIDCard.length !== 13
     ) {
 
       alert(
         `เลขบัตรประชาชนของผู้รับผลประโยชน์คนที่ ${i + 1} ต้องมี 13 หลัก`
       );
 
+      document
+        .getElementById(
+          `beneficiaryIDCard_${i}`
+        )
+        .focus();
+
       return;
 
     }
 
+
+    // ========================================
+    // บันทึก
+    // ========================================
+
+    beneficiaries[i] = {
+
+      Name:
+        name,
+
+      Relation:
+        relation,
+
+      Age:
+        age,
+
+      IDCard:
+        cleanIDCard
+
+    };
+
   }
 
 
-  // เก็บข้อมูล
+  // ==========================================
+  // Save
+  // ==========================================
 
   applicationData.Beneficiaries =
     beneficiaries;
 
 
   console.log(
-    "APPLICATION DATA:",
-    applicationData
+    "BENEFICIARIES:",
+    applicationData.Beneficiaries
   );
 
 
-  // ไปหน้าสรุป
-  showSummary();
+  // ==========================================
+  // STEP ถัดไป
+  // ==========================================
+
+  showReviewForm();
 
 }
-
 function showSummary() {
 
   // ==========================================
