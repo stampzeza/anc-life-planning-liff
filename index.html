@@ -1303,13 +1303,512 @@ function nextWorkStep() {
     applicationData
   );
 
+  // ==========================================
+  // ไป STEP 4
+  // ==========================================
+  
+  showAddressForm();
+
+}
+
+function showAddressForm() {
+
+  const app =
+    document.getElementById("app");
+
+
+  app.innerHTML = `
+
+    <div class="section">
+
+      <div class="section-title">
+        🏠 ที่อยู่ปัจจุบัน
+      </div>
+
+      <div style="
+        color:#777;
+        margin-bottom:18px;
+      ">
+        กรุณากรอกที่อยู่สำหรับติดต่อครับ
+      </div>
+
+
+      <label>
+        บ้านเลขที่
+      </label>
+
+      <input
+        id="currentHouseNo"
+        type="text"
+        placeholder="เช่น 99/99"
+      >
+
+
+      <label>
+        หมู่
+      </label>
+
+      <input
+        id="currentMoo"
+        type="text"
+        placeholder="เช่น 5"
+      >
+
+
+      <label>
+        ซอย
+      </label>
+
+      <input
+        id="currentSoi"
+        type="text"
+        placeholder="ถ้ามี"
+      >
+
+
+      <label>
+        ถนน
+      </label>
+
+      <input
+        id="currentRoad"
+        type="text"
+        placeholder="ถ้ามี"
+      >
+
+
+      <label>
+        ตำบล / แขวง
+      </label>
+
+      <input
+        id="currentSubDistrict"
+        type="text"
+        placeholder="เช่น ตำบลสุเทพ"
+      >
+
+
+      <label>
+        อำเภอ / เขต
+      </label>
+
+      <input
+        id="currentDistrict"
+        type="text"
+        placeholder="เช่น อำเภอเมือง"
+      >
+
+
+      <label>
+        จังหวัด
+      </label>
+
+      <input
+        id="currentProvince"
+        type="text"
+        placeholder="เช่น เชียงใหม่"
+      >
+
+
+      <label>
+        รหัสไปรษณีย์
+      </label>
+
+      <input
+        id="currentPostalCode"
+        type="text"
+        inputmode="numeric"
+        maxlength="5"
+        placeholder="เช่น 50000"
+      >
+
+
+      <!-- ================================= -->
+      <!-- ทะเบียนบ้าน -->
+      <!-- ================================= -->
+
+      <div class="section">
+
+        <div class="section-title">
+          🏡 ที่อยู่ตามทะเบียนบ้าน
+        </div>
+
+
+        <label style="
+          display:flex;
+          align-items:center;
+          gap:10px;
+          cursor:pointer;
+          color:#333;
+        ">
+
+          <input
+            id="sameAddress"
+            type="checkbox"
+            onchange="sameAddressChanged()"
+            style="
+              width:20px;
+              height:20px;
+            "
+          >
+
+          ใช้ที่อยู่ปัจจุบันเป็นที่อยู่ตามทะเบียนบ้าน
+
+        </label>
+
+
+        <div id="houseAddressFields">
+
+
+          <label>
+            บ้านเลขที่
+          </label>
+
+          <input
+            id="houseHouseNo"
+            type="text"
+            placeholder="เช่น 99/99"
+          >
+
+
+          <label>
+            หมู่
+          </label>
+
+          <input
+            id="houseMoo"
+            type="text"
+            placeholder="เช่น 5"
+          >
+
+
+          <label>
+            ซอย
+          </label>
+
+          <input
+            id="houseSoi"
+            type="text"
+            placeholder="ถ้ามี"
+          >
+
+
+          <label>
+            ถนน
+          </label>
+
+          <input
+            id="houseRoad"
+            type="text"
+            placeholder="ถ้ามี"
+          >
+
+
+          <label>
+            ตำบล / แขวง
+          </label>
+
+          <input
+            id="houseSubDistrict"
+            type="text"
+            placeholder="เช่น ตำบลสุเทพ"
+          >
+
+
+          <label>
+            อำเภอ / เขต
+          </label>
+
+          <input
+            id="houseDistrict"
+            type="text"
+            placeholder="เช่น อำเภอเมือง"
+          >
+
+
+          <label>
+            จังหวัด
+          </label>
+
+          <input
+            id="houseProvince"
+            type="text"
+            placeholder="เช่น เชียงใหม่"
+          >
+
+
+          <label>
+            รหัสไปรษณีย์
+          </label>
+
+          <input
+            id="housePostalCode"
+            type="text"
+            inputmode="numeric"
+            maxlength="5"
+            placeholder="เช่น 50000"
+          >
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="button"
+        onclick="nextAddressStep()"
+      >
+
+        ดำเนินการต่อ →
+
+      </button>
+
+
+      <button
+        onclick="showWorkForm()"
+        style="
+          width:100%;
+          margin-top:12px;
+          padding:12px;
+          border:none;
+          background:none;
+          color:#777;
+          font-size:15px;
+        "
+      >
+
+        ← กลับไปแก้ไขข้อมูลการทำงาน
+
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+function sameAddressChanged() {
+
+  const checked =
+    document.getElementById(
+      "sameAddress"
+    ).checked;
+
+
+  const fields =
+    document.getElementById(
+      "houseAddressFields"
+    );
+
+
+  if (checked) {
+
+    fields.style.display =
+      "none";
+
+  } else {
+
+    fields.style.display =
+      "block";
+
+  }
+
+}
+
+function nextAddressStep() {
 
   // ==========================================
-  // ยังไม่ไป STEP 4
+  // อ่านที่อยู่ปัจจุบัน
   // ==========================================
+
+  const currentAddress = {
+
+    HouseNo:
+      document.getElementById(
+        "currentHouseNo"
+      ).value.trim(),
+
+    Moo:
+      document.getElementById(
+        "currentMoo"
+      ).value.trim(),
+
+    Soi:
+      document.getElementById(
+        "currentSoi"
+      ).value.trim(),
+
+    Road:
+      document.getElementById(
+        "currentRoad"
+      ).value.trim(),
+
+    SubDistrict:
+      document.getElementById(
+        "currentSubDistrict"
+      ).value.trim(),
+
+    District:
+      document.getElementById(
+        "currentDistrict"
+      ).value.trim(),
+
+    Province:
+      document.getElementById(
+        "currentProvince"
+      ).value.trim(),
+
+    PostalCode:
+      document.getElementById(
+        "currentPostalCode"
+      ).value.trim()
+
+  };
+
+
+  // ==========================================
+  // ตรวจข้อมูล
+  // ==========================================
+
+  if (!currentAddress.HouseNo) {
+
+    alert(
+      "กรุณากรอกบ้านเลขที่"
+    );
+
+    return;
+
+  }
+
+
+  if (!currentAddress.Province) {
+
+    alert(
+      "กรุณากรอกจังหวัด"
+    );
+
+    return;
+
+  }
+
+
+  if (!currentAddress.PostalCode) {
+
+    alert(
+      "กรุณากรอกรหัสไปรษณีย์"
+    );
+
+    return;
+
+  }
+
+
+  // ==========================================
+  // เก็บที่อยู่ปัจจุบัน
+  // ==========================================
+
+  applicationData.CurrentAddress =
+    currentAddress;
+
+
+  // ==========================================
+  // ที่อยู่ทะเบียนบ้าน
+  // ==========================================
+
+  const sameAddress =
+    document.getElementById(
+      "sameAddress"
+    ).checked;
+
+
+  applicationData.SameAddress =
+    sameAddress;
+
+
+  if (sameAddress) {
+
+    applicationData.HouseAddress =
+      currentAddress;
+
+  } else {
+
+    applicationData.HouseAddress = {
+
+      HouseNo:
+        document.getElementById(
+          "houseHouseNo"
+        ).value.trim(),
+
+      Moo:
+        document.getElementById(
+          "houseMoo"
+        ).value.trim(),
+
+      Soi:
+        document.getElementById(
+          "houseSoi"
+        ).value.trim(),
+
+      Road:
+        document.getElementById(
+          "houseRoad"
+        ).value.trim(),
+
+      SubDistrict:
+        document.getElementById(
+          "houseSubDistrict"
+        ).value.trim(),
+
+      District:
+        document.getElementById(
+          "houseDistrict"
+        ).value.trim(),
+
+      Province:
+        document.getElementById(
+          "houseProvince"
+        ).value.trim(),
+
+      PostalCode:
+        document.getElementById(
+          "housePostalCode"
+        ).value.trim()
+
+    };
+
+  }
+
+
+  // ==========================================
+  // ตรวจทะเบียนบ้าน
+  // ==========================================
+
+  if (
+    !sameAddress &&
+    !applicationData.HouseAddress.HouseNo
+  ) {
+
+    alert(
+      "กรุณากรอกบ้านเลขที่ตามทะเบียนบ้าน"
+    );
+
+    return;
+
+  }
+
+
+  // ==========================================
+  // แสดงข้อมูลใน Console
+  // ==========================================
+
+  console.log(
+    "APPLICATION DATA:",
+    applicationData
+  );
+
 
   alert(
-    "บันทึกข้อมูลการทำงานแล้วครับ"
+    "บันทึกข้อมูลที่อยู่เรียบร้อยแล้วครับ"
   );
 
 }
