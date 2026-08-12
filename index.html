@@ -1001,6 +1001,23 @@ function nextStep() {
 
   }
 
+  // ==========================================
+  // Email
+  // ==========================================
+
+  const emailElement =
+    getRequiredValue(
+      "email",
+      "กรุณากรอกอีเมล"
+    );
+
+  if (emailElement === null) return;
+  
+  const email =
+    emailElement
+      ? emailElement.value.trim()
+      : "";
+
 
   // ==========================================
   // น้ำหนัก
@@ -1092,25 +1109,6 @@ function nextStep() {
     hospitalHistoryElement
       ? hospitalHistoryElement.value.trim()
       : "";
-
-
-  // ==========================================
-  // Email
-  // ==========================================
-
-  const emailElement =
-    getRequiredValue(
-      "email",
-      "กรุณากรอกอีเมล"
-    );
-
-  if (emailElement === null) return;
-  
-  const email =
-    emailElement
-      ? emailElement.value.trim()
-      : "";
-
 
   // ==========================================
   // บันทึกข้อมูลลง applicationData
