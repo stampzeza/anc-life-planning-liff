@@ -3404,7 +3404,7 @@ function renderBeneficiaries() {
 
       <button
         type="button"
-        onclick="showAddressForm()"
+        onclick="backFromBeneficiary()"
         style="
           width:100%;
           margin-top:12px;
@@ -3452,6 +3452,7 @@ function updateBeneficiary(
 
 function nextBeneficiaryStep() {
 
+  // บันทึกข้อมูลจากหน้าจอก่อน
   saveBeneficiaryFields();
 
 
@@ -3480,7 +3481,8 @@ function nextBeneficiaryStep() {
     i++
   ) {
 
-    const person = list[i];
+    const person =
+      list[i];
 
 
     if (!person.Name) {
@@ -3554,12 +3556,34 @@ function nextBeneficiaryStep() {
   );
 
 
+  // ตอนนี้ยังไม่ไปหน้าถัดไป
+  // เพื่อทดสอบการจำข้อมูลก่อน
+
   alert(
     `บันทึกผู้รับผลประโยชน์ ${list.length} คนเรียบร้อยแล้วครับ`
   );
 
 }
 
+// ============================================
+// BACK FROM BENEFICIARY
+// ============================================
+
+function backFromBeneficiary() {
+
+  // บันทึกข้อมูลที่กำลังกรอกอยู่ก่อน
+  saveBeneficiaryFields();
+
+
+  console.log(
+    "BACK - BENEFICIARIES:",
+    applicationData.Beneficiaries
+  );
+
+
+  showAddressForm();
+
+}
   
 function showSummary() {
 
