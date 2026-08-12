@@ -334,6 +334,32 @@
     font-weight: bold;
     margin-left: 3px;
   }
+
+  /* ============================================
+   REVIEW
+   ============================================ */
+
+  .review-row {
+    padding:10px 0;
+    border-bottom:1px solid #eeeeee;
+  }
+  
+  .review-row:last-child {
+    border-bottom:none;
+  }
+  
+  .review-label {
+    color:#888;
+    font-size:13px;
+    margin-bottom:4px;
+  }
+  
+  .review-value {
+    color:#222;
+    font-size:15px;
+    font-weight:500;
+    word-break:break-word;
+  }
   </style>
 
 </head>
@@ -3651,7 +3677,7 @@ function backFromBeneficiary() {
 }
 
 // ============================================
-// REVIEW FORM - STEP 5
+// REVIEW FORM - STEP 5.3
 // ============================================
 
 function showReviewForm() {
@@ -3678,54 +3704,233 @@ function showReviewForm() {
       </div>
 
 
+      <!-- ================================= -->
+      <!-- ข้อมูลผู้สมัคร -->
+      <!-- ================================= -->
+
       <div style="
-        padding:20px;
+        padding:18px;
         background:#fafafa;
         border:1px solid #e5e5e5;
         border-radius:16px;
-        text-align:center;
+        margin-bottom:18px;
       ">
 
         <div style="
-          font-size:40px;
-          margin-bottom:10px;
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          margin-bottom:16px;
         ">
-          ✅
+
+          <div style="
+            font-size:17px;
+            font-weight:bold;
+          ">
+            👤 ข้อมูลผู้สมัคร
+          </div>
+
+
+          <button
+            type="button"
+            onclick="showApplicationForm()"
+            style="
+              border:none;
+              background:white;
+              color:#777;
+              padding:7px 10px;
+              border-radius:8px;
+              font-size:13px;
+            "
+          >
+            ✏️ แก้ไข
+          </button>
+
         </div>
 
 
-        <div style="
-          font-size:18px;
-          font-weight:bold;
-          margin-bottom:8px;
-        ">
-          ข้อมูลพร้อมตรวจสอบ
+        <div class="review-row">
+          <div class="review-label">
+            ชื่อ - นามสกุล
+          </div>
+
+          <div class="review-value">
+            ${escapeHtml(
+              applicationData.FullName || "-"
+            )}
+          </div>
         </div>
 
 
-        <div style="
-          color:#777;
-          font-size:14px;
-        ">
-          เราจะนำข้อมูลทั้งหมด
-          มาแสดงในขั้นตอนถัดไปครับ
+        <div class="review-row">
+          <div class="review-label">
+            เลขบัตรประชาชน
+          </div>
+
+          <div class="review-value">
+            ${escapeHtml(
+              applicationData.IDCard || "-"
+            )}
+          </div>
+        </div>
+
+
+        <div class="review-row">
+          <div class="review-label">
+            เลขหลังบัตร
+          </div>
+
+          <div class="review-value">
+            ${escapeHtml(
+              applicationData.LaserID || "-"
+            )}
+          </div>
+        </div>
+
+
+        <div class="review-row">
+          <div class="review-label">
+            วันเดือนปีเกิด
+          </div>
+
+          <div class="review-value">
+            ${escapeHtml(
+              applicationData.BirthDate || "-"
+            )}
+          </div>
+        </div>
+
+
+        <div class="review-row">
+          <div class="review-label">
+            วันหมดอายุบัตร
+          </div>
+
+          <div class="review-value">
+            ${escapeHtml(
+              applicationData.IDExpireDate || "-"
+            )}
+          </div>
+        </div>
+
+
+        <div class="review-row">
+          <div class="review-label">
+            สัญชาติ
+          </div>
+
+          <div class="review-value">
+            ${escapeHtml(
+              applicationData.Nationality || "-"
+            )}
+          </div>
+        </div>
+
+
+        <div class="review-row">
+          <div class="review-label">
+            เบอร์โทรศัพท์
+          </div>
+
+          <div class="review-value">
+            ${escapeHtml(
+              applicationData.Phone || "-"
+            )}
+          </div>
+        </div>
+
+
+        <div class="review-row">
+          <div class="review-label">
+            อีเมล
+          </div>
+
+          <div class="review-value">
+            ${escapeHtml(
+              applicationData.Email || "-"
+            )}
+          </div>
+        </div>
+
+
+        <div class="review-row">
+          <div class="review-label">
+            น้ำหนัก
+          </div>
+
+          <div class="review-value">
+            ${escapeHtml(
+              applicationData.Weight || "-"
+            )}
+            กก.
+          </div>
+        </div>
+
+
+        <div class="review-row">
+          <div class="review-label">
+            ส่วนสูง
+          </div>
+
+          <div class="review-value">
+            ${escapeHtml(
+              applicationData.Height || "-"
+            )}
+            ซม.
+          </div>
+        </div>
+
+
+        <div class="review-row">
+          <div class="review-label">
+            โรคประจำตัว
+          </div>
+
+          <div class="review-value">
+            ${escapeHtml(
+              applicationData.Disease || "-"
+            )}
+          </div>
+        </div>
+
+
+        <div class="review-row">
+          <div class="review-label">
+            ประวัติการรักษา
+          </div>
+
+          <div class="review-value">
+            ${escapeHtml(
+              applicationData.HospitalHistory || "-"
+            )}
+          </div>
         </div>
 
       </div>
 
 
+      <!-- ================================= -->
+      <!-- ปุ่มกลับ -->
+      <!-- ================================= -->
+
       <button
         type="button"
-        class="button"
         onclick="showBeneficiaryForm()"
         style="
-          margin-top:20px;
+          width:100%;
+          margin-top:5px;
+          padding:12px;
+          border:none;
+          background:none;
+          color:#777;
+          font-size:15px;
         "
       >
 
-        ← กลับไปแก้ไข
+        ← กลับไปแก้ไขผู้รับผลประโยชน์
 
       </button>
+
 
     </div>
 
