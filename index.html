@@ -3142,12 +3142,23 @@ function saveBeneficiaryFields() {
 // REMOVE BENEFICIARY
 // ============================================
 
+// ============================================
+// REMOVE BENEFICIARY
+// ============================================
+
 function removeBeneficiary(index) {
 
+  const list =
+    applicationData.Beneficiaries || [];
+
+
+  // ------------------------------------------
+  // ป้องกัน index ผิด
+  // ------------------------------------------
+
   if (
-    !confirm(
-      "ต้องการลบผู้รับผลประโยชน์คนนี้หรือไม่?"
-    )
+    index < 0 ||
+    index >= list.length
   ) {
 
     return;
@@ -3155,11 +3166,34 @@ function removeBeneficiary(index) {
   }
 
 
-  applicationData.Beneficiaries.splice(
-    index,
-    1
-  );
+  // ------------------------------------------
+  // ต้องเหลืออย่างน้อย 1 คน
+  // ------------------------------------------
 
+  if (list.length <= 1) {
+
+    alert(
+      "ต้องมีผู้รับผลประโยชน์อย่างน้อย 1 คนครับ"
+    );
+
+    return;
+
+  }
+
+
+  // ------------------------------------------
+  // ลบข้อมูล
+  // ------------------------------------------
+
+  list.splice(index, 1);
+
+
+  // ------------------------------------------
+  // Render ใหม่
+  // ------------------------------------------
+
+  applicationData.Beneficiaries =
+    list;
 
   renderBeneficiaries();
 
@@ -3210,15 +3244,42 @@ function renderBeneficiaries() {
         border-radius:16px;
         margin-bottom:18px;
       ">
-
+    
         <div style="
-          font-weight:bold;
-          font-size:17px;
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
           margin-bottom:15px;
         ">
-
-          👤 ผู้รับผลประโยชน์คนที่ ${index + 1}
-
+    
+          <div style="
+            font-weight:bold;
+            font-size:17px;
+          ">
+    
+            👤 ผู้รับผลประโยชน์คนที่ ${index + 1}
+    
+          </div>
+    
+    
+          <button
+            type="button"
+            onclick="removeBeneficiary(${index})"
+            style="
+              border:none;
+              background:#fff;
+              color:#d9534f;
+              font-size:14px;
+              padding:8px 12px;
+              border-radius:8px;
+              cursor:pointer;
+            "
+          >
+    
+            🗑️ ลบ
+    
+          </button>
+    
         </div>
 
 
@@ -3384,17 +3445,6 @@ function updateBeneficiary(
 
 }
 
-function removeBeneficiary(index) {
-
-  beneficiaries.splice(
-    index,
-    1
-  );
-
-
-  renderBeneficiaries();
-
-}
 
 // ============================================
 // NEXT BENEFICIARY STEP
