@@ -252,50 +252,80 @@
   
     transition: 0.2s;
   
+    }
+    
+    .payment-option.selected {
+    
+      border-color: #111;
+    
+      background: #f5f5f5;
+    
+    }
+    
+    
+    .frequency-grid {
+    
+      display: grid;
+    
+      grid-template-columns: 1fr;
+    
+      gap: 10px;
+    
+    }
+    
+    
+    .frequency-button {
+    
+      padding: 14px;
+    
+      border: 2px solid #eee;
+    
+      border-radius: 14px;
+    
+      background: white;
+    
+      font-size: 16px;
+    
+      cursor: pointer;
+    
+    }
+    
+    
+    .frequency-button.selected {
+    
+      border-color: #111;
+    
+      background: #f5f5f5;
+    
+    }
+  
+    .summary-card {
+  
+    margin-bottom:16px;
+  
+    padding:16px;
+  
+    border:1px solid #eee;
+  
+    border-radius:16px;
+  
+    background:#fff;
+  
+    line-height:1.8;
+  
   }
   
-  .payment-option.selected {
+  .summary-title {
   
-    border-color: #111;
+    font-size:17px;
   
-    background: #f5f5f5;
+    font-weight:bold;
   
-  }
+    margin-bottom:10px;
   
+    padding-bottom:8px;
   
-  .frequency-grid {
-  
-    display: grid;
-  
-    grid-template-columns: 1fr;
-  
-    gap: 10px;
-  
-  }
-  
-  
-  .frequency-button {
-  
-    padding: 14px;
-  
-    border: 2px solid #eee;
-  
-    border-radius: 14px;
-  
-    background: white;
-  
-    font-size: 16px;
-  
-    cursor: pointer;
-  
-  }
-  
-  
-  .frequency-button.selected {
-  
-    border-color: #111;
-  
-    background: #f5f5f5;
+    border-bottom:1px solid #eee;
   
   }
   </style>
@@ -2293,6 +2323,426 @@ function nextBeneficiaryStep() {
 
 }
 
+function showSummary() {
+
+  // ==========================================
+  // ตรวจว่ามีข้อมูลผู้รับผลประโยชน์หรือไม่
+  // ==========================================
+
+  if (!applicationData.Beneficiaries) {
+
+    applicationData.Beneficiaries = [];
+
+  }
+
+
+  const app =
+    document.getElementById("app");
+
+
+  // ==========================================
+  // Helper สำหรับแสดงข้อมูล
+  // ==========================================
+
+  function display(value) {
+
+    if (
+      value === undefined ||
+      value === null ||
+      value === ""
+    ) {
+
+      return "-";
+
+    }
+
+    return String(value);
+
+  }
+
+
+  // ==========================================
+  // สร้าง HTML ผู้รับผลประโยชน์
+  // ==========================================
+
+  let beneficiaryHTML = "";
+
+
+  if (
+    applicationData.Beneficiaries.length === 0
+  ) {
+
+    beneficiaryHTML = `
+
+      <div style="
+        color:#777;
+        padding:10px 0;
+      ">
+        ยังไม่ได้ระบุผู้รับผลประโยชน์
+      </div>
+
+    `;
+
+  } else {
+
+    applicationData.Beneficiaries.forEach(
+      (b, index) => {
+
+        beneficiaryHTML += `
+
+          <div style="
+            padding:14px;
+            margin-top:10px;
+            border:1px solid #eee;
+            border-radius:12px;
+            background:#fafafa;
+          ">
+
+            <div style="
+              font-weight:bold;
+              margin-bottom:8px;
+            ">
+
+              👤 ผู้รับผลประโยชน์คนที่
+              ${index + 1}
+
+            </div>
+
+            <div>
+              ชื่อ:
+              ${display(b.FullName)}
+            </div>
+
+            <div>
+              ความสัมพันธ์:
+              ${display(b.Relationship)}
+            </div>
+
+            <div>
+              อายุ:
+              ${display(b.Age)} ปี
+            </div>
+
+            <div>
+              เลขบัตรประชาชน:
+              ${display(b.IDCard)}
+            </div>
+
+          </div>
+
+        `;
+
+      }
+    );
+
+  }
+
+
+  // ==========================================
+  // แสดงหน้า Summary
+  // ==========================================
+
+  app.innerHTML = `
+
+    <div class="section">
+
+      <div class="section-title">
+        🔎 ตรวจสอบข้อมูล
+      </div>
+
+      <div style="
+        color:#777;
+        margin-bottom:20px;
+        line-height:1.6;
+      ">
+
+        กรุณาตรวจสอบข้อมูลทั้งหมด
+        ก่อนกดยืนยันส่งข้อมูลครับ
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- ข้อมูลผู้สมัคร -->
+      <!-- ================================= -->
+
+      <div class="summary-card">
+
+        <div class="summary-title">
+          👤 ข้อมูลผู้สมัคร
+        </div>
+
+        <div>
+          <b>ชื่อ:</b>
+          ${display(applicationData.FullName)}
+        </div>
+
+        <div>
+          <b>เบอร์โทร:</b>
+          ${display(applicationData.Phone)}
+        </div>
+
+        <div>
+          <b>อีเมล:</b>
+          ${display(applicationData.Email)}
+        </div>
+
+        <div>
+          <b>น้ำหนัก:</b>
+          ${display(applicationData.Weight)}
+          กก.
+        </div>
+
+        <div>
+          <b>ส่วนสูง:</b>
+          ${display(applicationData.Height)}
+          ซม.
+        </div>
+
+        <div>
+          <b>โรคประจำตัว:</b>
+          ${display(applicationData.Disease)}
+        </div>
+
+        <div>
+          <b>ประวัติการรักษา:</b>
+          ${display(applicationData.HospitalHistory)}
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- การชำระเบี้ย -->
+      <!-- ================================= -->
+
+      <div class="summary-card">
+
+        <div class="summary-title">
+          💳 การชำระเบี้ย
+        </div>
+
+        <div>
+          <b>ช่องทาง:</b>
+          ${display(
+            applicationData.PaymentMethod
+          )}
+        </div>
+
+        <div>
+          <b>ความถี่:</b>
+          ${display(
+            applicationData.PaymentFrequency
+          )}
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- การทำงาน -->
+      <!-- ================================= -->
+
+      <div class="summary-card">
+
+        <div class="summary-title">
+          💼 ข้อมูลการทำงาน
+        </div>
+
+        <div>
+          <b>อาชีพ:</b>
+          ${display(
+            applicationData.Occupation
+          )}
+        </div>
+
+        <div>
+          <b>สถานที่ทำงาน:</b>
+          ${display(
+            applicationData.Company
+          )}
+        </div>
+
+        <div>
+          <b>ตำแหน่ง:</b>
+          ${display(
+            applicationData.Position
+          )}
+        </div>
+
+        <div>
+          <b>ลักษณะงาน:</b>
+          ${display(
+            applicationData.JobDescription
+          )}
+        </div>
+
+        <div>
+          <b>รายได้ต่อปี:</b>
+          ${display(
+            applicationData.AnnualIncome
+          )}
+          บาท
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- ที่อยู่ -->
+      <!-- ================================= -->
+
+      <div class="summary-card">
+
+        <div class="summary-title">
+          🏠 ที่อยู่ปัจจุบัน
+        </div>
+
+        <div>
+          ${formatAddress(
+            applicationData.CurrentAddress
+          )}
+        </div>
+
+      </div>
+
+
+      <div class="summary-card">
+
+        <div class="summary-title">
+          🏡 ที่อยู่ตามทะเบียนบ้าน
+        </div>
+
+        <div>
+          ${formatAddress(
+            applicationData.HouseAddress
+          )}
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- ผู้รับผลประโยชน์ -->
+      <!-- ================================= -->
+
+      <div class="summary-card">
+
+        <div class="summary-title">
+          👥 ผู้รับผลประโยชน์
+        </div>
+
+        ${beneficiaryHTML}
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- ยืนยัน -->
+      <!-- ================================= -->
+
+      <div style="
+        margin-top:20px;
+        padding:15px;
+        background:#fff8e6;
+        border-radius:14px;
+        font-size:14px;
+        color:#666;
+        line-height:1.6;
+      ">
+
+        ⚠️ กรุณาตรวจสอบข้อมูลให้ถูกต้อง
+        ก่อนกดยืนยันส่งข้อมูล
+
+      </div>
+
+
+      <button
+        class="button"
+        onclick="submitApplication()"
+        style="margin-top:18px;"
+      >
+
+        ✅ ยืนยันและส่งข้อมูล
+
+      </button>
+
+
+      <button
+        onclick="showBeneficiaryForm()"
+        style="
+          width:100%;
+          margin-top:12px;
+          padding:12px;
+          border:none;
+          background:none;
+          color:#777;
+          font-size:15px;
+        "
+      >
+
+        ← กลับไปแก้ไข
+
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+function formatAddress(address) {
+
+  if (!address) {
+
+    return "-";
+
+  }
+
+
+  const parts = [
+
+    address.HouseNo
+      ? `บ้านเลขที่ ${address.HouseNo}`
+      : "",
+
+    address.Moo
+      ? `หมู่ ${address.Moo}`
+      : "",
+
+    address.Soi
+      ? `ซอย ${address.Soi}`
+      : "",
+
+    address.Road
+      ? `ถนน ${address.Road}`
+      : "",
+
+    address.SubDistrict
+      ? `ตำบล/แขวง ${address.SubDistrict}`
+      : "",
+
+    address.District
+      ? `อำเภอ/เขต ${address.District}`
+      : "",
+
+    address.Province
+      ? `จังหวัด ${address.Province}`
+      : "",
+
+    address.PostalCode
+      ? `รหัสไปรษณีย์ ${address.PostalCode}`
+      : ""
+
+  ];
+
+
+  return parts
+    .filter(Boolean)
+    .join(" ");
+
+}
+  
 // ============================================
 // STATUS
 // ============================================
