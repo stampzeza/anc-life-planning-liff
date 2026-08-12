@@ -1022,9 +1022,7 @@ function selectFrequency(frequency) {
 
 function confirmPayment() {
 
-  if (
-    !applicationData.PaymentMethod
-  ) {
+  if (!applicationData.PaymentMethod) {
 
     alert(
       "กรุณาเลือกช่องทางการชำระเงิน"
@@ -1035,9 +1033,7 @@ function confirmPayment() {
   }
 
 
-  if (
-    !applicationData.PaymentFrequency
-  ) {
+  if (!applicationData.PaymentFrequency) {
 
     alert(
       "กรุณาเลือกความถี่การชำระเบี้ย"
@@ -1048,14 +1044,272 @@ function confirmPayment() {
   }
 
 
+  // ไป STEP 3
+  showWorkForm();
+
+}
+
+function showWorkForm() {
+
+  const app =
+    document.getElementById("app");
+
+
+  app.innerHTML = `
+
+    <div class="section">
+
+      <div class="section-title">
+        💼 ข้อมูลการทำงาน
+      </div>
+
+      <div style="
+        color:#777;
+        margin-bottom:18px;
+      ">
+        ข้อมูลส่วนนี้ใช้ประกอบการสมัครประกันครับ
+      </div>
+
+
+      <!-- อาชีพ -->
+
+      <label>
+        อาชีพปัจจุบัน
+      </label>
+
+      <select
+        id="occupation"
+        onchange="occupationChanged()"
+        style="
+          width:100%;
+          padding:14px;
+          border:1px solid #ddd;
+          border-radius:12px;
+          font-size:16px;
+          background:white;
+        "
+      >
+
+        <option value="">
+          -- กรุณาเลือกอาชีพ --
+        </option>
+
+        <option value="พนักงานออฟฟิศ">
+          👔 พนักงานออฟฟิศ
+        </option>
+
+        <option value="ค้าขาย/ธุรกิจส่วนตัว">
+          🏪 ค้าขาย / ธุรกิจส่วนตัว
+        </option>
+
+        <option value="ข้าราชการ/รัฐวิสาหกิจ">
+          🏛️ ข้าราชการ / รัฐวิสาหกิจ
+        </option>
+
+        <option value="รับจ้าง/ฟรีแลนซ์">
+          💻 รับจ้าง / ฟรีแลนซ์
+        </option>
+
+        <option value="อื่นๆ">
+          📝 อื่นๆ
+        </option>
+
+      </select>
+
+
+      <!-- ส่วนข้อมูลการทำงาน -->
+
+      <div
+        id="workFields"
+        style="display:none;"
+      >
+
+        <label>
+          สถานที่ทำงาน
+        </label>
+
+        <input
+          id="company"
+          type="text"
+          placeholder="เช่น บริษัท ABC จำกัด"
+        >
+
+
+        <label>
+          ตำแหน่ง
+        </label>
+
+        <input
+          id="position"
+          type="text"
+          placeholder="เช่น ผู้จัดการฝ่ายขาย"
+        >
+
+
+        <label>
+          ลักษณะงาน
+        </label>
+
+        <textarea
+          id="jobDescription"
+          placeholder="อธิบายลักษณะงานโดยย่อ"
+        ></textarea>
+
+
+        <label>
+          รายได้ต่อปี (บาท)
+        </label>
+
+        <input
+          id="annualIncome"
+          type="number"
+          inputmode="numeric"
+          placeholder="เช่น 600000"
+        >
+
+      </div>
+
+
+      <button
+        class="button"
+        onclick="nextWorkStep()"
+      >
+
+        ดำเนินการต่อ →
+
+      </button>
+
+
+      <button
+        onclick="showPaymentForm()"
+        style="
+          width:100%;
+          margin-top:12px;
+          padding:12px;
+          border:none;
+          background:none;
+          color:#777;
+          font-size:15px;
+        "
+      >
+
+        ← กลับไปแก้ไขการชำระเงิน
+
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+function occupationChanged() {
+
+  const occupation =
+    document.getElementById(
+      "occupation"
+    ).value;
+
+
+  const workFields =
+    document.getElementById(
+      "workFields"
+    );
+
+
+  if (!occupation) {
+
+    workFields.style.display =
+      "none";
+
+    return;
+
+  }
+
+
+  // ถ้าเลือกอาชีพแล้ว
+  // แสดงข้อมูลการทำงาน
+
+  workFields.style.display =
+    "block";
+
+}
+
+function nextWorkStep() {
+
+  const occupation =
+    document.getElementById(
+      "occupation"
+    ).value;
+
+
+  if (!occupation) {
+
+    alert(
+      "กรุณาเลือกอาชีพปัจจุบัน"
+    );
+
+    return;
+
+  }
+
+
+  const company =
+    document.getElementById(
+      "company"
+    ).value.trim();
+
+
+  const position =
+    document.getElementById(
+      "position"
+    ).value.trim();
+
+
+  const jobDescription =
+    document.getElementById(
+      "jobDescription"
+    ).value.trim();
+
+
+  const annualIncome =
+    document.getElementById(
+      "annualIncome"
+    ).value.trim();
+
+
+  // ==========================================
+  // เก็บข้อมูล
+  // ==========================================
+
+  applicationData.Occupation =
+    occupation;
+
+  applicationData.Company =
+    company;
+
+  applicationData.Position =
+    position;
+
+  applicationData.JobDescription =
+    jobDescription;
+
+  applicationData.AnnualIncome =
+    annualIncome;
+
+
   console.log(
-    "ข้อมูลทั้งหมด:",
+    "APPLICATION DATA:",
     applicationData
   );
 
 
+  // ==========================================
+  // ยังไม่ไป STEP 4
+  // ==========================================
+
   alert(
-    "เลือกวิธีชำระเงินเรียบร้อยแล้วครับ"
+    "บันทึกข้อมูลการทำงานแล้วครับ"
   );
 
 }
