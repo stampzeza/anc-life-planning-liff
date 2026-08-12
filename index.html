@@ -3555,14 +3555,11 @@ function nextBeneficiaryStep() {
     applicationData.Beneficiaries
   );
 
+  // ==========================================
+  // ไปหน้าตรวจสอบข้อมูล
+  // ==========================================
 
-  // ตอนนี้ยังไม่ไปหน้าถัดไป
-  // เพื่อทดสอบการจำข้อมูลก่อน
-
-  alert(
-    `บันทึกผู้รับผลประโยชน์ ${list.length} คนเรียบร้อยแล้วครับ`
-  );
-
+  showReviewForm();
 }
 
 // ============================================
@@ -3582,6 +3579,89 @@ function backFromBeneficiary() {
 
 
   showAddressForm();
+
+}
+
+// ============================================
+// REVIEW FORM - STEP 5
+// ============================================
+
+function showReviewForm() {
+
+  const app =
+    document.getElementById("app");
+
+
+  app.innerHTML = `
+
+    <div class="section">
+
+      <div class="section-title">
+        🔎 ตรวจสอบข้อมูล
+      </div>
+
+
+      <div style="
+        color:#777;
+        margin-bottom:20px;
+      ">
+        กรุณาตรวจสอบข้อมูลของคุณ
+        ก่อนยืนยันการสมัครครับ
+      </div>
+
+
+      <div style="
+        padding:20px;
+        background:#fafafa;
+        border:1px solid #e5e5e5;
+        border-radius:16px;
+        text-align:center;
+      ">
+
+        <div style="
+          font-size:40px;
+          margin-bottom:10px;
+        ">
+          ✅
+        </div>
+
+
+        <div style="
+          font-size:18px;
+          font-weight:bold;
+          margin-bottom:8px;
+        ">
+          ข้อมูลพร้อมตรวจสอบ
+        </div>
+
+
+        <div style="
+          color:#777;
+          font-size:14px;
+        ">
+          เราจะนำข้อมูลทั้งหมด
+          มาแสดงในขั้นตอนถัดไปครับ
+        </div>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="button"
+        onclick="showBeneficiaryForm()"
+        style="
+          margin-top:20px;
+        "
+      >
+
+        ← กลับไปแก้ไข
+
+      </button>
+
+    </div>
+
+  `;
 
 }
   
