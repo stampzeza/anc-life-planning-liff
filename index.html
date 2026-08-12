@@ -232,6 +232,72 @@
 
     }
 
+    .payment-option {
+
+    display: flex;
+  
+    align-items: center;
+  
+    gap: 15px;
+  
+    padding: 16px;
+  
+    margin-bottom: 12px;
+  
+    border: 2px solid #eee;
+  
+    border-radius: 16px;
+  
+    cursor: pointer;
+  
+    transition: 0.2s;
+  
+  }
+  
+  .payment-option.selected {
+  
+    border-color: #111;
+  
+    background: #f5f5f5;
+  
+  }
+  
+  
+  .frequency-grid {
+  
+    display: grid;
+  
+    grid-template-columns: 1fr;
+  
+    gap: 10px;
+  
+  }
+  
+  
+  .frequency-button {
+  
+    padding: 14px;
+  
+    border: 2px solid #eee;
+  
+    border-radius: 14px;
+  
+    background: white;
+  
+    font-size: 16px;
+  
+    cursor: pointer;
+  
+  }
+  
+  
+  .frequency-button.selected {
+  
+    border-color: #111;
+  
+    background: #f5f5f5;
+  
+  }
   </style>
 
 </head>
@@ -287,6 +353,8 @@ const LIFF_ID =
 // ============================================
 
 let lineUser = null;
+
+let applicationData = {};
 
 
 // ============================================
@@ -559,12 +627,40 @@ function nextStep() {
       "fullName"
     ).value.trim();
 
-
   const phone =
     document.getElementById(
       "phone"
     ).value.trim();
 
+  const email =
+    document.getElementById(
+      "email"
+    ).value.trim();
+
+  const weight =
+    document.getElementById(
+      "weight"
+    ).value.trim();
+
+  const height =
+    document.getElementById(
+      "height"
+    ).value.trim();
+
+  const disease =
+    document.getElementById(
+      "disease"
+    ).value.trim();
+
+  const hospitalHistory =
+    document.getElementById(
+      "hospitalHistory"
+    ).value.trim();
+
+
+  // ============================================
+  // ตรวจข้อมูลจำเป็น
+  // ============================================
 
   if (!fullName) {
 
@@ -588,12 +684,381 @@ function nextStep() {
   }
 
 
-  alert(
-    "ข้อมูลเบื้องต้นถูกต้องแล้วครับ"
+  // ============================================
+  // เก็บข้อมูลไว้ในตัวแปร
+  // ============================================
+
+  applicationData = {
+
+    USER_ID:
+      lineUser.userId,
+
+    DisplayName:
+      lineUser.displayName,
+
+    FullName:
+      fullName,
+
+    Phone:
+      phone,
+
+    Email:
+      email,
+
+    Weight:
+      weight,
+
+    Height:
+      height,
+
+    Disease:
+      disease,
+
+    HospitalHistory:
+      hospitalHistory
+
+  };
+
+
+  console.log(
+    "APPLICATION DATA:",
+    applicationData
   );
+
+
+  // ============================================
+  // ไปหน้าชำระเงิน
+  // ============================================
+
+  showPaymentForm();
 
 }
 
+function showPaymentForm() {
+
+  const app =
+    document.getElementById("app");
+
+
+  app.innerHTML = `
+
+    <div class="section">
+
+      <div class="section-title">
+        💳 วิธีการชำระเบี้ย
+      </div>
+
+      <div style="
+        color:#777;
+        margin-bottom:18px;
+      ">
+        เลือกช่องทางการชำระเงินที่สะดวก
+      </div>
+
+
+      <!-- QR CODE -->
+
+      <div
+        class="payment-option"
+        onclick="selectPayment('QR Code ออนไลน์')"
+        id="payment-qr"
+      >
+
+        <div style="
+          font-size:28px;
+        ">
+          📱
+        </div>
+
+        <div>
+
+          <div style="
+            font-weight:bold;
+            font-size:16px;
+          ">
+            QR Code ออนไลน์
+          </div>
+
+          <div style="
+            color:#777;
+            font-size:13px;
+            margin-top:4px;
+          ">
+            ชำระผ่าน QR Code
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- CREDIT CARD -->
+
+      <div
+        class="payment-option"
+        onclick="selectPayment('บัตรเครดิต')"
+        id="payment-card"
+      >
+
+        <div style="
+          font-size:28px;
+        ">
+          💳
+        </div>
+
+        <div>
+
+          <div style="
+            font-weight:bold;
+            font-size:16px;
+          ">
+            บัตรเครดิต
+          </div>
+
+          <div style="
+            color:#777;
+            font-size:13px;
+            margin-top:4px;
+          ">
+            ชำระผ่านบัตรเครดิต
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="section">
+
+        <div class="section-title">
+          📅 ความถี่การชำระ
+        </div>
+
+
+        <div class="frequency-grid">
+
+
+          <button
+            class="frequency-button"
+            onclick="selectFrequency('รายปี')"
+            id="freq-year"
+          >
+            📅 รายปี
+          </button>
+
+
+          <button
+            class="frequency-button"
+            onclick="selectFrequency('ราย 6 เดือน')"
+            id="freq-6m"
+          >
+            📆 ราย 6 เดือน
+          </button>
+
+
+          <button
+            class="frequency-button"
+            onclick="selectFrequency('ราย 3 เดือน')"
+            id="freq-3m"
+          >
+            🗓️ ราย 3 เดือน
+          </button>
+
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="button"
+        onclick="confirmPayment()"
+      >
+
+        ดำเนินการต่อ →
+
+      </button>
+
+
+      <button
+        onclick="showApplicationForm()"
+        style="
+          width:100%;
+          margin-top:12px;
+          padding:12px;
+          border:none;
+          background:none;
+          color:#777;
+          font-size:15px;
+        "
+      >
+
+        ← กลับไปแก้ไขข้อมูล
+
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+function selectPayment(method) {
+
+  applicationData.PaymentMethod =
+    method;
+
+
+  document
+    .querySelectorAll(
+      ".payment-option"
+    )
+    .forEach(el => {
+
+      el.classList.remove(
+        "selected"
+      );
+
+    });
+
+
+  if (
+    method ===
+    "QR Code ออนไลน์"
+  ) {
+
+    document
+      .getElementById(
+        "payment-qr"
+      )
+      .classList.add(
+        "selected"
+      );
+
+  }
+
+
+  if (
+    method ===
+    "บัตรเครดิต"
+  ) {
+
+    document
+      .getElementById(
+        "payment-card"
+      )
+      .classList.add(
+        "selected"
+      );
+
+  }
+
+}
+
+function selectFrequency(frequency) {
+
+  applicationData.PaymentFrequency =
+    frequency;
+
+
+  document
+    .querySelectorAll(
+      ".frequency-button"
+    )
+    .forEach(el => {
+
+      el.classList.remove(
+        "selected"
+      );
+
+    });
+
+
+  if (
+    frequency === "รายปี"
+  ) {
+
+    document
+      .getElementById(
+        "freq-year"
+      )
+      .classList.add(
+        "selected"
+      );
+
+  }
+
+
+  if (
+    frequency === "ราย 6 เดือน"
+  ) {
+
+    document
+      .getElementById(
+        "freq-6m"
+      )
+      .classList.add(
+        "selected"
+      );
+
+  }
+
+
+  if (
+    frequency === "ราย 3 เดือน"
+  ) {
+
+    document
+      .getElementById(
+        "freq-3m"
+      )
+      .classList.add(
+        "selected"
+      );
+
+  }
+
+}
+
+function confirmPayment() {
+
+  if (
+    !applicationData.PaymentMethod
+  ) {
+
+    alert(
+      "กรุณาเลือกช่องทางการชำระเงิน"
+    );
+
+    return;
+
+  }
+
+
+  if (
+    !applicationData.PaymentFrequency
+  ) {
+
+    alert(
+      "กรุณาเลือกความถี่การชำระเบี้ย"
+    );
+
+    return;
+
+  }
+
+
+  console.log(
+    "ข้อมูลทั้งหมด:",
+    applicationData
+  );
+
+
+  alert(
+    "เลือกวิธีชำระเงินเรียบร้อยแล้วครับ"
+  );
+
+}
 
 // ============================================
 // STATUS
