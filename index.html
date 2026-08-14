@@ -373,6 +373,31 @@
     font-size:14px;
     line-height:1.7;
   }
+
+  /* ============================================
+   INSURANCE TERMS
+   ============================================ */
+
+  .terms-card {
+    padding:16px;
+    background:#fafafa;
+    border:1px solid #e5e5e5;
+    border-radius:14px;
+    margin-bottom:14px;
+  }
+  
+  .terms-title {
+    font-size:15px;
+    font-weight:bold;
+    color:#222;
+    margin-bottom:9px;
+  }
+  
+  .terms-text {
+    font-size:14px;
+    line-height:1.8;
+    color:#555;
+  }
   </style>
 
 </head>
@@ -4269,7 +4294,7 @@ function showReviewForm() {
       </div>
       
       <!-- ================================= -->
-      <!-- ยืนยันข้อมูล -->
+      <!-- เงื่อนไขสำคัญก่อนสมัคร -->
       <!-- ================================= -->
       
       <div style="
@@ -4278,16 +4303,81 @@ function showReviewForm() {
         background:#fff8e1;
         border:1px solid #ffe082;
         border-radius:16px;
+        margin-bottom:15px;
       ">
       
         <div style="
-          font-size:16px;
+          font-size:17px;
           font-weight:bold;
-          margin-bottom:12px;
+          margin-bottom:8px;
         ">
-          ✅ ยืนยันข้อมูล
+          ⚠️ เงื่อนไขสำคัญก่อนสมัคร
         </div>
       
+      
+        <div style="
+          color:#666;
+          font-size:14px;
+          line-height:1.7;
+          margin-bottom:15px;
+        ">
+          กรุณาอ่านเงื่อนไขสำคัญเกี่ยวกับ
+          การรับประกันและความคุ้มครอง
+          ก่อนยืนยันการสมัครครับ
+        </div>
+      
+      
+        <button
+        type="button"
+        onclick="showInsuranceTerms()"
+        style="
+          width:100%;
+          padding:13px;
+          border:1px solid #ddd;
+          border-radius:12px;
+          background:white;
+          color:#333;
+          font-size:15px;
+          font-weight:bold;
+          cursor:pointer;
+      "
+      >
+        📖 อ่านเงื่อนไขสำคัญ
+      </button>
+      
+      
+        <div
+        id="termsAcceptedStatus"
+        style="
+          display:${applicationData.TermsAccepted ? "block" : "none"};
+          margin-top:12px;
+          padding:10px;
+          background:#e8f5e9;
+          border-radius:10px;
+          color:#2e7d32;
+          font-size:14px;
+          text-align:center;
+        "
+      >
+      
+        ✅ รับทราบเงื่อนไขแล้ว
+      
+      </div>
+      
+      </div>
+      
+      
+      <!-- ================================= -->
+      <!-- ยืนยันข้อมูล -->
+      <!-- ================================= -->
+      
+      <div style="
+        padding:18px;
+        background:#fafafa;
+        border:1px solid #e5e5e5;
+        border-radius:16px;
+        margin-bottom:15px;
+      ">
       
         <label style="
           display:flex;
@@ -4311,15 +4401,22 @@ function showReviewForm() {
           >
       
           <span>
+      
             ข้าพเจ้าได้ตรวจสอบข้อมูลทั้งหมดแล้ว
-            และยืนยันว่าข้อมูลที่กรอกเป็นความจริง
-            และถูกต้อง
+            และยืนยันว่าข้อมูลที่ให้ไว้เป็นความจริง
+            ถูกต้อง และครบถ้วน
+      
           </span>
       
         </label>
       
       </div>
-
+      
+      
+      <!-- ================================= -->
+      <!-- ยืนยันการสมัคร -->
+      <!-- ================================= -->
+      
       <button
         id="submitApplicationButton"
         type="button"
@@ -4327,7 +4424,7 @@ function showReviewForm() {
         onclick="submitApplication()"
         disabled
         style="
-          margin-top:15px;
+          margin-top:5px;
           opacity:0.5;
           cursor:not-allowed;
         "
@@ -4675,6 +4772,642 @@ function renderReviewBeneficiaries() {
   return html;
 
 }
+
+// ============================================
+// INSURANCE TERMS
+// ============================================
+
+function showInsuranceTerms() {
+
+  const app =
+    document.getElementById("app");
+
+
+  app.innerHTML = `
+
+    <div class="section">
+
+      <div class="section-title">
+        ⚠️ เงื่อนไขสำคัญก่อนสมัคร
+      </div>
+
+
+      <div style="
+        color:#777;
+        font-size:14px;
+        line-height:1.7;
+        margin-bottom:18px;
+      ">
+
+        กรุณาอ่านข้อมูลต่อไปนี้
+        ก่อนยืนยันการสมัครประกันภัยครับ
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- 1 -->
+      <!-- ================================= -->
+
+      <div class="terms-card">
+
+        <div class="terms-title">
+          1. การพิจารณารับประกัน
+        </div>
+
+        <div class="terms-text">
+
+          การกรอกข้อมูลและส่งใบสมัคร
+          ยังไม่ถือว่าบริษัทประกันภัย
+          อนุมัติการรับประกันภัย
+
+          <br><br>
+
+          การรับประกันภัยจะขึ้นอยู่กับ
+          การพิจารณาของบริษัทประกันภัย
+          ตามหลักเกณฑ์ เงื่อนไข
+          และข้อมูลที่ผู้สมัครให้ไว้
+
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- 2 -->
+      <!-- ================================= -->
+
+      <div class="terms-card">
+
+        <div class="terms-title">
+          2. การแถลงข้อมูลตามความเป็นจริง
+        </div>
+
+        <div class="terms-text">
+
+          ผู้สมัครต้องให้ข้อมูลเกี่ยวกับ
+          สุขภาพ ประวัติการรักษา
+          โรคประจำตัว อาชีพ
+          และข้อมูลอื่นที่เกี่ยวข้อง
+          ตามความเป็นจริง
+
+          <br><br>
+
+          การปกปิดข้อมูลหรือแถลงข้อความ
+          อันเป็นเท็จ อาจมีผลต่อการพิจารณา
+          รับประกันภัยหรือการจ่ายผลประโยชน์
+          ตามเงื่อนไขของกรมธรรม์
+
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- 3 -->
+      <!-- ================================= -->
+
+      <div class="terms-card">
+
+        <div class="terms-title">
+          3. ระยะเวลารอคอย
+        </div>
+
+        <div class="terms-text">
+
+          ความคุ้มครองบางประเภทอาจมี
+          ระยะเวลารอคอยก่อนเริ่มได้รับ
+          ความคุ้มครอง
+
+          <br><br>
+
+          ตัวอย่างเช่น การประกันสุขภาพ
+          หรือความคุ้มครองโรคบางประเภท
+          อาจกำหนดระยะเวลารอคอย
+          ตามที่ระบุไว้ในกรมธรรม์
+
+          <br><br>
+
+          <b>
+            ระยะเวลารอคอยที่แท้จริง
+            ให้เป็นไปตามแบบประกัน
+            และเงื่อนไขของกรมธรรม์
+          </b>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- 4 -->
+      <!-- ================================= -->
+
+      <div class="terms-card">
+
+        <div class="terms-title">
+          4. โรคหรือภาวะที่เป็นมาก่อน
+        </div>
+
+        <div class="terms-text">
+
+          โรค อาการ หรือภาวะทางสุขภาพ
+          ที่เกิดขึ้นหรือมีอยู่ก่อนวันเริ่ม
+          ความคุ้มครอง อาจอยู่ภายใต้
+          เงื่อนไขการพิจารณารับประกัน
+          การยกเว้นความคุ้มครอง
+          หรือเงื่อนไขอื่นของบริษัท
+
+          <br><br>
+
+          ผู้สมัครควรแจ้งข้อมูลดังกล่าว
+          ตามความเป็นจริงและครบถ้วน
+
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- 5 -->
+      <!-- ================================= -->
+
+      <div class="terms-card">
+
+        <div class="terms-title">
+          5. ข้อยกเว้นความคุ้มครอง
+        </div>
+
+        <div class="terms-text">
+
+          กรมธรรม์แต่ละแบบอาจมีข้อยกเว้น
+          ที่ไม่อยู่ภายใต้ความคุ้มครอง
+
+          <br><br>
+
+          ผู้สมัครควรศึกษาข้อกำหนด
+          ข้อยกเว้น และเงื่อนไข
+          ของแบบประกันที่สมัคร
+          ก่อนตัดสินใจทำประกัน
+
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- 6 -->
+      <!-- ================================= -->
+
+      <div class="terms-card">
+
+        <div class="terms-title">
+          6. การฆ่าตัวตาย
+        </div>
+
+        <div class="terms-text">
+
+          การเสียชีวิตจากการฆ่าตัวตาย
+          อาจอยู่ภายใต้ข้อกำหนด
+          และระยะเวลาที่ระบุไว้
+          ในกรมธรรม์
+
+          <br><br>
+
+          การจ่ายผลประโยชน์
+          ให้เป็นไปตามเงื่อนไข
+          ของกรมธรรม์ที่ได้รับอนุมัติ
+
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- 7 -->
+      <!-- ================================= -->
+
+      <div class="terms-card">
+
+        <div class="terms-title">
+          7. ผู้รับผลประโยชน์
+        </div>
+
+        <div class="terms-text">
+
+          การจ่ายผลประโยชน์ให้แก่
+          ผู้รับผลประโยชน์จะเป็นไปตาม
+          ข้อกำหนดของกรมธรรม์
+          และกฎหมายที่เกี่ยวข้อง
+
+          <br><br>
+
+          หากผู้รับผลประโยชน์มีส่วนเกี่ยวข้อง
+          กับการทำให้ผู้เอาประกันเสียชีวิต
+          การจ่ายผลประโยชน์อาจอยู่ภายใต้
+          ข้อจำกัดตามกฎหมายและเงื่อนไข
+          ของกรมธรรม์
+
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- 8 -->
+      <!-- ================================= -->
+
+      <div class="terms-card">
+
+        <div class="terms-title">
+          8. Co-payment
+        </div>
+
+        <div class="terms-text">
+
+          แบบประกันสุขภาพบางประเภท
+          อาจมีเงื่อนไขการร่วมจ่าย
+          (Co-payment)
+
+          <br><br>
+
+          หมายถึง ผู้เอาประกันอาจต้อง
+          ร่วมรับผิดชอบค่าใช้จ่ายบางส่วน
+          ตามสัดส่วนและเงื่อนไข
+          ที่ระบุไว้ในกรมธรรม์
+
+          <br><br>
+
+          <b>
+            ไม่ใช่กรมธรรม์สุขภาพทุกแบบ
+            ที่มีเงื่อนไข Co-payment
+          </b>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- 9 -->
+      <!-- ================================= -->
+
+      <div class="terms-card">
+
+        <div class="terms-title">
+          9. การเรียกร้องสินไหม
+        </div>
+
+        <div class="terms-text">
+
+          การเรียกร้องสินไหมต้องเป็นไปตาม
+          ขั้นตอน เอกสาร และเงื่อนไข
+          ที่บริษัทประกันภัยกำหนด
+
+          <br><br>
+
+          บริษัทอาจขอเอกสารหรือข้อมูลเพิ่มเติม
+          เพื่อประกอบการพิจารณาสินไหม
+
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- 10 -->
+      <!-- ================================= -->
+
+      <div class="terms-card">
+
+        <div class="terms-title">
+          10. การตรวจสอบข้อมูล
+        </div>
+
+        <div class="terms-text">
+
+          บริษัทประกันภัยอาจตรวจสอบ
+          ข้อมูลที่เกี่ยวข้องกับการสมัคร
+          และการเรียกร้องสินไหม
+          ตามสิทธิและเงื่อนไขที่กำหนด
+
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- 11 -->
+      <!-- ================================= -->
+
+      <div class="terms-card">
+
+        <div class="terms-title">
+          11. Free Look / การใช้สิทธิหลังได้รับกรมธรรม์
+        </div>
+
+        <div class="terms-text">
+
+          ผู้เอาประกันอาจมีสิทธิพิจารณา
+          และใช้สิทธิเกี่ยวกับกรมธรรม์
+          ภายในระยะเวลาที่กฎหมาย
+          หรือเงื่อนไขของกรมธรรม์กำหนด
+
+          <br><br>
+
+          รายละเอียดให้เป็นไปตาม
+          เงื่อนไขของกรมธรรม์ที่ได้รับ
+
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- 12 -->
+      <!-- ================================= -->
+
+      <div class="terms-card">
+
+        <div class="terms-title">
+          12. เอกสารและกรมธรรม์เป็นหลัก
+        </div>
+
+        <div class="terms-text">
+
+          ข้อมูลที่แสดงในระบบนี้
+          เป็นข้อมูลสำหรับประกอบการสมัคร
+          และให้ข้อมูลเบื้องต้น
+
+          <br><br>
+
+          <b>
+
+            สิทธิ ความคุ้มครอง ผลประโยชน์
+            ข้อยกเว้น และเงื่อนไขที่แท้จริง
+            ให้เป็นไปตามกรมธรรม์
+            และเอกสารของบริษัทประกันภัย
+
+          </b>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- IMPORTANT -->
+      <!-- ================================= -->
+
+      <div style="
+        margin-top:20px;
+        padding:16px;
+        background:#fff3e0;
+        border:1px solid #ffcc80;
+        border-radius:14px;
+        color:#6d4c41;
+        font-size:14px;
+        line-height:1.7;
+      ">
+
+        ⚠️ <b>โปรดทราบ</b>
+
+        <br><br>
+
+        เงื่อนไขและรายละเอียดของการรับประกัน
+        อาจแตกต่างกันตามแบบประกัน
+        บริษัทประกันภัย และกรมธรรม์แต่ละฉบับ
+
+        <br><br>
+
+        กรุณาศึกษาเอกสารเสนอขาย
+        ตารางผลประโยชน์
+        ข้อยกเว้น
+        และเงื่อนไขของกรมธรรม์
+        ก่อนตัดสินใจสมัคร
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- ACCEPT -->
+      <!-- ================================= -->
+
+      <div style="
+        margin-top:20px;
+        padding:18px;
+        background:#fafafa;
+        border:1px solid #e5e5e5;
+        border-radius:16px;
+      ">
+
+        <label style="
+          display:flex;
+          align-items:flex-start;
+          gap:10px;
+          cursor:pointer;
+          color:#333;
+          line-height:1.6;
+        ">
+
+          <input
+            id="acceptInsuranceTerms"
+            type="checkbox"
+            onchange="insuranceTermsChanged()"
+            style="
+              width:20px;
+              height:20px;
+              min-width:20px;
+              margin-top:2px;
+            "
+          >
+
+          <span>
+
+            ข้าพเจ้าได้อ่านและรับทราบ
+            เงื่อนไขสำคัญเกี่ยวกับการรับประกัน
+            และความคุ้มครองตามที่แสดงข้างต้นแล้ว
+
+          </span>
+
+        </label>
+
+
+        <button
+          id="acceptInsuranceTermsButton"
+          type="button"
+          onclick="acceptInsuranceTerms()"
+          disabled
+          style="
+            width:100%;
+            margin-top:15px;
+            padding:13px;
+            border:none;
+            border-radius:12px;
+            background:#ddd;
+            color:#999;
+            font-size:15px;
+            font-weight:bold;
+            cursor:not-allowed;
+          "
+        >
+
+          ✅ ยืนยันรับทราบเงื่อนไข
+
+        </button>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- BACK -->
+      <!-- ================================= -->
+
+      <button
+        type="button"
+        onclick="showBeneficiaryForm()"
+        style="
+          width:100%;
+          margin-top:15px;
+          padding:12px;
+          border:none;
+          background:none;
+          color:#777;
+          font-size:15px;
+        "
+      >
+
+        ← กลับไปแก้ไขข้อมูล
+
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+// ============================================
+// INSURANCE TERMS CHECKBOX
+// ============================================
+
+function insuranceTermsChanged() {
+
+  const checkbox =
+    document.getElementById(
+      "acceptInsuranceTerms"
+    );
+
+  const button =
+    document.getElementById(
+      "acceptInsuranceTermsButton"
+    );
+
+
+  if (!checkbox || !button) {
+
+    return;
+
+  }
+
+
+  if (checkbox.checked) {
+
+    button.disabled = false;
+
+    button.style.background =
+      "#2e7d32";
+
+    button.style.color =
+      "white";
+
+    button.style.cursor =
+      "pointer";
+
+  } else {
+
+    button.disabled = true;
+
+    button.style.background =
+      "#ddd";
+
+    button.style.color =
+      "#999";
+
+    button.style.cursor =
+      "not-allowed";
+
+  }
+
+}
+
+// ============================================
+// ACCEPT INSURANCE TERMS
+// ============================================
+
+function acceptInsuranceTerms() {
+
+  const checkbox =
+    document.getElementById(
+      "acceptInsuranceTerms"
+    );
+
+
+  if (!checkbox || !checkbox.checked) {
+
+    alert(
+      "กรุณาอ่านและยืนยันรับทราบเงื่อนไขก่อนครับ"
+    );
+
+    return;
+
+  }
+
+
+  // ==========================================
+  // บันทึกการรับทราบ
+  // ==========================================
+
+  applicationData.TermsAccepted =
+    true;
+
+
+  applicationData.TermsAcceptedAt =
+    new Date().toISOString();
+
+
+  applicationData.TermsVersion =
+    "2026-08-14";
+
+
+  console.log(
+    "INSURANCE TERMS ACCEPTED:",
+    {
+      TermsAccepted:
+        applicationData.TermsAccepted,
+
+      TermsAcceptedAt:
+        applicationData.TermsAcceptedAt,
+
+      TermsVersion:
+        applicationData.TermsVersion
+    }
+  );
+
+
+  alert(
+    "✅ รับทราบเงื่อนไขเรียบร้อยแล้วครับ"
+  );
+
+
+  // ==========================================
+  // กลับหน้า Review
+  // ==========================================
+
+  showReviewForm();
+
+}
+
   
 function showSummary() {
 
