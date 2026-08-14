@@ -4897,11 +4897,134 @@ function finalSubmitApplication() {
   );
   
   
-  alert(
-    "✅ เตรียมข้อมูลใบสมัครเรียบร้อยแล้วครับ"
+  // ==========================================
+  // ส่งข้อมูลไป Apps Script
+  // ==========================================
+  
+  sendApplicationTest(
+    finalApplicationData
   );
 
 }  
+
+// ============================================
+// SEND APPLICATION TEST
+// ============================================
+
+async function sendApplicationTest(
+  finalApplicationData
+) {
+
+  try {
+
+    console.log(
+      "SENDING APPLICATION...",
+      finalApplicationData
+    );
+
+
+    // ========================================
+    // แสดงสถานะ
+    // ========================================
+
+    setStatus(
+      "🔄 กำลังส่งข้อมูลใบสมัคร..."
+    );
+
+
+    // ========================================
+    // ส่งข้อมูล
+    // ========================================
+
+    const response =
+      await fetch(
+        "https://script.google.com/macros/s/AKfycbx2D04TYozU4CPQrQ1qAFWnWj5c4y9h9M9T6pgYzHleQfd2XisYmJRqvJAFHoJu9sNM/exec",
+        {
+
+          method: "POST",
+
+          headers: {
+
+            "Content-Type":
+              "text/plain;charset=utf-8"
+
+          },
+
+          body:
+            JSON.stringify(
+              finalApplicationData
+            )
+
+        }
+      );
+
+
+    // ========================================
+    // อ่าน Response
+    // ========================================
+
+    const result =
+      await response.json();
+
+
+    console.log(
+      "APPS SCRIPT RESPONSE:",
+      result
+    );
+
+
+    // ========================================
+    // ตรวจสอบผลลัพธ์
+    // ========================================
+
+    if (
+      result.success === true
+    ) {
+
+      setStatus(
+        "✅ ส่งข้อมูลสำเร็จ"
+      );
+
+
+      alert(
+        "✅ ส่งข้อมูลใบสมัครเรียบร้อยครับ"
+      );
+
+
+    } else {
+
+      throw new Error(
+        result.message ||
+        "Apps Script ไม่สามารถรับข้อมูลได้"
+      );
+
+    }
+
+
+  } catch (error) {
+
+    console.error(
+      "SEND APPLICATION ERROR:",
+      error
+    );
+
+
+    setStatus(
+      "❌ ไม่สามารถส่งข้อมูลได้"
+    );
+
+
+    alert(
+      "❌ ไม่สามารถส่งข้อมูลได้\n\n" +
+      (
+        error.message ||
+        error.toString()
+      )
+    );
+
+  }
+
+}
 
 // ============================================
 // PREPARE FINAL APPLICATION DATA
