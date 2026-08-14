@@ -4218,6 +4218,57 @@ function showReviewForm() {
       </div>
 
       <!-- ================================= -->
+      <!-- ผู้รับผลประโยชน์ -->
+      <!-- ================================= -->
+      
+      <div style="
+        padding:18px;
+        background:#fafafa;
+        border:1px solid #e5e5e5;
+        border-radius:16px;
+        margin-bottom:18px;
+      ">
+      
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          margin-bottom:16px;
+        ">
+      
+          <div style="
+            font-size:17px;
+            font-weight:bold;
+          ">
+            👥 ผู้รับผลประโยชน์
+          </div>
+      
+      
+          <button
+            type="button"
+            onclick="showBeneficiaryForm()"
+            style="
+              border:none;
+              background:white;
+              color:#777;
+              padding:7px 10px;
+              border-radius:8px;
+              font-size:13px;
+            "
+          >
+            ✏️ แก้ไข
+          </button>
+      
+        </div>
+      
+      
+        ${
+          renderReviewBeneficiaries()
+        }
+      
+      </div>
+
+      <!-- ================================= -->
       <!-- ปุ่มกลับ -->
       <!-- ================================= -->
 
@@ -4351,6 +4402,144 @@ function formatAddress(address) {
 
 
   return parts.join(" ");
+
+}
+
+// ============================================
+// REVIEW BENEFICIARIES
+// ============================================
+
+function renderReviewBeneficiaries() {
+
+  const list =
+    applicationData.Beneficiaries || [];
+
+
+  if (list.length === 0) {
+
+    return `
+      <div style="
+        color:#999;
+        text-align:center;
+        padding:15px;
+      ">
+        ยังไม่มีข้อมูลผู้รับผลประโยชน์
+      </div>
+    `;
+
+  }
+
+
+  let html = "";
+
+
+  list.forEach(
+    (person, index) => {
+
+      html += `
+
+        <div style="
+          padding:14px;
+          background:white;
+          border-radius:12px;
+          margin-bottom:12px;
+          border:1px solid #eeeeee;
+        ">
+
+
+          <div style="
+            font-weight:bold;
+            font-size:15px;
+            margin-bottom:10px;
+          ">
+
+            👤 ผู้รับผลประโยชน์คนที่
+            ${index + 1}
+
+          </div>
+
+
+          <div class="review-row">
+
+            <div class="review-label">
+              ชื่อ - นามสกุล
+            </div>
+
+            <div class="review-value">
+
+              ${escapeHtml(
+                person.Name || "-"
+              )}
+
+            </div>
+
+          </div>
+
+
+          <div class="review-row">
+
+            <div class="review-label">
+              ความสัมพันธ์
+            </div>
+
+            <div class="review-value">
+
+              ${escapeHtml(
+                person.Relation || "-"
+              )}
+
+            </div>
+
+          </div>
+
+
+          <div class="review-row">
+
+            <div class="review-label">
+              อายุ
+            </div>
+
+            <div class="review-value">
+
+              ${
+                person.Age
+                  ? escapeHtml(
+                      String(person.Age)
+                    ) + " ปี"
+                  : "-"
+              }
+
+            </div>
+
+          </div>
+
+
+          <div class="review-row">
+
+            <div class="review-label">
+              เลขบัตรประชาชน
+            </div>
+
+            <div class="review-value">
+
+              ${escapeHtml(
+                person.IDCard || "-"
+              )}
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+      `;
+
+    }
+  );
+
+
+  return html;
 
 }
   
