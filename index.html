@@ -4465,12 +4465,13 @@ function showReviewForm() {
 }
 
 // ============================================
-// CONFIRM INFORMATION
+// CHECK SUBMIT BUTTON
+// ต้องผ่านทั้ง 2 เงื่อนไข
 // ============================================
 
-function confirmInformationChanged() {
+function updateSubmitButton() {
 
-  const checkbox =
+  const confirmInformation =
     document.getElementById(
       "confirmInformation"
     );
@@ -4481,14 +4482,39 @@ function confirmInformationChanged() {
     );
 
 
-  if (!checkbox || !button) {
-
+  if (!confirmInformation || !button) {
     return;
-
   }
 
 
-  if (checkbox.checked) {
+  // ==========================================
+  // เงื่อนไขที่ 1
+  // ยืนยันข้อมูล
+  // ==========================================
+
+  const informationConfirmed =
+    confirmInformation.checked;
+
+
+  // ==========================================
+  // เงื่อนไขที่ 2
+  // รับทราบเงื่อนไข
+  // ==========================================
+
+  const termsAccepted =
+    applicationData.TermsAccepted === true;
+
+
+  // ==========================================
+  // ต้องผ่านทั้ง 2 ข้อ
+  // ==========================================
+
+  if (
+    informationConfirmed &&
+    termsAccepted
+  ) {
+
+    // เปิดปุ่ม
 
     button.disabled = false;
 
@@ -4497,6 +4523,8 @@ function confirmInformationChanged() {
     button.style.cursor = "pointer";
 
   } else {
+
+    // ปิดปุ่ม
 
     button.disabled = true;
 
@@ -4509,10 +4537,55 @@ function confirmInformationChanged() {
 }
 
 // ============================================
-// SUBMIT APPLICATION - TEST
+// SUBMIT APPLICATION
 // ============================================
 
 function submitApplication() {
+
+  // ==========================================
+  // ตรวจรับทราบเงื่อนไข
+  // ==========================================
+
+  if (
+    applicationData.TermsAccepted !== true
+  ) {
+
+    alert(
+      "กรุณาอ่านและยืนยันรับทราบเงื่อนไขการรับประกันก่อนครับ"
+    );
+
+    return;
+
+  }
+
+
+  // ==========================================
+  // ตรวจสอบข้อมูล
+  // ==========================================
+
+  const confirmInformation =
+    document.getElementById(
+      "confirmInformation"
+    );
+
+
+  if (
+    !confirmInformation ||
+    !confirmInformation.checked
+  ) {
+
+    alert(
+      "กรุณายืนยันว่าข้อมูลทั้งหมดถูกต้องก่อนครับ"
+    );
+
+    return;
+
+  }
+
+
+  // ==========================================
+  // ผ่านทุกเงื่อนไข
+  // ==========================================
 
   console.log(
     "FINAL APPLICATION DATA:",
@@ -4521,9 +4594,18 @@ function submitApplication() {
 
 
   alert(
-    "ตรวจสอบข้อมูลสำเร็จครับ\n\n" +
-    "ขั้นตอนถัดไปเราจะเชื่อมต่อระบบบันทึกข้อมูล"
+    "✅ ข้อมูลครบถ้วนและยืนยันเงื่อนไขเรียบร้อยแล้วครับ"
   );
+
+}
+
+// ============================================
+// CONFIRM INFORMATION
+// ============================================
+
+function confirmInformationChanged() {
+
+  updateSubmitButton();
 
 }
 
