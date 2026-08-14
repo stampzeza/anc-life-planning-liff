@@ -4549,8 +4549,7 @@ function showReviewForm() {
 }
 
 // ============================================
-// CHECK SUBMIT BUTTON
-// ต้องผ่านทั้ง 2 เงื่อนไข
+// UPDATE SUBMIT BUTTON
 // ============================================
 
 function updateSubmitButton() {
@@ -4560,20 +4559,25 @@ function updateSubmitButton() {
       "confirmInformation"
     );
 
-  const button =
+  const submitButton =
     document.getElementById(
       "submitApplicationButton"
     );
 
 
-  if (!confirmInformation || !button) {
+  // ถ้าอยู่คนละหน้า ไม่ต้องทำอะไร
+  if (
+    !confirmInformation ||
+    !submitButton
+  ) {
+
     return;
+
   }
 
 
   // ==========================================
-  // เงื่อนไขที่ 1
-  // ยืนยันข้อมูล
+  // 1. ยืนยันข้อมูล
   // ==========================================
 
   const informationConfirmed =
@@ -4581,8 +4585,7 @@ function updateSubmitButton() {
 
 
   // ==========================================
-  // เงื่อนไขที่ 2
-  // รับทราบเงื่อนไข
+  // 2. รับทราบเงื่อนไขการรับประกัน
   // ==========================================
 
   const termsAccepted =
@@ -4590,33 +4593,61 @@ function updateSubmitButton() {
 
 
   // ==========================================
-  // ต้องผ่านทั้ง 2 ข้อ
+  // 3. รับทราบ Privacy Notice
   // ==========================================
 
-  if (
+  const privacyAccepted =
+    applicationData.PrivacyNoticeAccepted === true;
+
+
+  // ==========================================
+  // ต้องผ่านทั้ง 3 เงื่อนไข
+  // ==========================================
+
+  const canSubmit =
     informationConfirmed &&
-    termsAccepted
-  ) {
+    termsAccepted &&
+    privacyAccepted;
+
+
+  if (canSubmit) {
 
     // เปิดปุ่ม
 
-    button.disabled = false;
+    submitButton.disabled = false;
 
-    button.style.opacity = "1";
+    submitButton.style.opacity = "1";
 
-    button.style.cursor = "pointer";
+    submitButton.style.cursor =
+      "pointer";
 
   } else {
 
     // ปิดปุ่ม
 
-    button.disabled = true;
+    submitButton.disabled = true;
 
-    button.style.opacity = "0.5";
+    submitButton.style.opacity = "0.5";
 
-    button.style.cursor = "not-allowed";
+    submitButton.style.cursor =
+      "not-allowed";
 
   }
+
+
+  // ==========================================
+  // Debug
+  // ==========================================
+
+  console.log(
+    "SUBMIT STATUS:",
+    {
+      informationConfirmed,
+      termsAccepted,
+      privacyAccepted,
+      canSubmit
+    }
+  );
 
 }
 
