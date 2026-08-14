@@ -6016,6 +6016,114 @@ function showPrivacyNotice() {
 
 }
 
+// ============================================
+// PRIVACY NOTICE CHECKBOX
+// ============================================
+
+function privacyNoticeChanged() {
+
+  const checkbox =
+    document.getElementById(
+      "acceptPrivacyNotice"
+    );
+
+  const button =
+    document.getElementById(
+      "acceptPrivacyNoticeButton"
+    );
+
+
+  if (!checkbox || !button) {
+    return;
+  }
+
+
+  if (checkbox.checked) {
+
+    button.disabled = false;
+
+    button.style.background =
+      "#1976d2";
+
+    button.style.color =
+      "white";
+
+    button.style.cursor =
+      "pointer";
+
+  } else {
+
+    button.disabled = true;
+
+    button.style.background =
+      "#ddd";
+
+    button.style.color =
+      "#999";
+
+    button.style.cursor =
+      "not-allowed";
+
+  }
+
+}
+
+// ============================================
+// ACCEPT PRIVACY NOTICE
+// ============================================
+
+function acceptPrivacyNotice() {
+
+  const checkbox =
+    document.getElementById(
+      "acceptPrivacyNotice"
+    );
+
+
+  if (
+    !checkbox ||
+    !checkbox.checked
+  ) {
+
+    alert(
+      "กรุณาอ่านและติ๊กยืนยันรับทราบประกาศความเป็นส่วนตัวก่อนครับ"
+    );
+
+    return;
+
+  }
+
+
+  // ==========================================
+  // บันทึกสถานะ
+  // ==========================================
+
+  applicationData.PrivacyNoticeAccepted =
+    true;
+
+
+  applicationData.PrivacyNoticeAcceptedAt =
+    new Date().toISOString();
+
+
+  applicationData.PrivacyNoticeVersion =
+    "2026-08-14";
+
+
+  console.log(
+    "PRIVACY NOTICE ACCEPTED:",
+    applicationData
+  );
+
+
+  // ==========================================
+  // กลับหน้า Review
+  // ==========================================
+
+  showReviewForm();
+
+}
+
   
 function showSummary() {
 
