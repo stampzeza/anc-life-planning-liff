@@ -3985,6 +3985,131 @@ function showReviewForm() {
       </div>
 
       <!-- ================================= -->
+<!-- ข้อมูลการทำงาน -->
+<!-- ================================= -->
+
+<div style="
+  padding:18px;
+  background:#fafafa;
+  border:1px solid #e5e5e5;
+  border-radius:16px;
+  margin-bottom:18px;
+">
+
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:16px;
+  ">
+
+    <div style="
+      font-size:17px;
+      font-weight:bold;
+    ">
+      💼 ข้อมูลการทำงาน
+    </div>
+
+
+    <button
+      type="button"
+      onclick="showWorkForm()"
+      style="
+        border:none;
+        background:white;
+        color:#777;
+        padding:7px 10px;
+        border-radius:8px;
+        font-size:13px;
+      "
+    >
+      ✏️ แก้ไข
+    </button>
+
+  </div>
+
+
+  <div class="review-row">
+
+      <div class="review-label">
+        อาชีพ
+      </div>
+  
+      <div class="review-value">
+        ${escapeHtml(
+          applicationData.Occupation || "-"
+        )}
+      </div>
+  
+    </div>
+  
+  
+    <div class="review-row">
+  
+      <div class="review-label">
+        สถานที่ทำงาน
+      </div>
+  
+      <div class="review-value">
+        ${escapeHtml(
+          applicationData.Company || "-"
+        )}
+      </div>
+  
+    </div>
+  
+  
+    <div class="review-row">
+  
+      <div class="review-label">
+        ตำแหน่ง
+      </div>
+  
+      <div class="review-value">
+        ${escapeHtml(
+          applicationData.Position || "-"
+        )}
+      </div>
+  
+    </div>
+  
+  
+    <div class="review-row">
+  
+      <div class="review-label">
+        ลักษณะงาน
+      </div>
+  
+      <div class="review-value">
+        ${escapeHtml(
+          applicationData.JobDescription || "-"
+        )}
+      </div>
+  
+    </div>
+  
+  
+    <div class="review-row">
+  
+      <div class="review-label">
+        รายได้ต่อปี
+      </div>
+  
+      <div class="review-value">
+        ${
+          applicationData.AnnualIncome
+            ? Number(
+                applicationData.AnnualIncome
+              ).toLocaleString("th-TH") + " บาท"
+            : "-"
+        }
+      </div>
+  
+    </div>
+  
+  </div>
+
+      <!-- ================================= -->
       <!-- ปุ่มกลับ -->
       <!-- ================================= -->
 
