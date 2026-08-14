@@ -360,6 +360,19 @@
     font-weight:500;
     word-break:break-word;
   }
+
+  /* ============================================
+   REVIEW ADDRESS
+   ============================================ */
+
+  .review-address {
+    padding:12px;
+    background:#fff;
+    border-radius:10px;
+    color:#444;
+    font-size:14px;
+    line-height:1.7;
+  }
   </style>
 
 </head>
@@ -4110,6 +4123,101 @@ function showReviewForm() {
   </div>
 
       <!-- ================================= -->
+      <!-- ที่อยู่ -->
+      <!-- ================================= -->
+      
+      <div style="
+        padding:18px;
+        background:#fafafa;
+        border:1px solid #e5e5e5;
+        border-radius:16px;
+        margin-bottom:18px;
+      ">
+      
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          margin-bottom:16px;
+        ">
+      
+          <div style="
+            font-size:17px;
+            font-weight:bold;
+          ">
+            🏠 ที่อยู่
+          </div>
+      
+      
+          <button
+            type="button"
+            onclick="showAddressForm()"
+            style="
+              border:none;
+              background:white;
+              color:#777;
+              padding:7px 10px;
+              border-radius:8px;
+              font-size:13px;
+            "
+          >
+            ✏️ แก้ไข
+          </button>
+      
+        </div>
+      
+      
+        <!-- ================================= -->
+        <!-- ที่อยู่ปัจจุบัน -->
+        <!-- ================================= -->
+      
+        <div style="
+          font-size:15px;
+          font-weight:bold;
+          margin-bottom:10px;
+        ">
+          📍 ที่อยู่ปัจจุบัน
+        </div>
+      
+      
+        <div class="review-address">
+      
+          ${formatAddress(
+            applicationData.CurrentAddress
+          )}
+      
+        </div>
+      
+      
+        <!-- ================================= -->
+        <!-- ทะเบียนบ้าน -->
+        <!-- ================================= -->
+      
+        <div style="
+          margin-top:20px;
+          font-size:15px;
+          font-weight:bold;
+          margin-bottom:10px;
+        ">
+          🏡 ที่อยู่ตามทะเบียนบ้าน
+        </div>
+      
+      
+        <div class="review-address">
+      
+          ${
+            applicationData.SameAddress
+              ? "ใช้ที่อยู่ปัจจุบัน"
+              : formatAddress(
+                  applicationData.HouseAddress
+                )
+          }
+      
+        </div>
+      
+      </div>
+
+      <!-- ================================= -->
       <!-- ปุ่มกลับ -->
       <!-- ================================= -->
 
@@ -4135,6 +4243,114 @@ function showReviewForm() {
     </div>
 
   `;
+
+}
+
+// ============================================
+// FORMAT ADDRESS FOR REVIEW
+// ============================================
+
+function formatAddress(address) {
+
+  if (!address) {
+
+    return "-";
+
+  }
+
+
+  const parts = [];
+
+
+  if (address.HouseNo) {
+
+    parts.push(
+      `บ้านเลขที่ ${escapeHtml(
+        address.HouseNo
+      )}`
+    );
+
+  }
+
+
+  if (address.Moo) {
+
+    parts.push(
+      `หมู่ ${escapeHtml(
+        address.Moo
+      )}`
+    );
+
+  }
+
+
+  if (address.Soi) {
+
+    parts.push(
+      `ซอย ${escapeHtml(
+        address.Soi
+      )}`
+    );
+
+  }
+
+
+  if (address.Road) {
+
+    parts.push(
+      `ถนน ${escapeHtml(
+        address.Road
+      )}`
+    );
+
+  }
+
+
+  if (address.SubDistrict) {
+
+    parts.push(
+      `${escapeHtml(
+        address.SubDistrict
+      )}`
+    );
+
+  }
+
+
+  if (address.District) {
+
+    parts.push(
+      `${escapeHtml(
+        address.District
+      )}`
+    );
+
+  }
+
+
+  if (address.Province) {
+
+    parts.push(
+      `${escapeHtml(
+        address.Province
+      )}`
+    );
+
+  }
+
+
+  if (address.PostalCode) {
+
+    parts.push(
+      escapeHtml(
+        address.PostalCode
+      )
+    );
+
+  }
+
+
+  return parts.join(" ");
 
 }
   
