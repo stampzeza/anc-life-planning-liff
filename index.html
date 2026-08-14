@@ -510,6 +510,8 @@ let applicationData = {
 
   Beneficiaries: []
 
+  
+
 };
 
 let beneficiaries = [];
@@ -4365,7 +4367,89 @@ function showReviewForm() {
       </div>
       
       </div>
+
+      <!-- ================================= -->
+      <!-- PDPA -->
+      <!-- ================================= -->
       
+      <div style="
+        margin-top:10px;
+        padding:18px;
+        background:#f3f8ff;
+        border:1px solid #cfe2ff;
+        border-radius:16px;
+        margin-bottom:15px;
+      ">
+      
+        <div style="
+          font-size:17px;
+          font-weight:bold;
+          margin-bottom:8px;
+        ">
+          🔐 การคุ้มครองข้อมูลส่วนบุคคล
+        </div>
+      
+      
+        <div style="
+          color:#666;
+          font-size:14px;
+          line-height:1.7;
+          margin-bottom:15px;
+        ">
+      
+          ข้อมูลที่ท่านให้ไว้ เช่น
+          ข้อมูลส่วนตัว ข้อมูลการติดต่อ
+          และข้อมูลด้านสุขภาพ
+          จะถูกนำไปใช้เพื่อดำเนินการสมัคร
+          และพิจารณาการรับประกันตามวัตถุประสงค์
+          ที่เกี่ยวข้อง
+      
+        </div>
+      
+      
+        <button
+          type="button"
+          onclick="showPrivacyNotice()"
+          style="
+            width:100%;
+            padding:13px;
+            border:1px solid #ddd;
+            border-radius:12px;
+            background:white;
+            color:#333;
+            font-size:15px;
+            font-weight:bold;
+            cursor:pointer;
+          "
+        >
+      
+          📖 อ่านประกาศความเป็นส่วนตัว
+      
+        </button>
+      
+      
+        <div
+          style="
+            display:${
+              applicationData.PrivacyNoticeAccepted
+                ? "block"
+                : "none"
+            };
+            margin-top:12px;
+            padding:10px;
+            background:#e8f5e9;
+            border-radius:10px;
+            color:#2e7d32;
+            font-size:14px;
+            text-align:center;
+          "
+        >
+      
+          ✅ รับทราบประกาศความเป็นส่วนตัวแล้ว
+      
+        </div>
+      
+      </div>
       
       <!-- ================================= -->
       <!-- ยืนยันข้อมูล -->
