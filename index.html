@@ -4708,9 +4708,118 @@ function submitApplication() {
   );
 
 
-  alert(
-    "✅ ข้อมูลครบถ้วนและยืนยันเงื่อนไขเรียบร้อยแล้วครับ"
-  );
+  showFinalConfirm();
+
+}
+
+// ============================================
+// FINAL CONFIRM
+// ============================================
+
+function showFinalConfirm() {
+
+  const app =
+    document.getElementById("app");
+
+  app.innerHTML = `
+
+    <div class="section">
+
+      <div class="section-title">
+        🔎 ตรวจสอบข้อมูลครั้งสุดท้าย
+      </div>
+
+      <div style="
+        color:#777;
+        margin-bottom:18px;
+        line-height:1.7;
+      ">
+        กรุณาตรวจสอบข้อมูลของท่าน
+        ก่อนยืนยันการสมัครครับ
+      </div>
+
+
+      <div class="terms-card">
+
+        <div class="terms-title">
+          👤 ผู้สมัคร
+        </div>
+
+        <div class="terms-text">
+
+          <b>ชื่อ - นามสกุล</b><br>
+          ${escapeHtml(
+            applicationData.FullName || "-"
+          )}
+
+          <br><br>
+
+          <b>เบอร์โทรศัพท์</b><br>
+          ${escapeHtml(
+            applicationData.Phone || "-"
+          )}
+
+          <br><br>
+
+          <b>วันเดือนปีเกิด</b><br>
+          ${escapeHtml(
+            applicationData.BirthDate || "-"
+          )}
+
+        </div>
+
+      </div>
+
+
+      <div class="terms-card">
+
+        <div class="terms-title">
+          🔐 สถานะการยืนยัน
+        </div>
+
+        <div class="terms-text">
+
+          ✅ รับทราบเงื่อนไขการรับประกันแล้ว
+
+          <br><br>
+
+          ✅ รับทราบประกาศความเป็นส่วนตัวแล้ว
+
+          <br><br>
+
+          ✅ ยืนยันข้อมูลทั้งหมดแล้ว
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="button"
+        onclick="finalSubmitApplication()"
+      >
+        ✅ ข้อมูลถูกต้อง ดำเนินการสมัคร
+      </button>
+
+
+      <button
+        onclick="showReviewForm()"
+        style="
+          width:100%;
+          margin-top:12px;
+          padding:12px;
+          border:none;
+          background:none;
+          color:#777;
+          font-size:15px;
+        "
+      >
+        ← กลับไปตรวจสอบข้อมูล
+      </button>
+
+    </div>
+
+  `;
 
 }
 
