@@ -4887,17 +4887,182 @@ function finalSubmitApplication() {
   // ผ่านทุกเงื่อนไข
   // ==========================================
 
+  const finalApplicationData =
+  prepareFinalApplicationData();
+
+
   console.log(
     "READY TO SUBMIT:",
-    applicationData
+    finalApplicationData
   );
-
-
+  
+  
   alert(
-    "✅ ตรวจสอบข้อมูลเรียบร้อยแล้วครับ\n\nพร้อมเข้าสู่ขั้นตอนส่งใบสมัคร"
+    "✅ เตรียมข้อมูลใบสมัครเรียบร้อยแล้วครับ"
   );
 
 }  
+
+// ============================================
+// PREPARE FINAL APPLICATION DATA
+// ============================================
+
+function prepareFinalApplicationData() {
+
+  const finalApplicationData = {
+
+    // ========================================
+    // LINE
+    // ========================================
+
+    LineUserID:
+      lineUser.userId,
+
+    LineDisplayName:
+      lineUser.displayName,
+
+
+    // ========================================
+    // ผู้สมัคร
+    // ========================================
+
+    FullName:
+      applicationData.FullName || "",
+
+    IDCard:
+      applicationData.IDCard || "",
+
+    LaserID:
+      applicationData.LaserID || "",
+
+    BirthDate:
+      applicationData.BirthDate || "",
+
+    IDExpireDate:
+      applicationData.IDExpireDate || "",
+
+    Nationality:
+      applicationData.Nationality || "",
+
+    Phone:
+      applicationData.Phone || "",
+
+    Email:
+      applicationData.Email || "",
+
+    Weight:
+      applicationData.Weight || "",
+
+    Height:
+      applicationData.Height || "",
+
+    Disease:
+      applicationData.Disease || "",
+
+    HospitalHistory:
+      applicationData.HospitalHistory || "",
+
+
+    // ========================================
+    // การชำระเงิน
+    // ========================================
+
+    PaymentMethod:
+      applicationData.PaymentMethod || "",
+
+    PaymentFrequency:
+      applicationData.PaymentFrequency || "",
+
+
+    // ========================================
+    // การทำงาน
+    // ========================================
+
+    Occupation:
+      applicationData.Occupation || "",
+
+    Company:
+      applicationData.Company || "",
+
+    Position:
+      applicationData.Position || "",
+
+    JobDescription:
+      applicationData.JobDescription || "",
+
+    AnnualIncome:
+      applicationData.AnnualIncome || "",
+
+
+    // ========================================
+    // ที่อยู่
+    // ========================================
+
+    CurrentAddress:
+      applicationData.CurrentAddress || {},
+
+    SameAddress:
+      applicationData.SameAddress === true,
+
+    HouseAddress:
+      applicationData.HouseAddress || {},
+
+
+    // ========================================
+    // ผู้รับผลประโยชน์
+    // ========================================
+
+    Beneficiaries:
+      applicationData.Beneficiaries || [],
+
+
+    // ========================================
+    // การรับทราบเงื่อนไข
+    // ========================================
+
+    TermsAccepted:
+      applicationData.TermsAccepted === true,
+
+    TermsAcceptedAt:
+      applicationData.TermsAcceptedAt || "",
+
+    TermsVersion:
+      applicationData.TermsVersion || "",
+
+
+    // ========================================
+    // PDPA
+    // ========================================
+
+    PrivacyNoticeAccepted:
+      applicationData.PrivacyNoticeAccepted === true,
+
+    PrivacyNoticeAcceptedAt:
+      applicationData.PrivacyNoticeAcceptedAt || "",
+
+    PrivacyNoticeVersion:
+      applicationData.PrivacyNoticeVersion || "",
+
+
+    // ========================================
+    // วันที่สร้างใบสมัคร
+    // ========================================
+
+    CreatedAt:
+      new Date().toISOString()
+
+  };
+
+
+  console.log(
+    "FINAL APPLICATION DATA:",
+    finalApplicationData
+  );
+
+
+  return finalApplicationData;
+
+}
   
 // ============================================
 // CONFIRM INFORMATION
