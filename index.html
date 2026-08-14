@@ -4267,7 +4267,77 @@ function showReviewForm() {
         }
       
       </div>
+      
+      <!-- ================================= -->
+      <!-- ยืนยันข้อมูล -->
+      <!-- ================================= -->
+      
+      <div style="
+        margin-top:10px;
+        padding:18px;
+        background:#fff8e1;
+        border:1px solid #ffe082;
+        border-radius:16px;
+      ">
+      
+        <div style="
+          font-size:16px;
+          font-weight:bold;
+          margin-bottom:12px;
+        ">
+          ✅ ยืนยันข้อมูล
+        </div>
+      
+      
+        <label style="
+          display:flex;
+          align-items:flex-start;
+          gap:10px;
+          cursor:pointer;
+          color:#333;
+          line-height:1.6;
+        ">
+      
+          <input
+            id="confirmInformation"
+            type="checkbox"
+            onchange="confirmInformationChanged()"
+            style="
+              width:20px;
+              height:20px;
+              min-width:20px;
+              margin-top:2px;
+            "
+          >
+      
+          <span>
+            ข้าพเจ้าได้ตรวจสอบข้อมูลทั้งหมดแล้ว
+            และยืนยันว่าข้อมูลที่กรอกเป็นความจริง
+            และถูกต้อง
+          </span>
+      
+        </label>
+      
+      </div>
 
+      <button
+        id="submitApplicationButton"
+        type="button"
+        class="button"
+        onclick="submitApplication()"
+        disabled
+        style="
+          margin-top:15px;
+          opacity:0.5;
+          cursor:not-allowed;
+        "
+      >
+      
+        🔒 ยืนยันการสมัคร
+      
+      </button>
+
+      
       <!-- ================================= -->
       <!-- ปุ่มกลับ -->
       <!-- ================================= -->
@@ -4294,6 +4364,69 @@ function showReviewForm() {
     </div>
 
   `;
+
+}
+
+// ============================================
+// CONFIRM INFORMATION
+// ============================================
+
+function confirmInformationChanged() {
+
+  const checkbox =
+    document.getElementById(
+      "confirmInformation"
+    );
+
+  const button =
+    document.getElementById(
+      "submitApplicationButton"
+    );
+
+
+  if (!checkbox || !button) {
+
+    return;
+
+  }
+
+
+  if (checkbox.checked) {
+
+    button.disabled = false;
+
+    button.style.opacity = "1";
+
+    button.style.cursor = "pointer";
+
+  } else {
+
+    button.disabled = true;
+
+    button.style.opacity = "0.5";
+
+    button.style.cursor = "not-allowed";
+
+  }
+
+}
+
+// ============================================
+// SUBMIT APPLICATION - TEST
+// ============================================
+
+function submitApplication() {
+
+  console.log(
+    "FINAL APPLICATION DATA:",
+    applicationData
+  );
+
+
+  alert(
+    "ตรวจสอบข้อมูลสำเร็จครับ\n\n" +
+    "ขั้นตอนถัดไปเราจะเชื่อมต่อระบบบันทึกข้อมูล"
+  );
 
 }
 
