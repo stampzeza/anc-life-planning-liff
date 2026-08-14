@@ -4748,23 +4748,84 @@ function submitApplication() {
   
   
   alert(
-    "✅ ข้อมูลครบถ้วนและยืนยันเงื่อนไขเรียบร้อยแล้วครับ"
-  );
+    // ==========================================
+// ตรวจสอบเงื่อนไขก่อนยืนยันการสมัคร
+// ==========================================
 
 
-  // ==========================================
-  // ผ่านทุกเงื่อนไข
-  // ==========================================
+// ==========================================
+// 1. ตรวจสอบเงื่อนไขการรับประกัน
+// ==========================================
 
-  console.log(
-    "FINAL APPLICATION DATA:",
-    applicationData
-  );
-
+if (
+  applicationData.TermsAccepted !== true
+) {
 
   alert(
-    "✅ ข้อมูลครบถ้วนและยืนยันเงื่อนไขเรียบร้อยแล้วครับ"
+    "กรุณาอ่านและยืนยันรับทราบเงื่อนไขการรับประกันก่อนครับ"
   );
+
+  return;
+
+}
+
+
+// ==========================================
+// 2. ตรวจสอบ Privacy Notice
+// ==========================================
+
+if (
+  applicationData.PrivacyNoticeAccepted !== true
+) {
+
+  alert(
+    "กรุณาอ่านและรับทราบประกาศความเป็นส่วนตัวก่อนครับ"
+  );
+
+  return;
+
+}
+
+
+// ==========================================
+// 3. ตรวจสอบการยืนยันข้อมูล
+// ==========================================
+
+const confirmInformation =
+  document.getElementById(
+    "confirmInformation"
+  );
+
+
+if (
+  !confirmInformation ||
+  !confirmInformation.checked
+) {
+
+  alert(
+    "กรุณายืนยันว่าข้อมูลทั้งหมดถูกต้องก่อนครับ"
+  );
+
+  return;
+
+}
+
+
+// ==========================================
+// ผ่านทุกเงื่อนไข
+// ==========================================
+
+console.log(
+  "FINAL APPLICATION DATA:",
+  applicationData
+);
+
+
+// ==========================================
+// ไปหน้าตรวจสอบข้อมูลครั้งสุดท้าย
+// ==========================================
+
+showFinalReviewForm();
 
 }
 
@@ -6206,6 +6267,691 @@ function acceptPrivacyNotice() {
   // ==========================================
 
   showReviewForm();
+
+}
+
+// ============================================
+// FINAL REVIEW FORM
+// ============================================
+
+function showFinalReviewForm() {
+
+  const app =
+    document.getElementById("app");
+
+
+  // ==========================================
+  // Helper
+  // ==========================================
+
+  function maskIDCard(id) {
+
+    if (!id) {
+      return "-";
+    }
+
+    const value =
+      String(id);
+
+    if (value.length < 8) {
+      return value;
+    }
+
+    return (
+      value.substring(0, 5) +
+      "*****" +
+      value.substring(
+        value.length - 3
+      )
+    );
+
+  }
+
+
+  function displayValue(value) {
+
+    if (
+      value === undefined ||
+      value === null ||
+      value === ""
+    ) {
+
+      return "-";
+
+    }
+
+    return escapeHtml(
+      String(value)
+    );
+
+  }
+
+
+  // ==========================================
+  // Beneficiaries
+  // ==========================================
+
+  let beneficiaryHTML =
+    `<div style="
+      color:#777;
+      font-size:14px;
+    ">
+      ไม่พบข้อมูล
+    </div>`;
+
+
+  if (
+    Array.isArray(
+      applicationData.Beneficiaries
+    ) &&
+    applicationData.Beneficiaries.length > 0
+  ) {
+
+    beneficiaryHTML =
+      applicationData.Beneficiaries
+        .map(
+          (beneficiary, index) => {
+
+            return `
+
+              <div style="
+                padding:12px;
+                margin-bottom:10px;
+                background:#fafafa;
+                border:1px solid #eee;
+                border-radius:12px;
+              ">
+
+                <div style="
+                  font-weight:bold;
+                  margin-bottom:6px;
+                ">
+
+                  ${index + 1}.
+                  ${displayValue(
+                    beneficiary.Name ||
+                    beneficiary.FullName
+                  )}
+
+                </div>
+
+
+                <div style="
+                  color:#666;
+                  font-size:14px;
+                  line-height:1.7;
+                ">
+
+                  ความสัมพันธ์:
+                  ${displayValue(
+                    beneficiary.Relationship
+                  )}
+
+                  <br>
+
+                  สัดส่วน:
+                  ${displayValue(
+                    beneficiary.Percentage
+                  )}
+
+                  %
+
+                </div>
+
+              </div>
+
+            `;
+
+          }
+        )
+        .join("");
+
+  }
+
+
+  // ==========================================
+  // Current Address
+  // ==========================================
+
+  const currentAddress =
+    applicationData.CurrentAddress || {};
+
+
+  const currentAddressText = [
+
+    currentAddress.HouseNo,
+
+    currentAddress.Moo
+      ? "หมู่ " + currentAddress.Moo
+      : "",
+
+    currentAddress.Soi
+      ? "ซอย " + currentAddress.Soi
+      : "",
+
+    currentAddress.Road
+      ? "ถนน " + currentAddress.Road
+      : "",
+
+    currentAddress.SubDistrict,
+
+    currentAddress.District,
+
+    currentAddress.Province,
+
+    currentAddress.PostalCode
+
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+
+  // ==========================================
+  // House Address
+  // ==========================================
+
+  const houseAddress =
+    applicationData.HouseAddress || {};
+
+
+  const houseAddressText = [
+
+    houseAddress.HouseNo,
+
+    houseAddress.Moo
+      ? "หมู่ " + houseAddress.Moo
+      : "",
+
+    houseAddress.Soi
+      ? "ซอย " + houseAddress.Soi
+      : "",
+
+    houseAddress.Road
+      ? "ถนน " + houseAddress.Road
+      : "",
+
+    houseAddress.SubDistrict,
+
+    houseAddress.District,
+
+    houseAddress.Province,
+
+    houseAddress.PostalCode
+
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+
+  // ==========================================
+  // Render
+  // ==========================================
+
+  app.innerHTML = `
+
+    <div class="section">
+
+      <div class="section-title">
+        🔎 ตรวจสอบข้อมูลครั้งสุดท้าย
+      </div>
+
+
+      <div style="
+        color:#777;
+        font-size:14px;
+        line-height:1.7;
+        margin-bottom:18px;
+      ">
+
+        กรุณาตรวจสอบข้อมูลทั้งหมด
+        ให้ถูกต้องก่อนยืนยันการสมัครครับ
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- ผู้สมัคร -->
+      <!-- ================================= -->
+
+      <div class="terms-card">
+
+        <div class="terms-title">
+          👤 ข้อมูลผู้สมัคร
+        </div>
+
+        <div class="terms-text">
+
+          <b>ชื่อ - นามสกุล</b>
+          <br>
+          ${displayValue(
+            applicationData.FullName
+          )}
+
+          <br><br>
+
+          <b>เลขบัตรประชาชน</b>
+          <br>
+          ${maskIDCard(
+            applicationData.IDCard
+          )}
+
+          <br><br>
+
+          <b>เลขหลังบัตรประชาชน</b>
+          <br>
+          ${displayValue(
+            applicationData.LaserID
+          )}
+
+          <br><br>
+
+          <b>วันเดือนปีเกิด</b>
+          <br>
+          ${displayValue(
+            applicationData.BirthDate
+          )}
+
+          <br><br>
+
+          <b>วันหมดอายุบัตรประชาชน</b>
+          <br>
+          ${displayValue(
+            applicationData.IDExpireDate
+          )}
+
+          <br><br>
+
+          <b>สัญชาติ</b>
+          <br>
+          ${displayValue(
+            applicationData.Nationality
+          )}
+
+          <br><br>
+
+          <b>เบอร์โทรศัพท์</b>
+          <br>
+          ${displayValue(
+            applicationData.Phone
+          )}
+
+          <br><br>
+
+          <b>อีเมล</b>
+          <br>
+          ${displayValue(
+            applicationData.Email
+          )}
+
+          <br><br>
+
+          <b>น้ำหนัก</b>
+          <br>
+          ${displayValue(
+            applicationData.Weight
+          )}
+          กก.
+
+          <br><br>
+
+          <b>ส่วนสูง</b>
+          <br>
+          ${displayValue(
+            applicationData.Height
+          )}
+          ซม.
+
+          <br><br>
+
+          <b>โรคประจำตัว</b>
+          <br>
+          ${displayValue(
+            applicationData.Disease
+          )}
+
+          <br><br>
+
+          <b>ประวัติการรักษาในโรงพยาบาล</b>
+          <br>
+          ${displayValue(
+            applicationData.HospitalHistory
+          )}
+
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- การชำระเงิน -->
+      <!-- ================================= -->
+
+      <div class="terms-card">
+
+        <div class="terms-title">
+          💳 การชำระเบี้ย
+        </div>
+
+        <div class="terms-text">
+
+          <b>วิธีการชำระเงิน</b>
+          <br>
+          ${displayValue(
+            applicationData.PaymentMethod
+          )}
+
+          <br><br>
+
+          <b>ความถี่การชำระ</b>
+          <br>
+          ${displayValue(
+            applicationData.PaymentFrequency
+          )}
+
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- การทำงาน -->
+      <!-- ================================= -->
+
+      <div class="terms-card">
+
+        <div class="terms-title">
+          💼 ข้อมูลการทำงาน
+        </div>
+
+        <div class="terms-text">
+
+          <b>อาชีพ</b>
+          <br>
+          ${displayValue(
+            applicationData.Occupation
+          )}
+
+          <br><br>
+
+          <b>สถานที่ทำงาน</b>
+          <br>
+          ${displayValue(
+            applicationData.Company
+          )}
+
+          <br><br>
+
+          <b>ตำแหน่ง</b>
+          <br>
+          ${displayValue(
+            applicationData.Position
+          )}
+
+          <br><br>
+
+          <b>ลักษณะงาน</b>
+          <br>
+          ${displayValue(
+            applicationData.JobDescription
+          )}
+
+          <br><br>
+
+          <b>รายได้ต่อปี</b>
+          <br>
+          ${displayValue(
+            applicationData.AnnualIncome
+          )}
+          บาท
+
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- ที่อยู่ -->
+      <!-- ================================= -->
+
+      <div class="terms-card">
+
+        <div class="terms-title">
+          🏠 ที่อยู่ปัจจุบัน
+        </div>
+
+        <div class="terms-text">
+
+          ${displayValue(
+            currentAddressText
+          )}
+
+        </div>
+
+
+        <div style="
+          margin-top:15px;
+          padding-top:15px;
+          border-top:1px solid #eee;
+        ">
+
+          <b>
+            🏡 ที่อยู่ตามทะเบียนบ้าน
+          </b>
+
+          <br><br>
+
+          ${
+            applicationData.SameAddress
+              ? "ใช้ที่อยู่ปัจจุบัน"
+              : displayValue(
+                  houseAddressText
+                )
+          }
+
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- ผู้รับผลประโยชน์ -->
+      <!-- ================================= -->
+
+      <div class="terms-card">
+
+        <div class="terms-title">
+          👥 ผู้รับผลประโยชน์
+        </div>
+
+        <div class="terms-text">
+
+          ${beneficiaryHTML}
+
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- สถานะเงื่อนไข -->
+      <!-- ================================= -->
+
+      <div class="terms-card">
+
+        <div class="terms-title">
+          🔐 การยืนยัน
+        </div>
+
+        <div class="terms-text">
+
+          <div style="
+            margin-bottom:10px;
+            color:#2e7d32;
+          ">
+
+            ${
+              applicationData.TermsAccepted === true
+                ? "✅ รับทราบเงื่อนไขการรับประกันแล้ว"
+                : "❌ ยังไม่ได้รับทราบเงื่อนไขการรับประกัน"
+            }
+
+          </div>
+
+
+          <div style="
+            color:#2e7d32;
+          ">
+
+            ${
+              applicationData.PrivacyNoticeAccepted === true
+                ? "✅ รับทราบประกาศความเป็นส่วนตัวแล้ว"
+                : "❌ ยังไม่ได้รับทราบประกาศความเป็นส่วนตัว"
+            }
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- WARNING -->
+      <!-- ================================= -->
+
+      <div style="
+        margin-top:18px;
+        padding:15px;
+        background:#fff8e1;
+        border:1px solid #ffe082;
+        border-radius:14px;
+        color:#6d4c41;
+        font-size:14px;
+        line-height:1.7;
+      ">
+
+        ⚠️ กรุณาตรวจสอบข้อมูลให้ถูกต้อง
+        โดยเฉพาะเลขบัตรประชาชน
+        วันเดือนปีเกิด
+        เบอร์โทรศัพท์
+        ที่อยู่
+        และข้อมูลผู้รับผลประโยชน์
+
+      </div>
+
+
+      <!-- ================================= -->
+      <!-- CONFIRM -->
+      <!-- ================================= -->
+
+      <button
+        type="button"
+        onclick="finalConfirmApplication()"
+        style="
+          width:100%;
+          margin-top:18px;
+          padding:15px;
+          border:none;
+          border-radius:12px;
+          background:#1976d2;
+          color:white;
+          font-size:16px;
+          font-weight:bold;
+          cursor:pointer;
+        "
+      >
+
+        ✅ ข้อมูลถูกต้อง ดำเนินการสมัคร
+
+      </button>
+
+
+      <!-- ================================= -->
+      <!-- BACK -->
+      <!-- ================================= -->
+
+      <button
+        type="button"
+        onclick="showReviewForm()"
+        style="
+          width:100%;
+          margin-top:12px;
+          padding:12px;
+          border:none;
+          background:none;
+          color:#777;
+          font-size:15px;
+        "
+      >
+
+        ← กลับไปตรวจสอบและแก้ไขข้อมูล
+
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+// ============================================
+// FINAL CONFIRM APPLICATION
+// ============================================
+
+function finalConfirmApplication() {
+
+  // ==========================================
+  // ตรวจเงื่อนไขอีกครั้ง
+  // ==========================================
+
+  if (
+    applicationData.TermsAccepted !== true
+  ) {
+
+    alert(
+      "กรุณารับทราบเงื่อนไขการรับประกันก่อนครับ"
+    );
+
+    return;
+
+  }
+
+
+  if (
+    applicationData.PrivacyNoticeAccepted !== true
+  ) {
+
+    alert(
+      "กรุณารับทราบประกาศความเป็นส่วนตัวก่อนครับ"
+    );
+
+    return;
+
+  }
+
+
+  const confirmInformation =
+    document.getElementById(
+      "confirmInformation"
+    );
+
+
+  /*
+   * หมายเหตุ:
+   * ตอนนี้เราอยู่หน้า Final Review แล้ว
+   * จึงตรวจสอบสถานะจากการผ่าน submitApplication()
+   * เป็นหลัก
+   */
+
+  console.log(
+    "FINAL CONFIRM:",
+    applicationData
+  );
+
+
+  alert(
+    "✅ ยืนยันข้อมูลเรียบร้อยแล้วครับ"
+  );
 
 }
 
