@@ -4981,13 +4981,36 @@ async function sendApplicationTest(
       result.success === true
     ) {
 
+      // ======================================
+      // ตรวจว่ามี ApplicationID หรือไม่
+      // ======================================
+
+      if (
+        !result.applicationID
+      ) {
+
+        throw new Error(
+          "ระบบบันทึกข้อมูลสำเร็จ แต่ไม่พบเลขใบสมัคร"
+        );
+
+      }
+
+
+      // ======================================
+      // แสดงสถานะ
+      // ======================================
+
       setStatus(
-        "✅ ส่งข้อมูลสำเร็จ"
+        "✅ สมัครเรียบร้อยแล้ว"
       );
 
 
-      alert(
-        "✅ ส่งข้อมูลใบสมัครเรียบร้อยครับ"
+      // ======================================
+      // แสดงหน้า Success
+      // ======================================
+
+      showApplicationSuccess(
+        result.applicationID
       );
 
 
@@ -5026,6 +5049,148 @@ async function sendApplicationTest(
 
 }
 
+// ============================================
+// APPLICATION SUCCESS
+// ============================================
+
+function showApplicationSuccess(
+  applicationID
+) {
+
+  const app =
+    document.getElementById(
+      "app"
+    );
+
+
+  app.innerHTML = `
+
+    <div
+      class="section"
+      style="
+        text-align:center;
+        padding-top:30px;
+        padding-bottom:30px;
+      "
+    >
+
+      <div
+        style="
+          font-size:64px;
+          margin-bottom:15px;
+        "
+      >
+        🎉
+      </div>
+
+
+      <div
+        style="
+          font-size:24px;
+          font-weight:bold;
+          color:#222;
+          margin-bottom:10px;
+        "
+      >
+        สมัครเรียบร้อยแล้วครับ
+      </div>
+
+
+      <div
+        style="
+          color:#777;
+          font-size:15px;
+          line-height:1.7;
+          margin-bottom:25px;
+        "
+      >
+
+        ระบบได้รับข้อมูลใบสมัครของคุณ
+        เรียบร้อยแล้วครับ
+
+      </div>
+
+
+      <!-- Application ID -->
+
+      <div
+        style="
+          background:#f5f7fa;
+          border-radius:16px;
+          padding:20px;
+          margin-bottom:20px;
+        "
+      >
+
+        <div
+          style="
+            color:#777;
+            font-size:14px;
+            margin-bottom:8px;
+          "
+        >
+          📋 เลขที่ใบสมัคร
+        </div>
+
+
+        <div
+          style="
+            font-size:22px;
+            font-weight:bold;
+            color:#111;
+            letter-spacing:1px;
+          "
+        >
+
+          ${escapeHtml(
+            applicationID
+          )}
+
+        </div>
+
+      </div>
+
+
+      <div
+        style="
+          color:#666;
+          font-size:14px;
+          line-height:1.8;
+          margin-bottom:25px;
+        "
+      >
+
+        กรุณาจดเลขที่ใบสมัครนี้ไว้<br>
+
+        สำหรับใช้ติดต่อสอบถาม<br>
+        หรือติดตามข้อมูลภายหลังครับ
+
+      </div>
+
+
+      <div
+        style="
+          background:#eef9f1;
+          color:#26733b;
+          border-radius:12px;
+          padding:14px;
+          font-size:14px;
+          line-height:1.6;
+        "
+      >
+
+        ✅ ระบบได้รับข้อมูลเรียบร้อยแล้ว<br>
+        เจ้าหน้าที่จะตรวจสอบข้อมูล<br>
+        และดำเนินการในขั้นตอนถัดไปครับ
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+  
 // ============================================
 // PREPARE FINAL APPLICATION DATA
 // ============================================
